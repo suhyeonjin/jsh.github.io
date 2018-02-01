@@ -21,6 +21,8 @@ thumbnail: /images/acebearCTF.png
 ![](exercise.png)
 
 
+## Solution
+
 Cipher Text가 하나 주어진다. 해당 Cipher 를 Plain Text 로써 의미있는 문자열로 복호화 해내는 문제.
 감이 모자란지라,, 처음엔 ROT, Hex Decoding 등으로 다르게 접근 했었는데 flag format 과 xor을 이용해서 해결할 수 있었다.
 
