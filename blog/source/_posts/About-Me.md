@@ -23,7 +23,7 @@ thumbnail: /images/profile.png
   - Linux
   - macOS
 
-##### [Program Language]
+##### [Language]
   - Major : Python
   - Minor : C/C++, Java, PHP, javascript(ajax, jqeury...)
   - ETC : C#, Android, Shell Script, Markup
