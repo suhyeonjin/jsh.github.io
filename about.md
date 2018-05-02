@@ -7,7 +7,7 @@ imagefeature: /images/profile.png
 chart: true
 ---
 <figure>
-  <img src="{{ site.url }}/images/profile.png">
+  <img src="{{ site.url }}/images/profile.jpg">
   <figcaption>Jin Su Hyeon</figcaption>
 </figure>
 
@@ -28,7 +28,7 @@ chart: true
 
 ## Profile
 <figure>
-	<img src="{{ site.url }}/images/profile.png">
+	<img src="{{ site.url }}/images/profile.jpg">
 	<figcaption>At Sanfrancisco RSA 2017</figcaption>
 </figure>
 
