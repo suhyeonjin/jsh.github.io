@@ -3,7 +3,7 @@ description:      "Jin Su Hyeon"
 logo:             logo.png
 logo_white:       logo_white.png
 logo_pic:         logo_pic.png
-disqus_shortname: 'Jin_SH'
+disqus_shortname: 'jinshs-blog'
 share:            true
 dropcap:			true
 # Change url to your domain. Leave localhost server or blank when working locally.
