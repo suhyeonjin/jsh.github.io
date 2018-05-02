@@ -1,11 +1,27 @@
 [
 	
 		{
+		  "title"      : "[2018_AceBear_CTF] Forensic/MISC Welcome(100)",
+		  "category"   : "CTF2018_AceBear",
+		  "url"        : "http://localhost:4000/ctf/2018_acebear/AceBear-CTF-Welcome-100",
+		  "date"       : "2018-01-31 00:00:00 +0900",
+		  "shortdate"  : "January 31, 2018"
+		} ,
+	
+		{
 		  "title"      : "OSX Tensorflow Install",
 		  "category"   : "etc",
 		  "url"        : "http://localhost:4000/etc/OSX-Tensorflow-Install",
 		  "date"       : "2018-01-26 00:00:00 +0900",
 		  "shortdate"  : "January 26, 2018"
+		} ,
+	
+		{
+		  "title"      : "[2017_SHA_CTF] Samsung S4 (300)",
+		  "category"   : "CTF2017_SHA",
+		  "url"        : "http://localhost:4000/ctf/2017_sha/SHA-CTF-Samsung-S4-300",
+		  "date"       : "2018-01-13 00:00:00 +0900",
+		  "shortdate"  : "January 13, 2018"
 		} ,
 	
 		{

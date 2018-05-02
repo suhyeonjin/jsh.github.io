@@ -2,18 +2,18 @@
 <html>
 <head>
   <meta charset="utf-8">
-<title>OSX TENSORFLOW INSTALL &vert; JSH</title>
+<title>[2018_ACEBEAR_CTF] FORENSIC/MISC WELCOME(100) &vert; JSH</title>
 <meta name="description" content="Jin Su Hyeon">
-<meta name="keywords" content="etc, tensorflow, error">
+<meta name="keywords" content="ctf, Forensic, MISC, xor">
 
 
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OSX Tensorflow Install">
+<meta property="og:title" content="[2018_AceBear_CTF] Forensic/MISC Welcome(100)">
 <meta property="og:description" content="Jin Su Hyeon">
-<meta property="og:url" content="http://localhost:4000/etc/OSX-Tensorflow-Install">
+<meta property="og:url" content="http://localhost:4000/ctf/2018_acebear/AceBear-CTF-Welcome-100">
 <meta property="og:site_name" content="jsh">
 <meta property="og:image" content="http://localhost:4000/images/logo.png">
 
@@ -21,7 +21,7 @@
 
 
 
-<link rel="canonical" href="http://localhost:4000/etc/OSX-Tensorflow-Install">
+<link rel="canonical" href="http://localhost:4000/ctf/2018_acebear/AceBear-CTF-Welcome-100">
 <link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="jsh Feed">
 
 
@@ -125,76 +125,89 @@
     <div class="notepad-post-title-simple row">
       <div class="small-12 columns">
         <div class="notepad-post-meta-simple">
-          <h1>OSX Tensorflow Install</h1>
-          <p>by <strong>jsh05042</strong> &#8212; on <a href="http://localhost:4000/tags/index.html#etc" data-toggle="tooltip" title="Posts tagged with etc" rel="tag">etc</a>&nbsp;&comma;&nbsp;<a href="http://localhost:4000/tags/index.html#tensorflow" data-toggle="tooltip" title="Posts tagged with tensorflow" rel="tag">tensorflow</a>&nbsp;&comma;&nbsp;<a href="http://localhost:4000/tags/index.html#error" data-toggle="tooltip" title="Posts tagged with error" rel="tag">error</a> <strong><time datetime="2018-01-26T00:00:00+09:00">26 Jan 2018</time></strong></p>
+          <h1>[2018_AceBear_CTF] Forensic/MISC Welcome(100)</h1>
+          <p>by <strong>jsh05042</strong> &#8212; on <a href="http://localhost:4000/tags/index.html#ctf" data-toggle="tooltip" title="Posts tagged with ctf" rel="tag">ctf</a>&nbsp;&comma;&nbsp;<a href="http://localhost:4000/tags/index.html#Forensic" data-toggle="tooltip" title="Posts tagged with Forensic" rel="tag">Forensic</a>&nbsp;&comma;&nbsp;<a href="http://localhost:4000/tags/index.html#MISC" data-toggle="tooltip" title="Posts tagged with MISC" rel="tag">MISC</a>&nbsp;&comma;&nbsp;<a href="http://localhost:4000/tags/index.html#xor" data-toggle="tooltip" title="Posts tagged with xor" rel="tag">xor</a> <strong><time datetime="2018-01-31T00:00:00+09:00">31 Jan 2018</time></strong></p>
         </div>
       </div>
     </div>
     </header>
     
     <article class="notepad-post-content post tag-simple">
-    <div><p>Lab3 예제 code를 Docker에서 실습하던 중에, gvs optimizer 가 type error 뜨는 것을 확인.. 고치려고 별 짓을 다했으나 결국 version 문제인것으로 확인했다… Docker 끄고.. 로컬에 설치 시작..</p>
+    <div><h2 id="exercise">Exercise</h2>
 
-<ul>
-  <li>아래처럼 하면, 정상적으로 설치 되지 않는다…</li>
-</ul>
+<blockquote>
+  <p>Welcome to AceBear Security Contest:<br />
+Cipher:</p>
+</blockquote>
 
 <p><code class="highlighter-rouge">bash
-sudo pip3 install tensorflow</code></p>
+172d330d21283133037c65101220703c187a3b1033202f24092c33103021261721273821773b3e</code></p>
+<blockquote>
+  <p>author: komang4130</p>
+</blockquote>
 
-<p>문제를 찾아보면, Max OS에서 정상적으로 version이 호환되지 않는 문제인데,, 아래와 같은 error 를 볼 수 있다.</p>
+<p><img src="/images/2018-01-31-AceBear-CTF-Welcome-100/exercise.png" alt="" /></p>
 
-<p>```bash
-python3
-Python 3.6.3 (default, Oct  4 2017, 06:09:15)
-[GCC 4.2.1 Compatible Apple LLVM 9.0.0 (clang-900.0.37)] on darwin
-Type “help”, “copyright”, “credits” or “license” for more information.</p>
+<h2 id="solution">Solution</h2>
+
+<p>Cipher Text가 하나 주어진다. 해당 Cipher 를 Plain Text 로써 의미있는 문자열로 복호화 해내는 문제.
+감이 모자란지라,, 처음엔 ROT, Hex Decoding 등으로 다르게 접근 했었는데 flag format 과 xor을 이용해서 해결할 수 있었다.</p>
+
+<blockquote>
+  <ol>
+    <li>cipher를 hex 형태로 convert 해야한다.</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>flag format이 ‘AceBear{‘ 임을 이미 알고 있기 때문에, 해당 길이만큼 hex로 decode 한 cipher에 대해 xor 하여 flag format text 가 생성되는 xor key를 찾을 수 있다. (VNVODICH)</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>cipher 와 찾은 xor key를 이용하여 다시 xor을 수행함으로써, flag를 확인할 수 있다.</li>
+  </ol>
+</blockquote>
+
+<p>```python</p>
 <blockquote>
   <blockquote>
     <blockquote>
-      <p>import tensorflow
-/usr/local/Cellar/python3/3.6.3/Frameworks/Python.framework/Versions/3.6/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: compiletime version 3.5 of module ‘tensorflow.python.framework.fast_tensor_util’ does not match runtime version 3.6
-  return f(*args, **kwds)
-quit()```</p>
+      <p>a
+‘172d330d21283133037c65101220703c187a3b1033202f24092c33103021261721273821773b3e’
+a = a.decode(‘hex’)
+a
+“\x17-3\r!(13\x03|e\x10\x12 p&lt;\x18z;\x103 /$\t,3\x100!&amp;\x17!’8!w;&gt;”
+b
+‘\x17-3\r!(13’
+plain
+‘AceBear{‘
+xor(plain,b)
+‘VNVODICH’
+xor(a,”VNVODICH”)
+‘AceBear{U23_Vi3tN4m_will_be_the_winn3r}’```</p>
     </blockquote>
   </blockquote>
 </blockquote>
 
-<p>좀 뒤져보면, (https://github.com/tensorflow/tensorflow/issues/14273)</p>
-
-<p><img src="/images/2018-01-26-OSX-Tensorflow-Install/issue.png" alt="" /></p>
-
-<ul>
-  <li>
-    <p>https://github.com/lakshayg/tensorflow-build/releases/download/v1.4.1-macosx_10_12-py27-py36-avx-sse41-sse42/tensorflow-1.4.1-cp36-cp36m-macosx_10_12_x86_64.whl</p>
-  </li>
-  <li>
-    <p>위 github 주소에서 직접, version에 맞는 tensor flow를 빌드할 수 있는 whl을 제공하고 있다. 내  Mac 버전과, Python3 버전이 동일한 항목을 찾아 직접 다운로드 해주도록 한다.</p>
-  </li>
-</ul>
-
-<p><code class="highlighter-rouge">bash
-sudo pip3 install --ignore-installed --upgrade https://github.com/lakshayg/tensorflow-build/raw/master/tensorflow-1.4.0-cp36-cp36m-macosx_10_12_x86_64.whl</code></p>
-
-<ul>
-  <li>위에서 안되던, 예제 Code가 잘~ 돌아가는 것을 확인할 수 있다.</li>
-</ul>
-
+<p align="right"><strong>AceBear{U23_Vi3tN4m_will_be_the_winn3r}</strong></p>
 
     </div>
     </article>
     <div class="cf"></div>
             <div class="row text-center">
             <section class="notepad-post-share">
-                <a class="twitter-icon" href="https://twitter.com/intent/tweet?text=&quot;OSX Tensorflow Install&quot;%20http://localhost:4000/etc/OSX-Tensorflow-Install%20via%20&#64;"
+                <a class="twitter-icon" href="https://twitter.com/intent/tweet?text=&quot;[2018_AceBear_CTF] Forensic/MISC Welcome(100)&quot;%20http://localhost:4000/ctf/2018_acebear/AceBear-CTF-Welcome-100%20via%20&#64;"
                     onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;" title="Share on Twitter">
                     <i class="fa fa-twitter"></i>
                 </a>
-                <a class="facebook-icon" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/etc/OSX-Tensorflow-Install"
+                <a class="facebook-icon" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/ctf/2018_acebear/AceBear-CTF-Welcome-100"
                     onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" title="Share on Facebook">
                     <i class="fa fa-facebook"></i>
                 </a>
-                <a class="google-icon" href="https://plus.google.com/share?url=http://localhost:4000/etc/OSX-Tensorflow-Install"
+                <a class="google-icon" href="https://plus.google.com/share?url=http://localhost:4000/ctf/2018_acebear/AceBear-CTF-Welcome-100"
                    onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;" title="Share on Google+">
                     <i class="fa fa-google-plus"></i>
                 </a>

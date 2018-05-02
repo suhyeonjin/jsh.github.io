@@ -6,10 +6,6 @@
     
     
     <url>
-        <loc>http://localhost:4000/2017-12-31-FinalDay</loc>
-    </url>
-    
-    <url>
         <loc>http://localhost:4000/404</loc>
     </url>
     
@@ -56,7 +52,15 @@
 
     
     <url>
+        <loc>http://localhost:4000/ctf/2018_acebear/AceBear-CTF-Welcome-100</loc>
+    </url>
+    
+    <url>
         <loc>http://localhost:4000/etc/OSX-Tensorflow-Install</loc>
+    </url>
+    
+    <url>
+        <loc>http://localhost:4000/ctf/2017_sha/SHA-CTF-Samsung-S4-300</loc>
     </url>
     
     <url>

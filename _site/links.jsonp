@@ -31,8 +31,18 @@ callback([
   } ,
 
   {
+    "text": "[2017_SHA_CTF] Samsung S4 (300)",
+    "href": "http://localhost:4000/ctf/2017_sha/SHA-CTF-Samsung-S4-300"
+  } ,
+
+  {
     "text": "OSX Tensorflow Install",
     "href": "http://localhost:4000/etc/OSX-Tensorflow-Install"
+  } ,
+
+  {
+    "text": "[2018_AceBear_CTF] Forensic/MISC Welcome(100)",
+    "href": "http://localhost:4000/ctf/2018_acebear/AceBear-CTF-Welcome-100"
   } 
 
 ])
