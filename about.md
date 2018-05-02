@@ -1,14 +1,14 @@
 ---
 layout: page
 permalink: /about/index.html
-title: Hossain Mohd Faysal
-tags: [Hossain, Mohd, Faysal, hmfaysal]
-imagefeature: fourseasons.jpg
+title: About-Me
+tags: [profile, me, JinSH, career]
+imagefeature: /images/profile.png
 chart: true
 ---
 <figure>
-  <img src="{{ site.url }}/images/hossain-faysal.jpg" alt="Hossain Mohammad Faysal">
-  <figcaption>Hossain Mohammad Faysal</figcaption>
+  <img src="{{ site.url }}/images/profile.png">
+  <figcaption>Jin Su Hyeon</figcaption>
 </figure>
 
 {% assign total_words = 0 %}
@@ -26,73 +26,111 @@ chart: true
     {% endif %}
 {% endfor %}
 
-
-My name is **Hossain Mohd. Faysal**, and this is my personal blog. It currently has {{ site.posts | size }} posts in {{ site.categories | size }} categories which combinedly have {{ total_words }} words, which will take an average reader ({{ site.wpm }} WPM) approximately <span class="time">{{ total_readtime }}</span> minutes to read. {% if featuredcount != 0 %}There are <a href="{{ site.url }}/featured">{{ featuredcount }} featured posts</a>, you should definitely check those out.{% endif %} The most recent post is {% for post in site.posts limit:1 %}{% if post.description %}<a href="{{ site.url }}{{ post.url }}" title="{{ post.description }}">"{{ post.title }}"</a>{% else %}<a href="{{ site.url }}{{ post.url }}" title="{{ post.description }}" title="Read more about {{ post.title }}">"{{ post.title }}"</a>{% endif %}{% endfor %} which was published on {% for post in site.posts limit:1 %}{% assign modifiedtime = post.modified | date: "%Y%m%d" %}{% assign posttime = post.date | date: "%Y%m%d" %}<time datetime="{{ post.date | date_to_xmlschema }}" class="post-time">{{ post.date | date: "%d %b %Y" }}</time>{% if post.modified %}{% if modifiedtime != posttime %} and last modified on <time datetime="{{ post.modified | date: "%Y-%m-%d" }}" itemprop="dateModified">{{ post.modified | date: "%d %b %Y" }}</time>{% endif %}{% endif %}{% endfor %}. The last commit was on {{ site.time | date: "%A, %d %b %Y" }} at {{ site.time | date: "%I:%M %p" }} [UTC](http://en.wikipedia.org/wiki/Coordinated_Universal_Time "Temps Universel Coordonné").
-
-I am an PhD candidate in *ESE* at the [SEAS](http://www.seas.upenn.edu/) at **UPENN**. I am licensed as a Professional Engineer (P.E) to practice in the states of Texas, Massachusetts and California. I double majored in EECS and Mathematics during my undergraduate life at [MIT](http://www.mit.edu/), and currently focusing on Electrical Engineering for my post-graduate studies.
-
-*[ESE]: Electrical and Systems Engineering
-*[SEAS]: School of Engineering and Applied Science
-*[MIT]: Massachusetts Institute of Technology
-*[EECS]: Electrical and Computer Engineering
-*[UPENN]: University of Pennsylvania
-
+## Profile
 <figure>
-	<img src="{{ site.url }}/images/Hossain-Mohd-Faysal.jpg" alt="Hossain Mohammad Faysal">
-	<figcaption>At Bates Linear Accelerator Center</figcaption>
+	<img src="{{ site.url }}/images/profile.png">
+	<figcaption>At Sanfrancisco RSA 2017</figcaption>
 </figure>
 
-I was born and brought up in Doha. Yes, its a desert peninsula, yes we have camels and falcons and all the other Middle Eastern traits/stereotypes you can think of.
+> 업데이트 & 수정 중
 
-<figure class="third">
-	<a href="{{ site.url }}/images/about/1.jpg"><img src="{{ site.url }}/images/about/1-001.jpg"></a>
-	<a href="{{ site.url }}/images/about/2.jpg"><img src="{{ site.url }}/images/about/2-001.jpg"></a>
-	<a href="{{ site.url }}/images/about/3.jpg"><img src="{{ site.url }}/images/about/3-001.jpg"></a>
-</figure>
-<figure class="half">
-	<a href="{{ site.url }}/images/about/4.jpg"><img src="{{ site.url }}/images/about/4-001.jpg"></a>
-	<a href="{{ site.url }}/images/about/5.jpg"><img src="{{ site.url }}/images/about/5-001.jpg"></a>
-</figure>
-<figure class="third">
-	<a href="{{ site.url }}/images/about/6.jpg"><img src="{{ site.url }}/images/about/6-001.jpg"></a>
-	<a href="{{ site.url }}/images/about/7.jpg"><img src="{{ site.url }}/images/about/7-001.jpg"></a>
-	<a href="{{ site.url }}/images/about/8.jpg"><img src="{{ site.url }}/images/about/8-001.jpg"></a>
-	<figcaption>Doha at its full glory.</figcaption>
-</figure>
+##### [Introduce]
+  - 1993.05.04
+  - SU HYEON, JIN
 
-At some point in the not-terribly-distant future, I hope to found a self-sustaining collective of clever people, for fun, profit(?), and the promotion of human life in the universe. This might wind up in Qatar, Bangladesh, Scandinavia, the Massachusetts Bay Area, the SF Bay Area, Japan, Germany, or the dustbin of overly idealistic plans. (Yes, I have a special bin for overly idealistic plans. In my district they can't be recycled with residential mixed paper.) The most challenging aspect of this concept is to curtail unproductive competition with other people who will inevitably have the same idea. (Some sort of cooperative federation...) I'm presently looking for people who might be interested in being a part of such an organization.
+##### [Operation System]
+  - Windows
+  - Linux
+  - macOS
 
-Anyways, for now I'm just working toward changing the face of Electrical Engineering forever. Not that I necessarily expect to succeed, but it's something to strive for, and it's a fun problem to work on.
+##### [Language]
+  - Major : Python
+  - Minor : C/C++, Java, PHP, javascript(ajax, jqeury...)
+  - ETC : C#, Android, Shell Script, Markup
 
+##### [Database]
+  - Mysql, MongoDB(NoSQL)
+  - Oracle
+    - Procedure, PL/SQL
 
-Entrepreneur
-Designer
-***Engineer***
-Inventor
+##### [Web Server]
+  - Python(Flask + Gevent)
+  - Apache
 
-I
-make
-stuff.
+##### [Framework]
+  - Flask, Jinja, Django
+  - Elastic search, Logstash, Kibana
 
+##### [Server Framework]
+  - Docker
 
-*Beautiful, practical, meaningful stuff.*
+##### [Eligibility]
+  - 정보처리 산업기사
+  - Digital Forensic Expert  2rd
 
-
-I make what I love.
-
-*I love what I do.*
-
-
-But over the years, I noticed that somehow, along the way, software designed to help us be creative, actually made us less creative. That's because we believe our best ideas emerge when we use pencils and paper.
-So I set out to build tools that work the way I do.
+##### [Career]
+  - (2014.07.20 ~ 2016.07.21) 공군본부 중앙전산소 침해사고 대응팀 - CERT
+  - (2016.07.01 ~ 2017.03.30) 차세대 보안리더 양성 프로그램 Best of the Best 5th
+    - Digital Forensic Track
 
 
-Tools for the creative space — the 53 centimeters that magically link head, heart, and hand. Tools as simple as pencil and paper. Tools so essential, I  really can't imagine work without them.
+  - (2016.11.28 ~ 2017.02.28) LG 전자 서초 R&D, SW Platform SDL & Security part
+    - IoT SDL Secure coding Guide
 
 
-For
-the makers,
-the creators,
-the discoverers,
-the original thinkers,
-***This is the space to create.***
+  - (2017.06.26 ~ 2017.08.25) 한국 전자통신 연구소 (ETRI), 지능보안연구 그룹
+    - Moving Target Defense Project
+
+##### [Presentation / Project]
+  - Best of the Best 5th Project
+    - IoT Hacking & Forensic with 0-day
+
+
+  - LG 전자 서초 R&D 취약점 시연회
+  - 독일 하이델베르크 TROOPERS17 NGI Session Speaker
+    - IoT Hacking & Forensic with 0-day
+
+
+  - 동계 정보보호 학술 대회 논문
+    - 기계학습을 이용한 행위 기반의 악성코드 판별 모델
+
+
+  - 일본 도쿄 AVTOKYO Conference Speaker
+    - IoT Hacking & Forensic with 0-day
+
+
+  - 고려대학교 정보보호 R&D Challenge 참가
+    - CAN Network Traffic (차량 네트워크 이상 징후 탐지 시스템 개발)
+
+##### [Awards]
+  - 2016 KR/FE 훈련. 사이버 DDoS 악성코드 탐지 및 방어
+    - 참모총장 표창 및 포상 휴가 수상
+
+
+  - (2016.12.13) LG 전자 보안 취약점 탐지 감사장
+    - LG전자 제품 취약점 5건 제보
+    - 부사장상 민경오 수여
+
+
+  - (2017.03.30) 차세대 보안리더 Best 10 선정
+    - 미래창조과학부 장관상 수여
+
+
+  - (2017.04.20) 2017 Codegate 해킹 시연영상 특별상
+    - Codegate 수여
+
+
+  - (2017.11.02) 제 4회 SW 개발보안 경진대회 우수상
+    - 한국인터넷진흥원장상 수여
+
+
+  - (2017.12.12) 제 5회 디지털 범인을 찾아라 대상
+    - 검창총장상 수여
+
+
+  - (2017.11.16) 2017 WhiteHat CTF 본선
+    - 본선 8위
+
+
+  - 그 외 다수 CTF 참가
+
