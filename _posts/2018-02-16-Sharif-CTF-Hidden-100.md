@@ -4,7 +4,7 @@ title: "[2018_Sharif_CTF] Hidden(100)"
 description:
 headline:
 modified: 2018-02-16
-category: [Forensic, memory, volatility]
+category: [CTF, 2018_Sharif]
 tags: [Reversing, string]
 imagefeature:
 mathjax:
