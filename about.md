@@ -6,11 +6,6 @@ tags: [profile, me, JinSH, career]
 imagefeature: /images/profile.png
 chart: true
 ---
-<figure>
-  <img src="{{ site.url }}/images/profile.jpg">
-  <figcaption>Jin Su Hyeon</figcaption>
-</figure>
-
 {% assign total_words = 0 %}
 {% assign total_readtime = 0 %}
 {% assign featuredcount = 0 %}
