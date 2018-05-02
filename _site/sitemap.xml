@@ -6,6 +6,10 @@
     
     
     <url>
+        <loc>http://localhost:4000/2017-12-31-FinalDay</loc>
+    </url>
+    
+    <url>
         <loc>http://localhost:4000/404</loc>
     </url>
     
@@ -52,7 +56,7 @@
 
     
     <url>
-        <loc>http://localhost:4000/webdevelopment/Why-jekyll</loc>
+        <loc>http://localhost:4000/life/2017%E1%84%82%E1%85%A7%E1%86%AB-%E1%84%92%E1%85%AC%E1%84%80%E1%85%A9%E1%84%85%E1%85%A9%E1%86%A8</loc>
     </url>
     
     <url>

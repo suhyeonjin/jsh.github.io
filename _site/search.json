@@ -1,11 +1,11 @@
 [
 	
 		{
-		  "title"      : "Why Jekyll?",
-		  "category"   : "webdevelopment",
-		  "url"        : "http://localhost:4000/webdevelopment/Why-jekyll",
-		  "date"       : "2014-07-23 00:00:00 +0900",
-		  "shortdate"  : "July 23, 2014"
+		  "title"      : "2017년 회고록",
+		  "category"   : "life",
+		  "url"        : "http://localhost:4000/life/2017%E1%84%82%E1%85%A7%E1%86%AB-%E1%84%92%E1%85%AC%E1%84%80%E1%85%A9%E1%84%85%E1%85%A9%E1%86%A8",
+		  "date"       : "2017-12-31 00:00:00 +0900",
+		  "shortdate"  : "December 31, 2017"
 		} ,
 	
 		{

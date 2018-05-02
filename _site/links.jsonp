@@ -26,8 +26,8 @@ callback([
   } ,
 
   {
-    "text": "Why Jekyll?",
-    "href": "http://localhost:4000/webdevelopment/Why-jekyll"
+    "text": "2017년 회고록",
+    "href": "http://localhost:4000/life/2017%E1%84%82%E1%85%A7%E1%86%AB-%E1%84%92%E1%85%AC%E1%84%80%E1%85%A9%E1%84%85%E1%85%A9%E1%86%A8"
   } 
 
 ])
