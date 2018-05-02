@@ -3,7 +3,7 @@ layout: post
 title: "OSX Tensorflow Install"
 description:
 headline:
-modified: 2017-12-31
+modified: 2018-01-26
 category: etc
 tags: [etc,tensorflow,error]
 imagefeature:
