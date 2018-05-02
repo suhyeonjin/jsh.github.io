@@ -19,7 +19,8 @@ featured: true
 > Cipher:
 
 ```bash
-172d330d21283133037c65101220703c187a3b1033202f24092c33103021261721273821773b3e```
+172d330d21283133037c65101220703c187a3b1033202f24092c33103021261721273821773b3e
+```
 > author: komang4130
 
 ![](/images/2018-01-31-AceBear-CTF-Welcome-100/exercise.png)
@@ -49,6 +50,7 @@ Cipher Text가 하나 주어진다. 해당 Cipher 를 Plain Text 로써 의미�
 >>> xor(plain,b)
 'VNVODICH'
 >>> xor(a,"VNVODICH")
-'AceBear{U23_Vi3tN4m_will_be_the_winn3r}'```
+'AceBear{U23_Vi3tN4m_will_be_the_winn3r}'
+```
 
 <p align='right'><strong>AceBear{U23_Vi3tN4m_will_be_the_winn3r}</strong></p>
