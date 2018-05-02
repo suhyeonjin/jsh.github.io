@@ -18,7 +18,7 @@ featured: true
 > Run the attached file. If you can, you will capture the flag.<br>
 > Note: Apply the minimum changes to make the file executable. Then, the mentioned hash function is md5. Be sure to run it on a real Windows OS (not Wine, etc.)
 
-![](/images/2018-02-16-Sharif-CTF-RunMe-50/exrcise.png)
+![](/images/2018-02-16-Sharif-CTF-RunMe-50/exercise.png)
 <p align='center'>[그림] exercise</p>
 
 
