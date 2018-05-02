@@ -7,13 +7,85 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://localhost:4000/feed.xml" />
 <link rel="alternate" type="text/html" href="http://localhost:4000/" />
-<updated>2018-05-02T18:18:15+09:00</updated>
+<updated>2018-05-02T21:09:05+09:00</updated>
 <id>http://localhost:4000/</id>
 <author>
   <name>jsh05042</name>
   <uri>http://localhost:4000/</uri>
   <email>jsh05042@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[OSX Tensorflow Install]]></title>
+  <link rel="alternate" type="text/html" href="http://localhost:4000/etc/OSX-Tensorflow-Install"/>
+  <id>http://localhost:4000/etc/OSX-Tensorflow-Install</id>
+  <published>2018-01-26T00:00:00+09:00</published>
+  <updated>2017-12-31T00:00:00-00:00</updated>
+  
+  <author>
+    <name>jsh05042</name>
+    <uri>http://localhost:4000</uri>
+    <email>jsh05042@gmail.com</email>
+  </author>
+  <category scheme="http://localhost:4000/tags/#etc" term="etc" /><category scheme="http://localhost:4000/tags/#tensorflow" term="tensorflow" /><category scheme="http://localhost:4000/tags/#error" term="error" />
+  <content type="html">
+  
+    &lt;p&gt;Lab3 예제 code를 Docker에서 실습하던 중에, gvs optimizer 가 type error 뜨는 것을 확인.. 고치려고 별 짓을 다했으나 결국 version 문제인것으로 확인했다… Docker 끄고.. 로컬에 설치 시작..&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;아래처럼 하면, 정상적으로 설치 되지 않는다…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pip3 &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;tensorflow
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;문제를 찾아보면, Max OS에서 정상적으로 version이 호환되지 않는 문제인데,, 아래와 같은 error 를 볼 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;python3
+Python 3.6.3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default, Oct  4 2017, 06:09:15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;GCC 4.2.1 Compatible Apple LLVM 9.0.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;clang-900.0.37&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt; on darwin
+Type &lt;span class=&quot;s2&quot;&gt;&quot;help&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;copyright&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;credits&quot;&lt;/span&gt; or &lt;span class=&quot;s2&quot;&gt;&quot;license&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;more information.
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; import tensorflow
+/usr/local/Cellar/python3/3.6.3/Frameworks/Python.framework/Versions/3.6/lib/python3.6/importlib/_bootstrap.py:219: RuntimeWarning: compiletime version 3.5 of module &lt;span class=&quot;s1&quot;&gt;'tensorflow.python.framework.fast_tensor_util'&lt;/span&gt; does not match runtime version 3.6
+  &lt;span class=&quot;k&quot;&gt;return &lt;/span&gt;f&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;args, &lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;kwds&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; quit&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;좀 뒤져보면, (https://github.com/tensorflow/tensorflow/issues/14273)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2018-01-26-OSX-Tensorflow-Install/issue.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;https://github.com/lakshayg/tensorflow-build/releases/download/v1.4.1-macosx_10_12-py27-py36-avx-sse41-sse42/tensorflow-1.4.1-cp36-cp36m-macosx_10_12_x86_64.whl&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;위 github 주소에서 직접, version에 맞는 tensor flow를 빌드할 수 있는 whl을 제공하고 있다. 내  Mac 버전과, Python3 버전이 동일한 항목을 찾아 직접 다운로드 해주도록 한다.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pip3 &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--ignore-installed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--upgrade&lt;/span&gt; https://github.com/lakshayg/tensorflow-build/raw/master/tensorflow-1.4.0-cp36-cp36m-macosx_10_12_x86_64.whl
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;위에서 안되던, 예제 Code가 잘~ 돌아가는 것을 확인할 수 있다.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+  
+  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/etc/OSX-Tensorflow-Install&quot;&gt;OSX Tensorflow Install&lt;/a&gt; was originally published by jsh05042 at &lt;a href=&quot;http://localhost:4000&quot;&gt;jsh&lt;/a&gt; on January 26, 2018.&lt;/p&gt;</content>
+</entry>
 
 
 <entry>

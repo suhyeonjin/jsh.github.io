@@ -20,8 +20,8 @@ owner:
   description:    "Cybersecurity researcher & developer. ‘Best of the Best(a.k.a BoB) 5th’, served at the Air Force CERT, now I'm a student at a university"
   # Social networking links used in footer. Update and remove as you like.
   twitter:        #
-  facebook:       https://www.facebook.com/jsh05042
-  github:         https://github.com/jinsoohyun/
+  facebook:       jsh05042
+  github:         jinsoohyun
   instagram:      https://www.instagram.com/jsh_0504/
   # For Google Authorship https://plus.google.com/authorship
   google_plus:    #https://plus.google.com/u/0/102602916593522619858
@@ -154,4 +154,4 @@ prose:
 
 include: [".htaccess"]
 exclude: ["lib", "config.rb", "Gemfile", "Capfile", "Gemfile.lock", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules"]
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]
