@@ -1,347 +1,546 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-<title>BLOG &vert; JSH</title>
-<meta name="description" content="Technical blog for Theori">
+  <head>
+    
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <link rel="shortcut icon" href="/static/img/favicon.ico" />
+        <title>Blog - John Smith</title>
+        <meta name="author" content="John Smith" />
+        <meta name="description" content="Blog" />
+        <meta name="keywords" content="Blog, John Smith, " />
 
+        <meta content="0" property="fb:app_id">
+        <meta content="John Smith" property="og:site_name">
+        
+          <meta content="Blog" property="og:title">
+        
+        
+          <meta content="article" property="og:type">
+        
+        
+          <meta content="My Personal Blog" property="og:description">
+        
+        
+          <meta content="http://localhost:4000/" property="og:url">
+        
+        
+        
+          <meta content="http://localhost:4000/static/img/logo-high-resolution.png" property="og:image">
+        
+        
+        
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@\#">
+        <meta name="twitter:creator" content="@\#">
+        
+          <meta name="twitter:title" content="Blog">
+        
+        
+          <meta name="twitter:url" content="http://localhost:4000/">
+        
+        
+          <meta name="twitter:description" content="My Personal Blog">
+        
+        
 
+      <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+      <script type="text/javascript">window.baseurl = 'http://localhost:4000';</script>
+      
+        <!-- Custom Fonts -->
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
 
-<!-- Open Graph -->
-<meta property="og:locale" content="en_US">
-<meta property="og:type" content="article">
-<meta property="og:title" content="BLOG">
-<meta property="og:description" content="Technical blog for Theori">
-<meta property="og:url" content="http://localhost:4000/">
-<meta property="og:site_name" content="jsh">
-<meta property="og:image" content="http://localhost:4000/images/logo.png">
+        <!-- FontAwesome icons -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/74dfc6cf47.css">
 
+        <!-- Core BootStrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <!-- Material Design CSS -->
+        <link rel="stylesheet" href="/static/css/bootstrap-material-design.min.css">
 
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/static/css/syntax.css">
 
+        <!-- Custom CSS -->        
+        <link rel="stylesheet" href="/static/css/thickbox.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+        <link rel="stylesheet" href="/static/css/projects.css">
 
+        <script type="text/javascript">
+          //loadingImage is relative to project dir
+          var tb_pathToImage = "/static/img/loadingAnimation.gif";
+        </script>
 
-<link rel="canonical" href="http://localhost:4000/">
-<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="jsh Feed">
+  </head>
 
+  <body class="home overflow-hidden">
+    <div class="header-panel shadow-z-2">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-sm-4 col-xs-12">
+            <div class="row-picture">
+              <img id="about" class="logo-img" src="/hcz-jekyll-blog/static/img/avatar.png" height="75px" width="75px">
+            </div>
+            <div class="row-details">
+              <h4 class="list-group-item-heading">John Smith</h4>
+              <p class="list-group-item-text">Freelance developer</p>
+              <div class="social-icons">
+	
+        <a class="icon" target="_blank" href=""><i class="fa fa-facebook"></i></a>
+    
+        <a class="icon" target="_blank" href=""><i class="fa fa-twitter"></i></a>
+    
+        <a class="icon" target="_blank" href=""><i class="fa fa-linkedin"></i></a>
+    
+        <a class="icon" target="_blank" href=""><i class="fa fa-stack-exchange"></i></a>
+    
+</div>
 
-<!-- http://t.co/dKP3o1e -->
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
-
-    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,600,300,800,700' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="http://localhost:4000/assets/css/vendor/font-awesome.min.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/vendor/normalize.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/vendor/nprogress.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/vendor/foundation.min.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/post.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/monokai.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/style.css">
-
-
-
-
-
-<!-- Icons -->
-<link rel="apple-touch-icon" sizes="57x57" href="http://localhost:4000/images/apple-icon-57x57.png">
-<link rel="apple-touch-icon" sizes="60x60" href="http://localhost:4000/images/apple-icon-60x60.png">
-<link rel="apple-touch-icon" sizes="72x72" href="http://localhost:4000/images/apple-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="76x76" href="http://localhost:4000/images/apple-icon-76x76.png">
-<link rel="apple-touch-icon" sizes="114x114" href="http://localhost:4000/images/apple-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="120x120" href="http://localhost:4000/images/apple-icon-120x120.png">
-<link rel="apple-touch-icon" sizes="144x144" href="http://localhost:4000/images/apple-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="152x152" href="http://localhost:4000/images/apple-icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:4000/images/apple-icon-180x180.png">
-<link rel="icon" type="image/png" sizes="192x192"  href="http://localhost:4000/images/android-icon-192x192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:4000/images/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="http://localhost:4000/images/favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:4000/images/favicon-16x16.png">
-<link rel="manifest" href="http://localhost:4000/images/manifest.json">
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
-
-
-</head>
-<body class="home-template" itemscope itemtype="http://schema.org/WebPage">
-  <header class="notepad-site-head">
-  <div class="notepad-site-head-menu" style="text-align: center">
-    <a class="notepad-blog-logo" href="http://localhost:4000" style="margin-top: 40px;"><img src="http://localhost:4000/images/logo.png" alt="Blog Logo" /></a>
-    <div class="notepad-blog-menu" style="float: none !important">
-      <div class="notepad-mobile-menu show-for-small">
-        <a href="#"><i class="fa fa-bars"></i></a>
+            </div>
+            <div class="navbar-header pull-right">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <i class="fa fa-2x fa-bars"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-9 col-sm-8 col-xs-12">
+          <div class="row">
+            <h2 class="blog-title-pro col-md-6 col-sm-12 col-xs-12 ">Blog</h2>
+            
+            <div class="col-md-6 col-sm-12 col-xs-12 searchcontrol" id="js-search">
+              <input class="form-control" type="text" id="js-search__input" placeholder="Search">
+              <ul class="search__results" id="js-search__results"></ul>
+            </div>
+            
+            </div>
+            <p class="info">
+              
+              
+            </p>
+          </div>
+        </div>
       </div>
-      <ul class="notepad-menu">
-        <li class="notepad-mobile-close-btn show-for-small text-right">
-        <a href="#"><i class="fa fa-times"></i></a>
+    </div>
+
+    <div class="container main outer">
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+              <nav class="menu">
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="list-separator nav navbar-nav well well-primary default">
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12 current-menu-item "><a href="/" target="_self"><i class="fa fa-home"></i> Home</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  "><a href="/about/" target="_self"><i class="fa fa-comments"></i> About</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  "><a href="/projects" target="_self"><i class="fa fa-desktop"></i> Projects</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  "><a href="/#" target="_self"><i class="fa fa-graduation-cap"></i> Resume</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  "><a href="/#" target="_self"><i class="fa fa-github"></i> Github</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  "><a href="/feed.xml" target="_blank"><i class="fa fa-feed"></i> XML Feed</a></li>
+
+</ul>
+
+    </div>
+    </nav>
+
+        </div>
+        <div class="col-md-9 col-xs-12 full">
+          <div class="well">
+    <div class="list-group">
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">02 Apr 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_ndh/2018/04/02/NUIT-DU-HACK-CTF-Kebab-STO-350.html">[2018_NUIT_DU_HACK_CTF] Kebab STO(350)</a></h4>
+
+          <p class="list-group-item-text">Exercise Description The challenge consists in finding the flag into a network capture. Challenge is listening on port 8888 Url...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">26 Mar 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_securinets/2018/03/26/Securinets-CTF-duck-hunt-300.html">[2018_Securinets_CTF] duck_hunt(300)</a></h4>
+
+          <p class="list-group-item-text">Exercise Do you know someone who loves hunting ducks? Link: http://for.ctfsecurinets.com/8/unknown.bin [그림] exercise Solution You can download a binary called...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">16 Feb 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_sharif/2018/02/16/Sharif-CTF-RunMe-50.html">[2018_Sharif_CTF] RunMe(50)</a></h4>
+
+          <p class="list-group-item-text">Exercise Run the attached file. If you can, you will capture the flag. Note: Apply the minimum changes to make...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">16 Feb 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_sharif/2018/02/16/Sharif-CTF-Hidden-100.html">[2018_Sharif_CTF] Hidden(100)</a></h4>
+
+          <p class="list-group-item-text">Exercise Find the hidden process. The flag is SharifCTF{MD5(Process id)}. [그림] exercise Solution 숨겨진 프로세스를 찾아내는 문제. process -&gt; Memory?...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">16 Feb 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_sharif/2018/02/16/Sharif-CTF-Crashed-DB-50.html">[2018_Sharif_CTF] Crashed DB(50)</a></h4>
+
+          <p class="list-group-item-text">Exercise We lost some data when we were delivering our DB. Can you recover it?? Hint: SQLite [그림] exercise Solution...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">15 Feb 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_sharif/2018/02/15/Sharif-CTF-Client01-75.html">[2018_Sharif_CTF] Client01(75)</a></h4>
+
+          <p class="list-group-item-text">Exercise Attached file is the homepage of the client01. He knows the flag. [그림] exercise Solution 첨부된, Client01의 홈페이지 내에서...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">09 Feb 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_acebear/2018/02/09/AceBear-CTF-STEg-Challenge-996.html">[2018_AceBear_CTF] STEg Challenge(996)</a></h4>
+
+          <p class="list-group-item-text">Exercise Download: Link Service: nc 35.200.176.244 33338 author: komang4130 [그림] exercise Solution AceBear CTF 에서 나왔던 Forensic/MISC 분야 중, 마지막...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">09 Feb 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_acebear/2018/02/09/AceBear-CTF-My-idol-975.html">[2018_AceBear_CTF] My idol(975)</a></h4>
+
+          <p class="list-group-item-text">Exercise Challenge Description: Trying to listen and maybe you know his name, and you’ll know one of his secret weapons...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">09 Feb 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_acebear/2018/02/09/AceBear-CTF-Memory-951.html">[2018_AceBear_CTF] Memory (951)</a></h4>
+
+          <p class="list-group-item-text">Exercise Download: Link author: f4k3r [그림] exercise Solution Download link 를 통해 받은 파일을 확인해보면, memory dump raw 파일을 하나...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">09 Feb 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_acebear/2018/02/09/AceBear-CTF-JS-999.html">[2018_AceBear_CTF] JS (999)</a></h4>
+
+          <p class="list-group-item-text">Exercise Challenge Description: Let listen to the best song of this month. Download: Link Author: komang4130 [그림] exercise Solution Forensic/MISC...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">06 Feb 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_codegate/2018/02/06/Codegate-CTF-Welcome-to-droid-125.html">[2018_Codegate_CTF] Welcome to droid (125)</a></h4>
+
+          <p class="list-group-item-text">Exercise &gt; o &lt; ! Download [그림] exercise Solution 풀이자가 많아서, 시간 날때 봤던 문제.. 하지만 Smail code 때매 제대로...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">06 Feb 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_codegate/2018/02/06/Codegate-CTF-RedVelvet-75.html">[2018_Codegate_CTF] RedVelvet (75)</a></h4>
+
+          <p class="list-group-item-text">Exercise Happiness:) Download [그림] exercise Solution1 - z3 Solver 일본에서 1달간 진행했던 산학연수를 마무리하고 귀국하는 날이라 정신이 없어, 팀원들에게 참가율이...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">06 Feb 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_codegate/2018/02/06/Codegate-CTF-Easy-Serial-350.html">[2018_Codegate_CTF] Easy_Serial (350)</a></h4>
+
+          <p class="list-group-item-text">Exercise Download 너무 매정한 지문.. [그림] exercise Solution 다운받은 binary를 확인해보면, ELFx64임을 알 수 있다. ⚡ root@RebForPwn  ~/jsh ...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">31 Jan 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2018_acebear/2018/01/31/AceBear-CTF-Welcome-100.html">[2018_AceBear_CTF] Forensic/MISC Welcome(100)</a></h4>
+
+          <p class="list-group-item-text">Exercise Welcome to AceBear Security Contest: Cipher: 172d330d21283133037c65101220703c187a3b1033202f24092c33103021261721273821773b3e author: komang4130 Solution Cipher Text가 하나 주어진다. 해당 Cipher 를 Plain Text...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">26 Jan 2018</div>
+          <h4 class="list-group-item-heading"><a href="/etc/2018/01/26/OSX-Tensorflow-Install.html">OSX Tensorflow Install</a></h4>
+
+          <p class="list-group-item-text">Lab3 예제 code를 Docker에서 실습하던 중에, gvs optimizer 가 type error 뜨는 것을 확인.. 고치려고 별 짓을 다했으나 결국 version...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">13 Jan 2018</div>
+          <h4 class="list-group-item-heading"><a href="/ctf/2017_sha/2018/01/13/SHA-CTF-Samsung-S4-300.html">[2017_SHA_CTF] Samsung S4 (300)</a></h4>
+
+          <p class="list-group-item-text">Exercise A forenic investigator was wondering how hacker boxes like RIFF and Z3X use JTAG on a Samsung S4 phone...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">31 Dec 2017</div>
+          <h4 class="list-group-item-heading"><a href="/life/2017/12/31/2017%EB%85%84-%ED%9A%8C%EA%B3%A0%EB%A1%9D.html">2017년 회고록</a></h4>
+
+          <p class="list-group-item-text">올 한해도 이렇게, 마무리가 되어간다. 지난 1년간 뭘하고 살았는지 간단하게 정리해보고 다가오는 2018년에 대한 계획을 세워보자. 2017년을 마무리하면서 16년 7월,...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">04 Jun 2016</div>
+          <h4 class="list-group-item-heading"><a href="/jekyll/2016/06/04/welcome-to-jekyll.html">Welcome to Jekyll!</a></h4>
+
+          <p class="list-group-item-text">You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">04 Jun 2016</div>
+          <h4 class="list-group-item-heading"><a href="/others/2016/06/04/example-content.html">Example content for posts</a></h4>
+
+          <p class="list-group-item-text">This demo page has been used from http://jasonm23.github.io/markdown-css-themes/. A First Level Header A Second Level Header A Third Level Header...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">04 Jun 2015</div>
+          <h4 class="list-group-item-heading"><a href="/others/2015/06/04/test-page.html">Test Page</a></h4>
+
+          <p class="list-group-item-text">This is a test blog page where we can explore how to embedd images in the blog. Image example 1...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+    </div>
+   
+
+    <!-- Pagination links -->
+    
+    <ul class="pager">
+      
+        <li class="previous disabled"><span aria-hidden="true">&laquo;</span></li>
+      
+
+      <li><a href="/">First</a></li>
+
+      
+        
+          <li class="active">
+             <a>1<span class="sr-only">(current)</span></a>
+          </li>
+        
+      
+        
+          <li>
+            <a href="/page2/">2</a>
+          </li>
+        
+      
+
+      <li><a href="/page2/">Last</a></li>
+
+      
+        <li class="next">
+          <a href="/page2/">&raquo;</a>
         </li>
-        
-        <li>
-        <a href="http://localhost:4000/">Home</a>
-         </li>
-        
-        <li>
-        <a href="http://localhost:4000/about">About</a>
-         </li>
-        
-      </ul>
-    </div>
-    <!--div class="clearfix"></div-->
-  </div>
-  <!--
-  <div class="notepad-site-head-content" >
-    <div class="notepad-site-head-bg"></div>
-    <h1 class="notepad-blog-title">
-      <span class="notepad-site-head-title-bg">
-        jsh
-      </span>
-    </h1>
-    <h2 class="notepad-blog-description">Jin Su Hyeon</h2>
-  </div>
-  -->
-  </header>
-
-
-<main class="notepad-content" role="main">
-
-            
-	
-    <article class="notepad-index-post post row">
-        <div class="small-12 medium-3 large-2 columns datetime">
-            <span class="notepad-post-meta">
-                <time datetime="2018-01-31T00:00:00+09:00">
-                    <span class="day">
-                        31
-                    </span>
-                    <span class="month-year">
-                        January 2018
-                    </span>
-                </time>
-            </span>
-        </div>
-        <div class="small-12 medium-9 large-10 columns">
-            <header class="notepad-post-header">
-                <h3 class="notepad-post-title">
-                    <a href="http://localhost:4000/ctf/2018_acebear/AceBear-CTF-Welcome-100">
-                        [2018_AceBear_CTF] Forensic/MISC Welcome(100)
-                    </a>
-                </h3>
-            </header>
-            <section class="notepad-post-excerpt">
-                <p>Exercise Welcome to AceBear Security Contest: Cipher: bash 172d330d21283133037c65101220703c187a3b1033202f24092c33103021261721273821773b3e author: komang4130 Solution Cipher Text가 하나 주어진다. 해당 Cipher 를 Plain Text 로써 의미있는 문자열로 복호화 해내는 문제. 감이 모자란지라,, 처음엔 ROT, Hex Decoding 등으로 다르게 접근 했었는데 flag format 과...</p>
-            </section>
-            
-                <div class="notepad-index-post-tags">
-                <a href="http://localhost:4000/categories/index.html#CTF2018_AceBear" title="Other posts from the Ctf category">Ctf</a>&nbsp;<a href="http://localhost:4000/categories/index.html#CTF2018_AceBear" title="Other posts from the 2018_acebear category">2018_acebear</a>
-                    
-                </div>
-            
-        </div>
-    </article>
-	
-    <article class="notepad-index-post post row">
-        <div class="small-12 medium-3 large-2 columns datetime">
-            <span class="notepad-post-meta">
-                <time datetime="2018-01-26T00:00:00+09:00">
-                    <span class="day">
-                        26
-                    </span>
-                    <span class="month-year">
-                        January 2018
-                    </span>
-                </time>
-            </span>
-        </div>
-        <div class="small-12 medium-9 large-10 columns">
-            <header class="notepad-post-header">
-                <h3 class="notepad-post-title">
-                    <a href="http://localhost:4000/etc/OSX-Tensorflow-Install">
-                        OSX Tensorflow Install
-                    </a>
-                </h3>
-            </header>
-            <section class="notepad-post-excerpt">
-                <p>Lab3 예제 code를 Docker에서 실습하던 중에, gvs optimizer 가 type error 뜨는 것을 확인.. 고치려고 별 짓을 다했으나 결국 version 문제인것으로 확인했다… Docker 끄고.. 로컬에 설치 시작.. 아래처럼 하면, 정상적으로 설치 되지 않는다… bash sudo pip3 install tensorflow 문제를 찾아보면,...</p>
-            </section>
-            
-                <div class="notepad-index-post-tags">
-                <a href="http://localhost:4000/categories/index.html#etc" title="Other posts from the Etc category">Etc</a>
-                    
-                </div>
-            
-        </div>
-    </article>
-	
-    <article class="notepad-index-post post row">
-        <div class="small-12 medium-3 large-2 columns datetime">
-            <span class="notepad-post-meta">
-                <time datetime="2018-01-13T00:00:00+09:00">
-                    <span class="day">
-                        13
-                    </span>
-                    <span class="month-year">
-                        January 2018
-                    </span>
-                </time>
-            </span>
-        </div>
-        <div class="small-12 medium-9 large-10 columns">
-            <header class="notepad-post-header">
-                <h3 class="notepad-post-title">
-                    <a href="http://localhost:4000/ctf/2017_sha/SHA-CTF-Samsung-S4-300">
-                        [2017_SHA_CTF] Samsung S4 (300)
-                    </a>
-                </h3>
-            </header>
-            <section class="notepad-post-excerpt">
-                <p>Exercise A forenic investigator was wondering how hacker boxes like RIFF and Z3X use JTAG on a Samsung S4 phone while the main cores have debugging disabled. Challenge created by the Digital and Biometric Traces division of the Netherlands Forensic...</p>
-            </section>
-            
-                <div class="notepad-index-post-tags">
-                <a href="http://localhost:4000/categories/index.html#CTF2017_SHA" title="Other posts from the Ctf category">Ctf</a>&nbsp;<a href="http://localhost:4000/categories/index.html#CTF2017_SHA" title="Other posts from the 2017_sha category">2017_sha</a>
-                    
-                </div>
-            
-        </div>
-    </article>
-	
-    <article class="notepad-index-post post row">
-        <div class="small-12 medium-3 large-2 columns datetime">
-            <span class="notepad-post-meta">
-                <time datetime="2017-12-31T00:00:00+09:00">
-                    <span class="day">
-                        31
-                    </span>
-                    <span class="month-year">
-                        December 2017
-                    </span>
-                </time>
-            </span>
-        </div>
-        <div class="small-12 medium-9 large-10 columns">
-            <header class="notepad-post-header">
-                <h3 class="notepad-post-title">
-                    <a href="http://localhost:4000/life/2017%E1%84%82%E1%85%A7%E1%86%AB-%E1%84%92%E1%85%AC%E1%84%80%E1%85%A9%E1%84%85%E1%85%A9%E1%86%A8">
-                        2017년 회고록
-                    </a>
-                </h3>
-            </header>
-            <section class="notepad-post-excerpt">
-                <p>올 한해도 이렇게, 마무리가 되어간다. 지난 1년간 뭘하고 살았는지 간단하게 정리해보고 다가오는 2018년에 대한 계획을 세워보자. 2017년을 마무리하면서 16년 7월, 전역을 기점으로 BoB 5th를 시작했고 정신없는 2016년을 보냈다. 학교로 복학하고, BoB 도 마무리되고 역시나 이것 저것 해보고 싶은 것들 천지라...</p>
-            </section>
-            
-                <div class="notepad-index-post-tags">
-                <a href="http://localhost:4000/categories/index.html#life" title="Other posts from the Life category">Life</a>
-                    
-                </div>
-            
-        </div>
-    </article>
-	
-    <article class="notepad-index-post post row">
-        <div class="small-12 medium-3 large-2 columns datetime">
-            <span class="notepad-post-meta">
-                <time datetime="2014-07-19T00:00:00+09:00">
-                    <span class="day">
-                        19
-                    </span>
-                    <span class="month-year">
-                        July 2014
-                    </span>
-                </time>
-            </span>
-        </div>
-        <div class="small-12 medium-9 large-10 columns">
-            <header class="notepad-post-header">
-                <h3 class="notepad-post-title">
-                    <a href="http://localhost:4000/personal/introducing-notepad">
-                        Introducing Notepad
-                    </a>
-                </h3>
-            </header>
-            <section class="notepad-post-excerpt">
-                <p>Notepad is a Jekyll theme which is very simple, clean and beautiful. This theme is good for any blog. Main Features: Zurb Foundation 5 - css framework Fullscreen post covers with header wich will be bright or dark according to...</p>
-            </section>
-            
-                <div class="notepad-index-post-tags">
-                <a href="http://localhost:4000/categories/index.html#personal" title="Other posts from the Personal category">Personal</a>
-                    
-                </div>
-            
-        </div>
-    </article>
-	
-    <nav class="pagination" role="navigation">
+      
+    </ul>
     
-    <span class="newer-posts faded"><i class="fa fa-chevron-left"></i> Newer</span>
-    
+</div><!-- end #home -->
 
-    
-    <span class="page-number">Page 1 of 2</span>
-    	 
-        <a class="older-posts" href="http://localhost:4000/page2/">Older <i class="fa fa-chevron-right"></i></a>
-    	
-	</nav>
-
-
-</main>
-    <footer class="notepad-site-footer">
-    <div class="copyright">
-         <section>All content copyright <a href="http://localhost:4000/about">jsh05042</a> &copy; 2018 &bull; All rights reserved.</section>
-         <br>
-         <section><a class="icon-ghost" href="https://jekyllrb.com/" targe="_blank">Jekyll</a> theme by <a class="icon-ghost" href="https://twitter.com/hmfaysal" target="_blank">hmfaysal</a></section>
-    </div>
-    <div class="social-icons">
-        
-        
-        
-        
-        <a href="http://instagram.com/https://www.instagram.com/jsh_0504/">
-            <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
-                <i class="fa fa-instagram fa-stack-1x"></i>
-            </span>
-        </a>
-        
-        
-        <a href="http://github.com/jinsoohyun">
-            <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
-                <i class="fa fa-github fa-stack-1x"></i>
-            </span>
-        </a>
-        
-        
-        <a href="http://facebook.com/jsh05042">
-            <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
-                <i class="fa fa-facebook fa-stack-1x"></i>
-            </span>
-        </a>
-        
-    </div>
-    
-    <div class="cf"></div>
+          <div class="row">
+            <div class="col-md-12 col-xs-12 footer">
+              <footer>
+  © 2016 Your Name <a href="#">Privacy link</a> - Powered by Jekyll.
 </footer>
+<div align="center">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-0000000000000000"
+    data-ad-slot="0000000000"
+    data-ad-format="auto"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
+            </div>
+          </div>
+        </div> <!-- end /.col-md-9 -->
+      </div> <!-- end /.row -->
+    </div>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
-    <script src="http://localhost:4000/assets/js/vendor/modernizr.js"></script>
-    <script src="http://localhost:4000/assets/js/foundation.min.js"></script>
     
-    <script src="http://localhost:4000/assets/js/notepad.js"></script>
-    <script src="http://localhost:4000/assets/js/scripts.min.js"></script>
-    <script src="http://localhost:4000/assets/js/vendor/nprogress.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="/static/js/super-search.js"></script>
+
+<script src="/static/js/thickbox-compressed.js"></script>
+<script src="/static/js/material.min.js"></script>
+<script src="/static/js/main.js"></script>
+<script src="/static/js/projects.js"></script>
 
     <script>
-      $(document).foundation();
-    </script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+  ga('create', 'UA-72862926-1', 'auto');
+  ga('send', 'pageview');
 
-<script>NProgress.start();var interval=setInterval(function(){NProgress.inc()},1000);jQuery(window).load(function(){clearInterval(interval);NProgress.done()});jQuery(window).unload(function(){NProgress.start()});</script>
-
-</body>
+</script>
+  </body>
 </html>

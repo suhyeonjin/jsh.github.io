@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="shortcut icon" href="/static/img/favicon.ico" />
+        <title>[2018_AceBear_CTF] JS (999) - John Smith</title>
+        <meta name="author" content="John Smith" />
+        <meta name="description" content="[2018_AceBear_CTF] JS (999)" />
+        <meta name="keywords" content="[2018_AceBear_CTF] JS (999), John Smith, CTF, 2018_acebear" />
+
+        <meta content="0" property="fb:app_id">
+        <meta content="John Smith" property="og:site_name">
+        
+          <meta content="[2018_AceBear_CTF] JS (999)" property="og:title">
+        
+        
+          <meta content="article" property="og:type">
+        
+        
+          <meta content="My Personal Blog" property="og:description">
+        
+        
+          <meta content="http://localhost:4000/ctf/2018_acebear/2018/02/09/AceBear-CTF-JS-999.html" property="og:url">
+        
+        
+          <meta content="2018-02-09T00:00:00+09:00" property="article:published_time">
+          <meta content="http://localhost:4000/about/" property="article:author">
+        
+        
+          <meta content="http://localhost:4000/static/img/logo-high-resolution.png" property="og:image">
+        
+        
+          
+          <meta content="CTF" property="article:section">
+          
+        
+        
+          
+          <meta content="Forensic" property="article:tag">
+          
+          <meta content="MISC" property="article:tag">
+          
+          <meta content="javascript" property="article:tag">
+          
+          <meta content="steganography" property="article:tag">
+          
+        
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@\#">
+        <meta name="twitter:creator" content="@\#">
+        
+          <meta name="twitter:title" content="[2018_AceBear_CTF] JS (999)">
+        
+        
+          <meta name="twitter:url" content="http://localhost:4000/ctf/2018_acebear/2018/02/09/AceBear-CTF-JS-999.html">
+        
+        
+          <meta name="twitter:description" content="My Personal Blog">
+        
+        
+
+      <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+      <script type="text/javascript">window.baseurl = 'http://localhost:4000';</script>
+      
+        <!-- Custom Fonts -->
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+
+        <!-- FontAwesome icons -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/74dfc6cf47.css">
+
+        <!-- Core BootStrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <!-- Material Design CSS -->
+        <link rel="stylesheet" href="/static/css/bootstrap-material-design.min.css">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/static/css/syntax.css">
+
+        <!-- Custom CSS -->        
+        <link rel="stylesheet" href="/static/css/thickbox.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+        <link rel="stylesheet" href="/static/css/projects.css">
+
+        <script type="text/javascript">
+          //loadingImage is relative to project dir
+          var tb_pathToImage = "/static/img/loadingAnimation.gif";
+        </script>
+
+  </head>
+
+  <body class="home overflow-hidden">
+    <div class="header-panel shadow-z-2">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-sm-4 col-xs-12">
+            <div class="row-picture">
+              <img id="about" class="logo-img" src="/hcz-jekyll-blog/static/img/avatar.png" height="75px" width="75px">
+            </div>
+            <div class="row-details">
+              <h4 class="list-group-item-heading">John Smith</h4>
+              <p class="list-group-item-text">Freelance developer</p>
+              <div class="social-icons">
+	
+        <a class="icon" target="_blank" href=""><i class="fa fa-facebook"></i></a>
+    
+        <a class="icon" target="_blank" href=""><i class="fa fa-twitter"></i></a>
+    
+        <a class="icon" target="_blank" href=""><i class="fa fa-linkedin"></i></a>
+    
+        <a class="icon" target="_blank" href=""><i class="fa fa-stack-exchange"></i></a>
+    
+</div>
+
+            </div>
+            <div class="navbar-header pull-right">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <i class="fa fa-2x fa-bars"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-9 col-sm-8 col-xs-12">
+          <div class="row">
+            <h2 class="blog-title-pro col-md-6 col-sm-12 col-xs-12 ">[2018_AceBear_CTF] JS (999)</h2>
+            
+            <div class="col-md-6 col-sm-12 col-xs-12 searchcontrol" id="js-search">
+              <input class="form-control" type="text" id="js-search__input" placeholder="Search">
+              <ul class="search__results" id="js-search__results"></ul>
+            </div>
+            
+            </div>
+            <p class="info">
+              
+                <span class="time">09 Feb 2018</span>
+              
+              
+                <span class="categories">
+                  &raquo; 
+                  
+                    <a href="/category/CTF">CTF</a>
+                    , 
+                  
+                    <a href="/category/2018_acebear">2018_acebear</a>
+                    
+                  
+                </span>
+              
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container main outer">
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+              <nav class="menu">
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="list-separator nav navbar-nav well well-primary post">
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12 current-menu-item AceBear-CTF-JS-999.html"><a href="/" target="_self"><i class="fa fa-home"></i> Home</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  AceBear-CTF-JS-999.html"><a href="/about/" target="_self"><i class="fa fa-comments"></i> About</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  AceBear-CTF-JS-999.html"><a href="/projects" target="_self"><i class="fa fa-desktop"></i> Projects</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  AceBear-CTF-JS-999.html"><a href="/#" target="_self"><i class="fa fa-graduation-cap"></i> Resume</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  AceBear-CTF-JS-999.html"><a href="/#" target="_self"><i class="fa fa-github"></i> Github</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  AceBear-CTF-JS-999.html"><a href="/feed.xml" target="_blank"><i class="fa fa-feed"></i> XML Feed</a></li>
+
+</ul>
+
+    </div>
+    </nav>
+
+        </div>
+        <div class="col-md-9 col-xs-12 full">
+          <div class="post-content well">
+<article class="content">
+    <div class="post"><h2 id="exercise">Exercise</h2>
+
+<blockquote>
+  <p>Challenge Description: Let listen to the best song of this month.
+Download: Link
+Author: komang4130</p>
+</blockquote>
+
+<p><img src="/images/2018-02-09-AceBear-CTF-JS-999/exercise.png" alt="" /></p>
+<p align="center">[그림] exercise</p>
+
+<h2 id="solution">Solution</h2>
+
+<p>Forensic/MISC 분야에서 나왔던 문제, 풀이자가 상당히 적고 나도 당시엔 풀지 못한 문제인데.. 너무 어이 없이 해결해서 당황스럽다..</p>
+
+<p>link를 통해서 받은 파일을 확인해보면, mp3 파일을 하나 확인할 수 있다.</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code> jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/JS
+ file ./Hey_Stranger.mp3
+./Hey_Stranger.mp3: Audio file with ID3 version 2.4.0
+ jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/JS
+ exiftool ./Hey_Stranger.mp3
+ExifTool Version Number         : 10.55
+File Name                       : Hey_Stranger.mp3
+Directory                       : .
+File Size                       : 4.7 MB
+File Modification Date/Time     : 2018:01:27 14:11:55+09:00
+File Access Date/Time           : 2018:02:08 21:26:36+09:00
+File Inode Change Date/Time     : 2018:01:27 14:13:20+09:00
+File Permissions                : rw-r--r--
+File Type                       : MP3
+File Type Extension             : mp3
+MIME Type                       : audio/mpeg
+MPEG Audio Version              : 1
+Audio Layer                     : 3
+Audio Bitrate                   : 128 kbps
+Sample Rate                     : 44100
+Channel Mode                    : Stereo
+MS Stereo                       : Off
+Intensity Stereo                : Off
+Copyright Flag                  : False
+Original Media                  : False
+Emphasis                        : None
+ID3 Size                        : 1415670
+Copyright                       : Vega
+Title                           : Người Lạ Ơi
+Genre                           : Rap / Hip Hop Việt
+Artist                          : Karik, Orange
+Album                           :
+User Defined Text               : <span class="o">(</span>author<span class="o">)</span> Châu Đăng Khoa
+Encoder Settings                : Lavf56.40.101
+Picture MIME Type               : image/png
+Picture Type                    : Other
+Picture Description             : Hey Stranger - Karik - Orange
+Picture                         : <span class="o">(</span>Binary data 1415401 bytes, use -b option to extract<span class="o">)</span>
+Duration                        : 0:03:37 <span class="o">(</span>approx<span class="o">)</span>
+</code></pre>
+</div>
+<p><br /></p>
+
+<p>대회 당시, binary가 mp3 파일로 주어졌기 때문에 MP3stego 등을 이용하거나, Spectrum, GoldWave 등으로 Audio Steganography로 접근했었다. 하지만 전혀 관계없다… <code class="highlighter-rouge">binwalk</code>로 파일 내 데이터를 추출하면, 아래와 같이 Thumbnail로 저장되어 있는 이미지 파일을 하나 확인할 수 있다.</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code> jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/JS
+binwalk ./Hey_Stranger.mp3
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+259           0x103           PNG image, 1366 x 1000, 8-bit/color RGBA, non-interlaced
+300           0x12C           Zlib compressed data, compressed
+4103003       0x3E9B5B        lrzip compressed data
+</code></pre>
+</div>
+
+<p><img src="/images/2018-02-09-AceBear-CTF-JS-999/info.png" alt="" /></p>
+<p align="center"><i>[그림] Binwalk information</i></p>
+
+<p>혹시 몰라, 대회 당시엔 해당 png 파일에 대해 추출하고 OpenStego 돌려보고, LSB 확인하고 등의 작업을 많이 수행했었는데 바보 같았던게 문제에서 <code class="highlighter-rouge">JS</code> 라는 단어를 언급하고 있던 점을 전혀 생각하지 않았던 것이다.</p>
+
+<p><code class="highlighter-rouge">javascript</code> image steganography 에 대해서 찾아보니, 바로 관련된 자료가 나왔고.. 해당 thumbnail을 올려 unhide 해보니.. 바로 Flag 확인..(상당히 어이가 없었다.. 풀이자도 2-3팀 정도였던 걸로 기억하는데, 너무 간단한 문제였다..)
+<img src="/images/2018-02-09-AceBear-CTF-JS-999/unhide.png" alt="" /></p>
+<p align="center"><i>[그림] unhide Thumbnail</i></p>
+<p align="right"><strong>AceBear{!!!!!BoA_Luffy_1s_Real!!!!!}</strong></p>
+</div>
+    <hr />
+    <div class="share-page">
+    Share this on &rarr;
+ <a href="https://twitter.com/share" class="twitter-share-button" data-via="\#">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<!-- Google + -->
+<div class="g-plus" data-action="share" data-annotation="bubble"></div>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<!-- Facebook -->
+<div class="fb-share-button" data-href="http://localhost:4000/ctf/2018_acebear/2018/02/09/AceBear-CTF-JS-999.html" data-layout="button_count" style="position: relative; top: -8px; left: 3px;"></div>
+</div>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+</article>
+<hr />
+
+
+    
+    
+        
+            
+                
+                <div class="panel-body">
+                <h4>Related Posts</h4>
+                <ul>
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/ctf/2018_ndh/2018/04/02/NUIT-DU-HACK-CTF-Kebab-STO-350.html">[2018_NUIT_DU_HACK_CTF] Kebab STO(350)</a>
+                    
+                        <small>(Categories: <a href="/category/CTF">CTF</a>, <a href="/category/2018_NDH">2018_NDH</a>)</small>
+                    
+                </li>
+                
+                
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/ctf/2018_securinets/2018/03/26/Securinets-CTF-duck-hunt-300.html">[2018_Securinets_CTF] duck_hunt(300)</a>
+                    
+                        <small>(Categories: <a href="/category/CTF">CTF</a>, <a href="/category/2018_Securinets">2018_Securinets</a>)</small>
+                    
+                </li>
+                
+                
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/ctf/2018_sharif/2018/02/16/Sharif-CTF-RunMe-50.html">[2018_Sharif_CTF] RunMe(50)</a>
+                    
+                        <small>(Categories: <a href="/category/CTF">CTF</a>, <a href="/category/2018_Sharif">2018_Sharif</a>)</small>
+                    
+                </li>
+                
+                
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/ctf/2018_sharif/2018/02/16/Sharif-CTF-Hidden-100.html">[2018_Sharif_CTF] Hidden(100)</a>
+                    
+                        <small>(Categories: <a href="/category/CTF">CTF</a>, <a href="/category/2018_Sharif">2018_Sharif</a>)</small>
+                    
+                </li>
+                
+                
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/ctf/2018_sharif/2018/02/16/Sharif-CTF-Crashed-DB-50.html">[2018_Sharif_CTF] Crashed DB(50)</a>
+                    
+                        <small>(Categories: <a href="/category/CTF">CTF</a>, <a href="/category/2018_Sharif">2018_Sharif</a>)</small>
+                    
+                </li>
+                
+                
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/ctf/2018_sharif/2018/02/15/Sharif-CTF-Client01-75.html">[2018_Sharif_CTF] Client01(75)</a>
+                    
+                        <small>(Categories: <a href="/category/CTF">CTF</a>, <a href="/category/2018_Sharif">2018_Sharif</a>)</small>
+                    
+                </li>
+                
+                
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+
+    </ul>
+    </div>
+
+
+<div class="PageNavigation">
+  
+    <a class="prev pull-left" href="http://localhost:4000/ctf/2018_codegate/2018/02/06/Codegate-CTF-Welcome-to-droid-125.html">&laquo; [2018_Codegate_CTF] Welcome to droid (125)</a>
+  
+  
+    <a class="next pull-right" href="http://localhost:4000/ctf/2018_acebear/2018/02/09/AceBear-CTF-Memory-951.html">[2018_AceBear_CTF] Memory (951) &raquo;</a>
+  
+</div>
+
+
+<div class="disqus-comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* <![CDATA[ */
+
+        var disqus_shortname = "aboutashu";
+        var disqus_identifier = "http://localhost:4000_[2018_AceBear_CTF] JS (999)";
+        var disqus_title = "[2018_AceBear_CTF] JS (999)";
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    /* ]]> */
+    </script>
+</div>
+</div>
+          <div class="row">
+            <div class="col-md-12 col-xs-12 footer">
+              <footer>
+  © 2016 Your Name <a href="#">Privacy link</a> - Powered by Jekyll.
+</footer>
+<div align="center">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-0000000000000000"
+    data-ad-slot="0000000000"
+    data-ad-format="auto"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+            </div>
+          </div>
+        </div> <!-- end /.col-md-9 -->
+      </div> <!-- end /.row -->
+    </div>
+
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="/static/js/super-search.js"></script>
+
+<script src="/static/js/thickbox-compressed.js"></script>
+<script src="/static/js/material.min.js"></script>
+<script src="/static/js/main.js"></script>
+<script src="/static/js/projects.js"></script>
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72862926-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>

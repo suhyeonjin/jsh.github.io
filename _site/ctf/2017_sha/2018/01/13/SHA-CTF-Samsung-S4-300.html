@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="shortcut icon" href="/static/img/favicon.ico" />
+        <title>[2017_SHA_CTF] Samsung S4 (300) - John Smith</title>
+        <meta name="author" content="John Smith" />
+        <meta name="description" content="[2017_SHA_CTF] Samsung S4 (300)" />
+        <meta name="keywords" content="[2017_SHA_CTF] Samsung S4 (300), John Smith, CTF, 2017_SHA" />
+
+        <meta content="0" property="fb:app_id">
+        <meta content="John Smith" property="og:site_name">
+        
+          <meta content="[2017_SHA_CTF] Samsung S4 (300)" property="og:title">
+        
+        
+          <meta content="article" property="og:type">
+        
+        
+          <meta content="My Personal Blog" property="og:description">
+        
+        
+          <meta content="http://localhost:4000/ctf/2017_sha/2018/01/13/SHA-CTF-Samsung-S4-300.html" property="og:url">
+        
+        
+          <meta content="2018-01-13T00:00:00+09:00" property="article:published_time">
+          <meta content="http://localhost:4000/about/" property="article:author">
+        
+        
+          <meta content="http://localhost:4000/static/img/logo-high-resolution.png" property="og:image">
+        
+        
+          
+          <meta content="CTF" property="article:section">
+          
+        
+        
+          
+          <meta content="Forensic" property="article:tag">
+          
+          <meta content="JTAG" property="article:tag">
+          
+          <meta content="SHA CTF" property="article:tag">
+          
+          <meta content="Writeup" property="article:tag">
+          
+        
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@\#">
+        <meta name="twitter:creator" content="@\#">
+        
+          <meta name="twitter:title" content="[2017_SHA_CTF] Samsung S4 (300)">
+        
+        
+          <meta name="twitter:url" content="http://localhost:4000/ctf/2017_sha/2018/01/13/SHA-CTF-Samsung-S4-300.html">
+        
+        
+          <meta name="twitter:description" content="My Personal Blog">
+        
+        
+
+      <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+      <script type="text/javascript">window.baseurl = 'http://localhost:4000';</script>
+      
+        <!-- Custom Fonts -->
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+
+        <!-- FontAwesome icons -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/74dfc6cf47.css">
+
+        <!-- Core BootStrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <!-- Material Design CSS -->
+        <link rel="stylesheet" href="/static/css/bootstrap-material-design.min.css">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/static/css/syntax.css">
+
+        <!-- Custom CSS -->        
+        <link rel="stylesheet" href="/static/css/thickbox.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+        <link rel="stylesheet" href="/static/css/projects.css">
+
+        <script type="text/javascript">
+          //loadingImage is relative to project dir
+          var tb_pathToImage = "/static/img/loadingAnimation.gif";
+        </script>
+
+  </head>
+
+  <body class="home overflow-hidden">
+    <div class="header-panel shadow-z-2">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-sm-4 col-xs-12">
+            <div class="row-picture">
+              <img id="about" class="logo-img" src="/hcz-jekyll-blog/static/img/avatar.png" height="75px" width="75px">
+            </div>
+            <div class="row-details">
+              <h4 class="list-group-item-heading">John Smith</h4>
+              <p class="list-group-item-text">Freelance developer</p>
+              <div class="social-icons">
+	
+        <a class="icon" target="_blank" href=""><i class="fa fa-facebook"></i></a>
+    
+        <a class="icon" target="_blank" href=""><i class="fa fa-twitter"></i></a>
+    
+        <a class="icon" target="_blank" href=""><i class="fa fa-linkedin"></i></a>
+    
+        <a class="icon" target="_blank" href=""><i class="fa fa-stack-exchange"></i></a>
+    
+</div>
+
+            </div>
+            <div class="navbar-header pull-right">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <i class="fa fa-2x fa-bars"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-9 col-sm-8 col-xs-12">
+          <div class="row">
+            <h2 class="blog-title-pro col-md-6 col-sm-12 col-xs-12 ">[2017_SHA_CTF] Samsung S4 (300)</h2>
+            
+            <div class="col-md-6 col-sm-12 col-xs-12 searchcontrol" id="js-search">
+              <input class="form-control" type="text" id="js-search__input" placeholder="Search">
+              <ul class="search__results" id="js-search__results"></ul>
+            </div>
+            
+            </div>
+            <p class="info">
+              
+                <span class="time">13 Jan 2018</span>
+              
+              
+                <span class="categories">
+                  &raquo; 
+                  
+                    <a href="/category/CTF">CTF</a>
+                    , 
+                  
+                    <a href="/category/2017_SHA">2017_SHA</a>
+                    
+                  
+                </span>
+              
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container main outer">
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+              <nav class="menu">
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="list-separator nav navbar-nav well well-primary post">
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12 current-menu-item SHA-CTF-Samsung-S4-300.html"><a href="/" target="_self"><i class="fa fa-home"></i> Home</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  SHA-CTF-Samsung-S4-300.html"><a href="/about/" target="_self"><i class="fa fa-comments"></i> About</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  SHA-CTF-Samsung-S4-300.html"><a href="/projects" target="_self"><i class="fa fa-desktop"></i> Projects</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  SHA-CTF-Samsung-S4-300.html"><a href="/#" target="_self"><i class="fa fa-graduation-cap"></i> Resume</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  SHA-CTF-Samsung-S4-300.html"><a href="/#" target="_self"><i class="fa fa-github"></i> Github</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  SHA-CTF-Samsung-S4-300.html"><a href="/feed.xml" target="_blank"><i class="fa fa-feed"></i> XML Feed</a></li>
+
+</ul>
+
+    </div>
+    </nav>
+
+        </div>
+        <div class="col-md-9 col-xs-12 full">
+          <div class="post-content well">
+<article class="content">
+    <div class="post"><h2 id="exercise">Exercise</h2>
+
+<blockquote>
+  <p>A forenic investigator was wondering how hacker boxes like RIFF and Z3X use JTAG on a Samsung S4 phone while the main cores have debugging disabled.</p>
+</blockquote>
+
+<blockquote>
+  <p>Challenge created by the Digital and Biometric Traces division of the Netherlands Forensic Institute.</p>
+</blockquote>
+
+<p><img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/0_exercise.png" alt="" /></p>
+
+<ul>
+  <li>
+    <p>2017년 8월에 참가했었던 SHA CTF 에서 나온 Forensic 문제. Samsung Galaxy S4 JTAG 관련 문제이다. 대회 당시에 이게 뭔가.. 하고 살펴보다가 벙쪄서 못 풀었었다. Forensic CTF 문제에서 보기 드문 형태로 나온 유형이라 기억에 남아서 <code class="highlighter-rouge">"나중에 Writeup이 나오면 보거나, 꼭 다시 풀어봐야지"</code>하고 아껴(?)왔다. 참가했던 CTF 중 못 푼 문제들 스택 처리를 계속 계획에 염두해오고 있던터라, 이번 기회에 바로 다시 풀어보았다.</p>
+  </li>
+  <li>
+    <p>사실, 대회가 끝나고 바로 재도전 했었지만 도저히 어떻게 풀어나가야 할지 감이 잡히질 않아 해당 문제를 풀이 했던 <code class="highlighter-rouge">HackingForSoju</code> 팀의 <code class="highlighter-rouge">zeta-two</code>에게 팀원 중 해당 문제를 푼 사람을 통해 어떻게 접근한 건지 알려줄 수 있냐고 요청 메일까지 보내며 풀어보고자 했던 문제이다.. (아래는 친철하게 힌트를 알려준 <code class="highlighter-rouge">zeta two</code>의 메일)</p>
+  </li>
+</ul>
+
+<blockquote>
+  <p>Hi!</p>
+</blockquote>
+
+<blockquote>
+  <p>For Forensics 300 my teammate is working on a write-up but I can tell you that you can load the data in siggrok and use the JTAG parser. From there you will see that it is reading the data register (DR) over and over. So just decode each 34(!) bit value and you have the flag.<br /></p>
+</blockquote>
+
+<blockquote>
+  <p>Greetings<br />
+Calle “Zeta Two” Svensson<br />
+HackingForSoju<br /></p>
+</blockquote>
+
+<hr />
+<h2 id="solution">Solution</h2>
+
+<p>먼저, 문제에서 언급된 내용을 살펴보면 Forensic 연구원이 <code class="highlighter-rouge">RIFF</code>, <code class="highlighter-rouge">Z3X</code>와 같은 도구를 사용해 Samsung S4 기기의 <code class="highlighter-rouge">JTAG</code> 를 사용하는 방식에 대해 궁금했다고 한다. 첨부 파일을 확인하기 전에 문제를 풀 당시, JTAG을 제외하곤 생소한 단어였기 때문에 정리가 필요했다.</p>
+
+<ul>
+  <li>
+    <h5 id="jtag">JTAG?</h5>
+    <blockquote>
+      <p><code class="highlighter-rouge">Joint Test Action Group</code>, 임베디드 시스템 개발 시에 사용하는 디버깅 장비.</p>
+    </blockquote>
+
+    <ul>
+      <li>
+        <h6 id="interface--아래와-같은-핀으로-칩-내에-구성되어-있다">Interface : 아래와 같은 핀으로 칩 내에 구성되어 있다.</h6>
+        <ul>
+          <li>TDI (데이터 입력) :: Test하기 위한 데이터 신호. TMS에 의해 전이된 TAP state에 따라, TDI가 command/data 가 결정됨</li>
+          <li>TDO (데이터 출력) :: Test한 결과를 외부에서 모니터링 하기 위한 pin, 이 역시 TAP state에 따라 address/data가 될 수 있음.</li>
+          <li>TCK (클럭) :: Test clock</li>
+          <li>TMS (모드) :: Test Mode 전환하기 위한 제어 신호</li>
+          <li>TRST (리셋)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/1_jtag_interface.png" alt="" /></p>
+<p align="center">[그림] JTAG interface</p>
+
+<ul>
+  <li>
+    <h5 id="riff">RIFF?</h5>
+    <blockquote>
+      <p>JTAG 신호를 PC 에서 조작 가능하도록 변환해주는 장비.
+스마트폰 Flash Memory Dump 용도로 사용할 수 있다.</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p><img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/2_riff.png" alt="" /></p>
+<p align="center">[그림] RIFF (출처 : JTAG를 이용한 스마트폰 플래시 메모리 덤프 - 박상호)</p>
+
+<ul>
+  <li>
+    <h5 id="z3x">Z3X?</h5>
+    <blockquote>
+      <p>RIFF 와 같이 Flash Dump 를 위해 사용되는 장비로써, 찾아보면 Samsung 스마트폰 기종에 대해서 JTAG 를 손쉽게 활성화하여 Root, Unlock 작업을 할 수 있다고 나와았다. (구매 욕구가..)</p>
+    </blockquote>
+  </li>
+</ul>
+
+<p><img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/3_z3x.png" alt="" /></p>
+<p align="center">[그림] Z3X </p>
+
+<p><br />
+문제에서 주어진 첨부파일을 확인해보면, <code class="highlighter-rouge">samsungs4.tgz</code> 파일을 확인할 수 있다. 해당 파일의 압축을 풀면 <code class="highlighter-rouge">CTF_SamsungS4.csv</code> 파일을 확인할 수 있는데 아래와 같은 내용을 포함하고 있다.
+<img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/4_csv.png" alt="" /></p>
+<p align="center">[그림] CTF_SamsungS4.csv</p>
+
+<p>문제에서 언급한 장비로 s4 기기에 대한 JTAG 신호를 기록한 것으로 보이며, 이를 의미있는 데이터로 변환해야하는 것으로 보였다. 대회 당시에는 JTAG 신호를 어떻게 분석해야 할지 하드웨어적인 지식이 전혀 없어 여러 삽질을 했었는데 결과적으로 <code class="highlighter-rouge">zeta-two</code>로 부터 얻은 Hint 를 통해 <code class="highlighter-rouge">sigrok</code>이라는 도구를 이용해 문제를 해결했다.</p>
+
+<p>CSV 내용을 보면, TimeStamp 별로 TMS, TCK, TDI, TDO 핀의 신호가 기록되있는 것을 확인할 수 있다. 이를 어떻게 분석할 수 있는 시각적 데이터로 변환해야하는가? 가 관건이었는데, 처음 내가 접근했던 방식은 “http://www2.lauterbach.com/pdf/training_jtag.pdf” 을 보고 JTAG data 가 가지는 의미 등에 대해 파악하는 것이었다.
+<img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/5_jtag_training.png" alt="" /></p>
+<p align="center">[그림] JTAG core process</p>
+
+<p>Shift-IR, DR 등의 자료가 나오고 JTAG 신호를 처리하는 Process 등에 대해 살펴보고 해당 CSV 데이터를 동일하게 처리하는 방식으로 하려 했지만, 생판 모르는 JTAG 자료를 보고 따라하려니 뭐가 뭔지 도통 알아먹을 수 없었다…. 그렇게 해당 방식은 뒤로하고, <code class="highlighter-rouge">sigrok</code> 도구를 이용하기로 했다. <code class="highlighter-rouge">sigrok</code>은 신호 분석용 오픈소스 도구이다. 다양한 플랫폼, 신호 분석과 디코더를 지원한다. CSV 를 바로 업로드 할 수 있는 기능이 있어 편하게 해당 데이터를 신호로 변환하여 열어볼 수 있었다. 본래 CSV 에 포함되어 있는 TimeStamp는 분석이 되지 않으므로, Header Row 와 TimeStamp Column 을 제거했다.</p>
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>cat ./CTF_SamsungS4_@.csv | tail -n+2 | awk <span class="s1">'{print $2 $3 $4 $5}'</span> &gt; ./reData.csv
+</code></pre>
+</div>
+
+<p>데이터만 남겨놓은 파일로 대체한 뒤, <code class="highlighter-rouge">sigrok</code>에서 QT 로 GUI를 지원하는 <code class="highlighter-rouge">pulseview</code>를 이용해 해당 CSV 데이터를 분석할 수 있다. <code class="highlighter-rouge">pulseview</code>로 로드하면 아래와 같은 시그널을 확인할 수 있다. 좌측에 해당 시그널의 명칭이 빠져있는데, 각각 TMS, TCK, TDI, TDO 순이므로 클릭하여 입력하면 수정할 수 있다.
+<img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/6_pulseview.png" alt="" /></p>
+<p align="center">[그림] pulseview signal</p>
+
+<p>해당 시그널이 의미하는 바와, 담긴 정보를 찾기 위해 JTAG 신호를 Decode 해야하며 Decoder 탭에서, 사용할 Decoder 로 JTAG 를 선택할 수 있다. 확대해서 확인해보면, SHIFT-IR, SHIFT-DR 등의 구간이 정상적으로 식별되는 것을 확인할 수 있다. (원래 Decoder 를 누른 뒤, TDI, TDO, TMS 등의 시그널을 맞춰 주어야하는데 알아서, 잘 맞춰져서 넘어갔다.)
+<img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/7_jtag_decoder.png" alt="" />
+<img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/8_jtag_decoder.png" alt="" />
+<img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/9_jtag_decoder.png" alt="" /></p>
+<p align="center">[그림] JTAG decode</p>
+
+<p>여기까지 진행하고 난 뒤에도 살짝 당황스러웠던게, Decoder 라해서 signal을 식별가능한 Text 로 변환해주는 줄 알았는데 JTAG spec 으로 변환해주는 것이었다..
+TDI는 디바이스로 들어가는 데이터를 표시하며, TDO는 디바이스로부터 나오는 데이터를 표시한다. 여기에서 또, 상당이 애먼 시간을 쏟았는데 결과적으로 JTAG의 TMS, TCK, TDI, TDO 시그널을 SPI decoder 를 이용해 Bitstream 으로 변환할 수 있다는 사실을 알 수 있었다. (SPI가 정확하게 어떤 무엇인지, 각 정보들을 정확하게 이해하고 싶었지만, 너무 까다로운 정보들이라.. 정확한 이해는 하지 못했다.)
+<img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/10_spi.png" alt="" /></p>
+<p align="center">[그림] JTAG to SPI</p>
+
+<p>마침, <code class="highlighter-rouge">pulseview</code>에서도 <code class="highlighter-rouge">SPI</code> decoder 를 지원하고 있었고, 아래와 같이 decoder를 추가한 뒤, Setting을 거쳐 작업을 수행할 수 있었다. 설정한 부분은 아래와 같은데 각각 다음과 같다.</p>
+<ul>
+  <li>CLK : <code class="highlighter-rouge">clock</code> 을 의미하는데 <code class="highlighter-rouge">TCK</code>가 <code class="highlighter-rouge">test clock</code>을 의미하므로 <code class="highlighter-rouge">TCK</code>로 설정했다.</li>
+  <li>MISO : <code class="highlighter-rouge">Master in, Slave out</code>으로써, slave out은 SPI decoder 로 들어가는 데이터를 의미하기 때문에, JTAG에서 디바이스로부터 나오는 데이터인 <code class="highlighter-rouge">TDO</code>로 설정했다.</li>
+  <li>CS# : <code class="highlighter-rouge">Chip Select</code>를 의미하는데, 제어 신호로써 <code class="highlighter-rouge">TMS</code>가 사용되기 때문에 <code class="highlighter-rouge">TMS</code>를 설정했다.</li>
+  <li>Word size : 변환되는 구간을 의미하는 것 같다. 처음에 8로 설정되어 있는데 아래 그림에 표시된 decode 결과가 TMS pulse 가 1인 구간 내에서 일부분만 변환을 하기에 해당 구간 내 모든 데이터를 변환하기 위해 구간 길이인 35로 설정했다.</li>
+</ul>
+
+<p><img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/11_spi_decoder.png" alt="" /></p>
+<p align="center">[그림] SPI decoder setting</p>
+
+<p>위 설정 값을 지정할 때마다, 디코딩 결과를 실시간으로 확인할 수 있었는데 위와 같은 설정을 했을때, 아래 그림과 같이 눈에 익는 Bitstream 을 확인할 수 있었다.
+<img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/12_spi_decoder.png" alt="" /></p>
+<p align="center">[그림] SPI decoder result</p>
+
+<p>바로, ASCII 범위 내 값이 반환 된 것인데 아래 표시된 bitstream을 ASCII 값으로 변환 해보면 “galf” 즉 “flag” 인 것을 알 수 있다.(little endian) ASCII 값이 식별되는 sampling 범위는 약 +2500s ~ +4200s 구간이다. \x00 로 끝임을 예상할 수 있다.
+<img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/13_ascii_area.png" alt="" /></p>
+<p align="center">[그림] ASCII bitstream area</p>
+
+<p>해당 bitstream 을 적은 뒤, Python으로 Hex decoding 을 할 경우 아래와 같이 Flag 를 확인할 수 있었다.
+<img src="/images/2018-01-13-SHA-CTF-Samsung-S4-300/14_flag.png" alt="" /></p>
+<p align="center">[그림] Flag</p>
+
+<p align="right"><strong>flag{9a0e5c94ac3e38719130ab133cfbfe18}</strong></p>
+
+<hr />
+<h2 id="finish">Finish</h2>
+<blockquote>
+  <p>계속 염두하고 있던, 문제 하나를 해결해서 개운한 느낌이다. 하지만, 아직 궁금증이 해결되지 않은 부분이 너무 많다. SPI며, JTAG, RIFF Box, Signal Analysis 등 하드웨어 분야 또한 상당히 매료되는데, 기회가 되면 한번 제대로 공부를 해보고 싶다.. Mobile Forensic 공부할 때, Z3X 구매해서 한번 실습해 볼까…싶다..</p>
+</blockquote>
+
+<blockquote>
+  <p>내가 푼 방식 말고, 처음에 JTAG Process 를 이해하고 이를 이용해 문제를 해결한 방식으로 푼 writeup이 CTFtime에 올라와 있길래 첨부해 둔다. 도구 쓴게 하나도 없고 오로지 Instruction 문서랑 Python으로만 해결한 것 같다. 이렇게 풀고 싶었는데 보고나니 뭔가 아쉽다..
+    - http://karabut.com/sha2017-ctf-samsung-s4-writeup.html</p>
+</blockquote>
+
+<p><br /></p>
+<h4 id="reference">Reference</h4>
+<ul>
+  <li>Using SPI Flash with 7 Series FPGAs Application Note (https://www.xilinx.com/support/documentation/application_notes/xapp586-spi-flash.pdf)</li>
+  <li>SPI (https://ko.wikipedia.org/wiki/%EC%A7%81%EB%A0%AC_%EC%A3%BC%EB%B3%80%EA%B8%B0%EA%B8%B0<em>%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4</em>%EB%B2%84%EC%8A%A4)</li>
+  <li>Training jtag interface (http://www2.lauterbach.com/pdf/training_jtag.pdf)</li>
+  <li>JTAG work (http://www.fpga4fun.com/JTAG2.html)</li>
+  <li>JTAG를 이용한 스마트폰 플래시 메모리 덤프 (http://for-md.org/wp-content/uploads/2015/01/JTAG%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8F%B0-%ED%94%8C%EB%9E%98%EC%8B%9C-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EB%8D%A4%ED%94%84.pdf)</li>
+</ul>
+
+</div>
+    <hr />
+    <div class="share-page">
+    Share this on &rarr;
+ <a href="https://twitter.com/share" class="twitter-share-button" data-via="\#">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<!-- Google + -->
+<div class="g-plus" data-action="share" data-annotation="bubble"></div>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<!-- Facebook -->
+<div class="fb-share-button" data-href="http://localhost:4000/ctf/2017_sha/2018/01/13/SHA-CTF-Samsung-S4-300.html" data-layout="button_count" style="position: relative; top: -8px; left: 3px;"></div>
+</div>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+</article>
+<hr />
+
+
+    
+    
+        
+            
+                
+                <div class="panel-body">
+                <h4>Related Posts</h4>
+                <ul>
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/ctf/2018_ndh/2018/04/02/NUIT-DU-HACK-CTF-Kebab-STO-350.html">[2018_NUIT_DU_HACK_CTF] Kebab STO(350)</a>
+                    
+                        <small>(Categories: <a href="/category/CTF">CTF</a>, <a href="/category/2018_NDH">2018_NDH</a>)</small>
+                    
+                </li>
+                
+                
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/ctf/2018_securinets/2018/03/26/Securinets-CTF-duck-hunt-300.html">[2018_Securinets_CTF] duck_hunt(300)</a>
+                    
+                        <small>(Categories: <a href="/category/CTF">CTF</a>, <a href="/category/2018_Securinets">2018_Securinets</a>)</small>
+                    
+                </li>
+                
+                
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/ctf/2018_sharif/2018/02/16/Sharif-CTF-RunMe-50.html">[2018_Sharif_CTF] RunMe(50)</a>
+                    
+                        <small>(Categories: <a href="/category/CTF">CTF</a>, <a href="/category/2018_Sharif">2018_Sharif</a>)</small>
+                    
+                </li>
+                
+                
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/ctf/2018_sharif/2018/02/16/Sharif-CTF-Hidden-100.html">[2018_Sharif_CTF] Hidden(100)</a>
+                    
+                        <small>(Categories: <a href="/category/CTF">CTF</a>, <a href="/category/2018_Sharif">2018_Sharif</a>)</small>
+                    
+                </li>
+                
+                
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/ctf/2018_sharif/2018/02/16/Sharif-CTF-Crashed-DB-50.html">[2018_Sharif_CTF] Crashed DB(50)</a>
+                    
+                        <small>(Categories: <a href="/category/CTF">CTF</a>, <a href="/category/2018_Sharif">2018_Sharif</a>)</small>
+                    
+                </li>
+                
+                
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/ctf/2018_sharif/2018/02/15/Sharif-CTF-Client01-75.html">[2018_Sharif_CTF] Client01(75)</a>
+                    
+                        <small>(Categories: <a href="/category/CTF">CTF</a>, <a href="/category/2018_Sharif">2018_Sharif</a>)</small>
+                    
+                </li>
+                
+                
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+
+    </ul>
+    </div>
+
+
+<div class="PageNavigation">
+  
+    <a class="prev pull-left" href="http://localhost:4000/life/2017/12/31/2017%EB%85%84-%ED%9A%8C%EA%B3%A0%EB%A1%9D.html">&laquo; 2017년 회고록</a>
+  
+  
+    <a class="next pull-right" href="http://localhost:4000/etc/2018/01/26/OSX-Tensorflow-Install.html">OSX Tensorflow Install &raquo;</a>
+  
+</div>
+
+
+<div class="disqus-comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* <![CDATA[ */
+
+        var disqus_shortname = "aboutashu";
+        var disqus_identifier = "http://localhost:4000_[2017_SHA_CTF] Samsung S4 (300)";
+        var disqus_title = "[2017_SHA_CTF] Samsung S4 (300)";
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    /* ]]> */
+    </script>
+</div>
+</div>
+          <div class="row">
+            <div class="col-md-12 col-xs-12 footer">
+              <footer>
+  © 2016 Your Name <a href="#">Privacy link</a> - Powered by Jekyll.
+</footer>
+<div align="center">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-0000000000000000"
+    data-ad-slot="0000000000"
+    data-ad-format="auto"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+            </div>
+          </div>
+        </div> <!-- end /.col-md-9 -->
+      </div> <!-- end /.row -->
+    </div>
+
+    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="/static/js/super-search.js"></script>
+
+<script src="/static/js/thickbox-compressed.js"></script>
+<script src="/static/js/material.min.js"></script>
+<script src="/static/js/main.js"></script>
+<script src="/static/js/projects.js"></script>
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72862926-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>

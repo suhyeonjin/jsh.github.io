@@ -1,316 +1,349 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-<title>BLOG &vert; JSH</title>
-<meta name="description" content="Technical blog for Theori">
+  <head>
+    
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <link rel="shortcut icon" href="/static/img/favicon.ico" />
+        <title>Blog - John Smith</title>
+        <meta name="author" content="John Smith" />
+        <meta name="description" content="Blog" />
+        <meta name="keywords" content="Blog, John Smith, " />
 
+        <meta content="0" property="fb:app_id">
+        <meta content="John Smith" property="og:site_name">
+        
+          <meta content="Blog" property="og:title">
+        
+        
+          <meta content="article" property="og:type">
+        
+        
+          <meta content="My Personal Blog" property="og:description">
+        
+        
+          <meta content="http://localhost:4000/page2/" property="og:url">
+        
+        
+        
+          <meta content="http://localhost:4000/static/img/logo-high-resolution.png" property="og:image">
+        
+        
+        
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@\#">
+        <meta name="twitter:creator" content="@\#">
+        
+          <meta name="twitter:title" content="Blog">
+        
+        
+          <meta name="twitter:url" content="http://localhost:4000/page2/">
+        
+        
+          <meta name="twitter:description" content="My Personal Blog">
+        
+        
 
+      <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+      <script type="text/javascript">window.baseurl = 'http://localhost:4000';</script>
+      
+        <!-- Custom Fonts -->
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
 
-<!-- Open Graph -->
-<meta property="og:locale" content="en_US">
-<meta property="og:type" content="article">
-<meta property="og:title" content="BLOG">
-<meta property="og:description" content="Technical blog for Theori">
-<meta property="og:url" content="http://localhost:4000/page2/">
-<meta property="og:site_name" content="jsh">
-<meta property="og:image" content="http://localhost:4000/images/logo.png">
+        <!-- FontAwesome icons -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/74dfc6cf47.css">
 
+        <!-- Core BootStrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <!-- Material Design CSS -->
+        <link rel="stylesheet" href="/static/css/bootstrap-material-design.min.css">
 
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/static/css/syntax.css">
 
+        <!-- Custom CSS -->        
+        <link rel="stylesheet" href="/static/css/thickbox.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+        <link rel="stylesheet" href="/static/css/projects.css">
 
+        <script type="text/javascript">
+          //loadingImage is relative to project dir
+          var tb_pathToImage = "/static/img/loadingAnimation.gif";
+        </script>
 
-<link rel="canonical" href="http://localhost:4000/page2/">
-<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title="jsh Feed">
+  </head>
 
+  <body class="home overflow-hidden">
+    <div class="header-panel shadow-z-2">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-sm-4 col-xs-12">
+            <div class="row-picture">
+              <img id="about" class="logo-img" src="/hcz-jekyll-blog/static/img/avatar.png" height="75px" width="75px">
+            </div>
+            <div class="row-details">
+              <h4 class="list-group-item-heading">John Smith</h4>
+              <p class="list-group-item-text">Freelance developer</p>
+              <div class="social-icons">
+	
+        <a class="icon" target="_blank" href=""><i class="fa fa-facebook"></i></a>
+    
+        <a class="icon" target="_blank" href=""><i class="fa fa-twitter"></i></a>
+    
+        <a class="icon" target="_blank" href=""><i class="fa fa-linkedin"></i></a>
+    
+        <a class="icon" target="_blank" href=""><i class="fa fa-stack-exchange"></i></a>
+    
+</div>
 
-<!-- http://t.co/dKP3o1e -->
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
-
-    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,600,300,800,700' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="http://localhost:4000/assets/css/vendor/font-awesome.min.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/vendor/normalize.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/vendor/nprogress.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/vendor/foundation.min.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/post.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/monokai.css">
-    <link rel="stylesheet" href="http://localhost:4000/assets/css/style.css">
-
-
-
-
-
-<!-- Icons -->
-<link rel="apple-touch-icon" sizes="57x57" href="http://localhost:4000/images/apple-icon-57x57.png">
-<link rel="apple-touch-icon" sizes="60x60" href="http://localhost:4000/images/apple-icon-60x60.png">
-<link rel="apple-touch-icon" sizes="72x72" href="http://localhost:4000/images/apple-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="76x76" href="http://localhost:4000/images/apple-icon-76x76.png">
-<link rel="apple-touch-icon" sizes="114x114" href="http://localhost:4000/images/apple-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="120x120" href="http://localhost:4000/images/apple-icon-120x120.png">
-<link rel="apple-touch-icon" sizes="144x144" href="http://localhost:4000/images/apple-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="152x152" href="http://localhost:4000/images/apple-icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:4000/images/apple-icon-180x180.png">
-<link rel="icon" type="image/png" sizes="192x192"  href="http://localhost:4000/images/android-icon-192x192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:4000/images/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="http://localhost:4000/images/favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:4000/images/favicon-16x16.png">
-<link rel="manifest" href="http://localhost:4000/images/manifest.json">
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
-
-
-</head>
-<body class="home-template" itemscope itemtype="http://schema.org/WebPage">
-  <header class="notepad-site-head">
-  <div class="notepad-site-head-menu" style="text-align: center">
-    <a class="notepad-blog-logo" href="http://localhost:4000" style="margin-top: 40px;"><img src="http://localhost:4000/images/logo.png" alt="Blog Logo" /></a>
-    <div class="notepad-blog-menu" style="float: none !important">
-      <div class="notepad-mobile-menu show-for-small">
-        <a href="#"><i class="fa fa-bars"></i></a>
+            </div>
+            <div class="navbar-header pull-right">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <i class="fa fa-2x fa-bars"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-9 col-sm-8 col-xs-12">
+          <div class="row">
+            <h2 class="blog-title-pro col-md-6 col-sm-12 col-xs-12 ">Blog</h2>
+            
+            <div class="col-md-6 col-sm-12 col-xs-12 searchcontrol" id="js-search">
+              <input class="form-control" type="text" id="js-search__input" placeholder="Search">
+              <ul class="search__results" id="js-search__results"></ul>
+            </div>
+            
+            </div>
+            <p class="info">
+              
+              
+            </p>
+          </div>
+        </div>
       </div>
-      <ul class="notepad-menu">
-        <li class="notepad-mobile-close-btn show-for-small text-right">
-        <a href="#"><i class="fa fa-times"></i></a>
+    </div>
+
+    <div class="container main outer">
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+              <nav class="menu">
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="list-separator nav navbar-nav well well-primary default">
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  page2"><a href="/" target="_self"><i class="fa fa-home"></i> Home</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  page2"><a href="/about/" target="_self"><i class="fa fa-comments"></i> About</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  page2"><a href="/projects" target="_self"><i class="fa fa-desktop"></i> Projects</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  page2"><a href="/#" target="_self"><i class="fa fa-graduation-cap"></i> Resume</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  page2"><a href="/#" target="_self"><i class="fa fa-github"></i> Github</a></li>
+
+	
+	
+	
+	
+	
+	
+    
+	
+	<li class="col-lg-12 col-md-12 col-sm-4 col-xs-12  page2"><a href="/feed.xml" target="_blank"><i class="fa fa-feed"></i> XML Feed</a></li>
+
+</ul>
+
+    </div>
+    </nav>
+
+        </div>
+        <div class="col-md-9 col-xs-12 full">
+          <div class="well">
+    <div class="list-group">
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">19 Jul 2014</div>
+          <h4 class="list-group-item-heading"><a href="/personal/2014/07/19/introducing-notepad.html">Introducing Notepad</a></h4>
+
+          <p class="list-group-item-text">Notepad is a Jekyll theme which is very simple, clean and beautiful. This theme is good for any blog. Main...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">23 May 2013</div>
+          <h4 class="list-group-item-heading"><a href="/theme/2013/05/23/readability-feature-post.html">Post with Cover Image and Text</a></h4>
+
+          <p class="list-group-item-text">This is a sample post with a large feature image up top and tons of text. You can set post...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">19 Jun 2012</div>
+          <h4 class="list-group-item-heading"><a href="/theme/2012/06/19/documentation.html">Documentation</a></h4>
+
+          <p class="list-group-item-text">General notes and suggestions for customizing HMFAYSAL Notepad Theme. Contents Basic Setup for a new Jekyll site Setup for an...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">22 May 2012</div>
+          <h4 class="list-group-item-heading"><a href="/articles/2012/05/22/readability-post.html">Testing Readability with a Bunch of Text</a></h4>
+
+          <p class="list-group-item-text">Portland in shoreditch Vice, labore typewriter pariatur hoodie fap sartorial Austin. Pinterest literally occupy Schlitz forage. Odio ad blue bottle...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+      <div class="list-group-item">
+        <div class="row-action-primary">
+          <i class="fa fa-sticky-note"></i>
+        </div>
+        <div class="row-content">
+          <div class="least-content">10 Mar 2011</div>
+          <h4 class="list-group-item-heading"><a href="/articles/2011/03/10/theme-elements.html">Theme Elements</a></h4>
+
+          <p class="list-group-item-text">Below is just about everything you’ll need to style in the theme. Check the source code to see the many...</p>
+        </div>
+      </div>
+      <div class="list-group-separator"></div>
+      
+    </div>
+   
+
+    <!-- Pagination links -->
+    
+    <ul class="pager">
+      
+        <li class="previous">
+          <a href="/">&laquo;</a>
         </li>
-        
-        <li>
-        <a href="http://localhost:4000/">Home</a>
-         </li>
-        
-        <li>
-        <a href="http://localhost:4000/about">About</a>
-         </li>
-        
-      </ul>
-    </div>
-    <!--div class="clearfix"></div-->
-  </div>
-  <!--
-  <div class="notepad-site-head-content" >
-    <div class="notepad-site-head-bg"></div>
-    <h1 class="notepad-blog-title">
-      <span class="notepad-site-head-title-bg">
-        jsh
-      </span>
-    </h1>
-    <h2 class="notepad-blog-description">Jin Su Hyeon</h2>
-  </div>
-  -->
-  </header>
+      
 
+      <li><a href="/">First</a></li>
 
-<main class="notepad-content" role="main">
+      
+        
+          <li><a href="/">1</a></li>
+        
+      
+        
+          <li class="active">
+             <a>2<span class="sr-only">(current)</span></a>
+          </li>
+        
+      
 
-            
-	
-    <article class="notepad-index-post post row">
-        <div class="small-12 medium-3 large-2 columns datetime">
-            <span class="notepad-post-meta">
-                <time datetime="2013-05-23T00:00:00+09:00">
-                    <span class="day">
-                        23
-                    </span>
-                    <span class="month-year">
-                        May 2013
-                    </span>
-                </time>
-            </span>
-        </div>
-        <div class="small-12 medium-9 large-10 columns">
-            <header class="notepad-post-header">
-                <h3 class="notepad-post-title">
-                    <a href="http://localhost:4000/theme/readability-feature-post">
-                        Post with Cover Image and Text
-                    </a>
-                </h3>
-            </header>
-            <section class="notepad-post-excerpt">
-                <p>This is a sample post with a large feature image up top and tons of text. You can set post image covers by using only Kramdown narkdown, just place something like this: ![cover-image](http://path-to-your-image.jpg) Odio ad blue bottle vinyl, 90’s narwhal...</p>
-            </section>
-            
-                <div class="notepad-index-post-tags">
-                <a href="http://localhost:4000/categories/index.html#theme" title="Other posts from the Theme category">Theme</a>
-                    
-                </div>
-            
-        </div>
-    </article>
-	
-    <article class="notepad-index-post post row">
-        <div class="small-12 medium-3 large-2 columns datetime">
-            <span class="notepad-post-meta">
-                <time datetime="2012-06-19T00:00:00+09:00">
-                    <span class="day">
-                        19
-                    </span>
-                    <span class="month-year">
-                        June 2012
-                    </span>
-                </time>
-            </span>
-        </div>
-        <div class="small-12 medium-9 large-10 columns">
-            <header class="notepad-post-header">
-                <h3 class="notepad-post-title">
-                    <a href="http://localhost:4000/theme/documentation">
-                        Documentation
-                    </a>
-                </h3>
-            </header>
-            <section class="notepad-post-excerpt">
-                <p>General notes and suggestions for customizing HMFAYSAL Notepad Theme. Contents Basic Setup for a new Jekyll site Setup for an Existing Jekyll site Post Front Matter YAML Folder Structure Customization _config.yml Disqus Comments Owner/Author Information Google Analytics and Webmaster Tools...</p>
-            </section>
-            
-                <div class="notepad-index-post-tags">
-                <a href="http://localhost:4000/categories/index.html#theme" title="Other posts from the Theme category">Theme</a>
-                    
-                </div>
-            
-        </div>
-    </article>
-	
-    <article class="notepad-index-post post row">
-        <div class="small-12 medium-3 large-2 columns datetime">
-            <span class="notepad-post-meta">
-                <time datetime="2012-05-22T00:00:00+09:00">
-                    <span class="day">
-                        22
-                    </span>
-                    <span class="month-year">
-                        May 2012
-                    </span>
-                </time>
-            </span>
-        </div>
-        <div class="small-12 medium-9 large-10 columns">
-            <header class="notepad-post-header">
-                <h3 class="notepad-post-title">
-                    <a href="http://localhost:4000/articles/readability-post">
-                        Testing Readability with a Bunch of Text
-                    </a>
-                </h3>
-            </header>
-            <section class="notepad-post-excerpt">
-                <p>Portland in shoreditch Vice, labore typewriter pariatur hoodie fap sartorial Austin. Pinterest literally occupy Schlitz forage. Odio ad blue bottle vinyl, 90’s narwhal commodo bitters pour-over nostrud. Ugh est hashtag in, fingerstache adipisicing laboris esse Pinterest shabby chic Portland. Shoreditch...</p>
-            </section>
-            
-                <div class="notepad-index-post-tags">
-                <a href="http://localhost:4000/categories/index.html#articles" title="Other posts from the Articles category">Articles</a>
-                    
-                </div>
-            
-        </div>
-    </article>
-	
-    <article class="notepad-index-post post row">
-        <div class="small-12 medium-3 large-2 columns datetime">
-            <span class="notepad-post-meta">
-                <time datetime="2011-03-10T00:00:00+09:00">
-                    <span class="day">
-                        10
-                    </span>
-                    <span class="month-year">
-                        March 2011
-                    </span>
-                </time>
-            </span>
-        </div>
-        <div class="small-12 medium-9 large-10 columns">
-            <header class="notepad-post-header">
-                <h3 class="notepad-post-title">
-                    <a href="http://localhost:4000/articles/theme-elements">
-                        Theme Elements
-                    </a>
-                </h3>
-            </header>
-            <section class="notepad-post-excerpt">
-                <p>Below is just about everything you’ll need to style in the theme. Check the source code to see the many embedded elements within paragraphs. Heading 1 Heading 2 Heading 3 Heading 4 Heading 5 Heading 6 Body text Lorem ipsum...</p>
-            </section>
-            
-                <div class="notepad-index-post-tags">
-                <a href="http://localhost:4000/categories/index.html#articles" title="Other posts from the Articles category">Articles</a>
-                    
-                </div>
-            
-        </div>
-    </article>
-	
-    <nav class="pagination" role="navigation">
+      <li><a href="/page2/">Last</a></li>
+
+      
+        <li class="next disabled"><span>&raquo;</span></li>
+      
+    </ul>
     
-	    
-	    <a class="newer-posts" href="http://localhost:4000"><i class="fa fa-chevron-left"></i> Newer</a>
-	    
-	
+</div><!-- end #home -->
 
-    
-    <span class="page-number">Page 2 of 2</span>
-    	
-    	<span class="older-posts faded">Older <i class="fa fa-chevron-right"></i></span>
-    	
-	</nav>
-
-
-</main>
-    <footer class="notepad-site-footer">
-    <div class="copyright">
-         <section>All content copyright <a href="http://localhost:4000/about">jsh05042</a> &copy; 2018 &bull; All rights reserved.</section>
-         <br>
-         <section><a class="icon-ghost" href="https://jekyllrb.com/" targe="_blank">Jekyll</a> theme by <a class="icon-ghost" href="https://twitter.com/hmfaysal" target="_blank">hmfaysal</a></section>
-    </div>
-    <div class="social-icons">
-        
-        
-        
-        
-        <a href="http://instagram.com/https://www.instagram.com/jsh_0504/">
-            <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
-                <i class="fa fa-instagram fa-stack-1x"></i>
-            </span>
-        </a>
-        
-        
-        <a href="http://github.com/jinsoohyun">
-            <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
-                <i class="fa fa-github fa-stack-1x"></i>
-            </span>
-        </a>
-        
-        
-        <a href="http://facebook.com/jsh05042">
-            <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x fa-inverse"></i>
-                <i class="fa fa-facebook fa-stack-1x"></i>
-            </span>
-        </a>
-        
-    </div>
-    
-    <div class="cf"></div>
+          <div class="row">
+            <div class="col-md-12 col-xs-12 footer">
+              <footer>
+  © 2016 Your Name <a href="#">Privacy link</a> - Powered by Jekyll.
 </footer>
+<div align="center">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-0000000000000000"
+    data-ad-slot="0000000000"
+    data-ad-format="auto"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 
+            </div>
+          </div>
+        </div> <!-- end /.col-md-9 -->
+      </div> <!-- end /.row -->
+    </div>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="http://localhost:4000/assets/js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
-    <script src="http://localhost:4000/assets/js/vendor/modernizr.js"></script>
-    <script src="http://localhost:4000/assets/js/foundation.min.js"></script>
     
-    <script src="http://localhost:4000/assets/js/notepad.js"></script>
-    <script src="http://localhost:4000/assets/js/scripts.min.js"></script>
-    <script src="http://localhost:4000/assets/js/vendor/nprogress.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="/static/js/super-search.js"></script>
+
+<script src="/static/js/thickbox-compressed.js"></script>
+<script src="/static/js/material.min.js"></script>
+<script src="/static/js/main.js"></script>
+<script src="/static/js/projects.js"></script>
 
     <script>
-      $(document).foundation();
-    </script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+  ga('create', 'UA-72862926-1', 'auto');
+  ga('send', 'pageview');
 
-<script>NProgress.start();var interval=setInterval(function(){NProgress.inc()},1000);jQuery(window).load(function(){clearInterval(interval);NProgress.done()});jQuery(window).unload(function(){NProgress.start()});</script>
-
-</body>
+</script>
+  </body>
 </html>
