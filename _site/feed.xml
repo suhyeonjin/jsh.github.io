@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>John Smith</title>
+    <title>Jsh</title>
     <description>My Personal Blog</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 02 Jul 2018 01:33:44 +0900</pubDate>
-    <lastBuildDate>Mon, 02 Jul 2018 01:33:44 +0900</lastBuildDate>
+    <pubDate>Fri, 13 Jul 2018 20:34:12 +0900</pubDate>
+    <lastBuildDate>Fri, 13 Jul 2018 20:34:12 +0900</lastBuildDate>
     <generator>Jekyll v3.4.3</generator>
     
       <item>
