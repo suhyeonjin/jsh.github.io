@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      [2018_Codegate_CTF] Easy_Serial (350) &middot; Way Back Home
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/main.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_SVG"> </script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <div class="sidebar-personal-info">
+      <div class="
+      ">
+        <a href="https://www.github.com/suhyeonjin">
+          <img src="/public/profile.jpeg" alt="profile picture" />
+        </a>
+      </div>
+      <div class="sidebar-personal-info-section">
+        <p>Su-Hyeon JIN</p>
+      </div>
+      
+      
+      
+      <div class="sidebar-personal-info-section">
+        <p> Contact Me
+        
+        
+        
+        <a href="https://github.com/suhyeonjin">
+          <i class="fa fa-github" aria-hidden="true"></i>
+        </a>
+        
+        |
+        
+        
+        
+        <a href="https://www.facebook.com/jsh05042">
+          <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+        
+        |
+        
+        
+        
+        <a href="mailto:jsh05042@gmail.com">
+          <i class="fa fa-envelope" aria-hidden="true"></i>
+        </a>
+        
+        
+        
+        <br>
+        <span class="notice">
+
+        Why so serious?
+        </span>
+        </p>
+      </div>
+      
+    </div>
+  </div>
+
+<!-- 사이드 메뉴시작 -->
+  <nav class="sidebar-nav">
+    
+      
+      
+      
+
+      
+      <!-- 사이드바 대분류 -->
+      <span class="">
+        <a class="sidebar-nav-item " href="/blog/">
+          Home
+        </a>
+
+        
+      </span>
+
+    
+      
+      
+      
+
+      
+      <!-- 사이드바 대분류 -->
+      <span class="foldable">
+        <a class="sidebar-nav-item " href="/">
+          Categories
+        </a>
+
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#til">
+                
+                TIL (Today I Learned) -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#컴퓨터공학">
+                
+                컴퓨터공학 -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#django">
+                
+                Django -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#python">
+                
+                python -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#javascript">
+                
+                javascript -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#nodejs">
+                
+                nodejs -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#MySQL">
+                
+                MySQL -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#알고리즘-문제풀이">
+                
+                알고리즘 문제풀이 -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#git">
+                
+                git -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#firebase">
+                
+                firebase -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#etc">
+                
+                etc -
+                  
+                  
+                  1
+              </a>
+          
+        
+      </span>
+
+    
+      
+      
+      
+
+      
+      <!-- 사이드바 대분류 -->
+      <span class="">
+        <a class="sidebar-nav-item " href="/about/">
+          About
+        </a>
+
+        
+      </span>
+
+    
+      
+      
+      
+
+      
+      <!-- 사이드바 대분류 -->
+      <span class="">
+        <a class="sidebar-nav-item " href="/search/">
+          Search
+        </a>
+
+        
+      </span>
+
+    
+
+
+  </nav>
+  <div class="sidebar-item template">
+    <p>
+    Powered by <a href="http://jekyllrb.com">jekyll</a> and <a href="http://codinfox.github.io">codinfox-lanyon</a>
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead nav-down">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="suhyeonjin-github-io">
+              <!-- <img class="masthead-logo" src="/public/logo.png"/> -->
+              <img class="masthead-logo" src="/assets/images/monkey.jpg"/>
+
+            <small id="blog-title">Way Back Home</small>
+            </a>
+          </h3>
+
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">[2018_Codegate_CTF] Easy_Serial (350)</h1>
+  <span class="post-date">06 Feb 2018</span>
+  <a href="#disqus_thread"></a>
+   |
+  
+    <a href="/blog/tags/#reversing" class="post-tag">Reversing</a>
+  
+    <a href="/blog/tags/#haskell" class="post-tag">haskell</a>
+  
+  
+  <article>
+    <h2 id="exercise">Exercise</h2>
+
+<blockquote>
+  <p>Download</p>
+</blockquote>
+
+<p>너무 매정한 지문..</p>
+
+<p><img src="/images/2018-02-06-Codegate-CTF-Easy-Serial-350/exercise.png" alt="" /></p>
+<p align="center"><i>[그림] exercise</i></p>
+
+<h2 id="solution">Solution</h2>
+
+<p>다운받은 binary를 확인해보면, ELFx64임을 알 수 있다.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ⚡ root@RebForPwn  ~/jsh  file ./easy
+./easy: ELF 64-bit LSB executable, x86-64, version 1 <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span class="k">for </span>GNU/Linux 2.6.32, BuildID[sha1]<span class="o">=</span>4bd1814b358aaa9e61a968f20bd14ffa9cd208e8, not stripped
+</code></pre></div></div>
+
+<p><br />
+실행해보면, serial Key를 입력 받는 것을 확인해 볼 수 있다.
+<img src="/images/2018-02-06-Codegate-CTF-Easy-Serial-350/run.png" alt="" /></p>
+<p align="center"><i>[그림] run</i></p>
+
+<p>IDA로 열어보면 hs_main부분을 확인할 수 있는데, <code class="highlighter-rouge">Haskell</code>로 작성된 binary 이다.</p>
+<pre><code class="language-C">int __cdecl __noreturn main(int argc, const char **argv, const char **envp)
+{
+  __int64 v3; // r8
+  __int64 v4; // r9
+  __int64 v5; // ST30_8
+
+  HIDWORD(v5) = HIDWORD(defaultRtsConfig);
+  LODWORD(v5) = 1;
+  hs_main(argc, (__int64)argv, (__int64)&amp;ZCMain_main_closure, (__int64)argv, v3, v4, v5, 0LL, 1LL);
+}
+</code></pre>
+<p><br /></p>
+
+<p>예전에 Samsung CTF 본선에서 하스켈로 짜여진 문제가 나왔던 기억이 있는데, 그때 당시에도 decompiler를 찾아보려 했었지만, 딱히 정상적으로 변환이 되는 항목은 볼 수 없었다. (테이블 만들고, 브포하고 노가다 했던 기억이…) 근데, git hub 에서 다시 찾아본 결과 “https://github.com/gereeter/hsdecomp” 에서의 decompiler를 이용해 Binary –&gt; Code 형태로 변환할 수 있다. 그대로 디컴파일 시도할 경우, 에러가 나는데 팀원이 에러나는 부분을 수정해서 제공해줬다~</p>
+
+<p>변환한 Haskell Code는 아래와 같다.</p>
+<pre><code class="language-Haskell">('Main_main_closure', '=', '&gt;&gt; $fMonadIO
+    (putStrLn (unpackCString# "Input Serial Key &gt;&gt;&gt; "))
+    (&gt;&gt;= $fMonadIO
+        getLine
+        (\\s1dZ_info_arg_0 -&gt;
+            &gt;&gt; $fMonadIO
+                (putStrLn
+                    (++ (unpackCString# "your serial key &gt;&gt;&gt; ")
+                    (++ s1b7_info (++ (unpackCString# "_")
+                    (++ s1b9_info (++ (unpackCString# "_") s1bb_info))))))
+
+                (case &amp;&amp;
+                    (== $fEqInt (ord (!! s1b7_info loc_7172456)) (I# 70))
+                    (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172472)) (I# 108))
+                        (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172488)) (I# 97))
+                            (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172504)) (I# 103))
+                                (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172520)) (I# 123))
+                                    (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172536)) (I# 83))
+                                        (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172552)) (I# 48))
+                                            (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172568)) (I# 109))
+                                                (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172584)) (I# 101))
+                                                    (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172600)) (I# 48))
+                                                        (&amp;&amp; (== $fEqInt (ord (!! s1b7_info (I# 10))) (I# 102))
+                                                            (&amp;&amp; (== $fEqInt (ord (!! s1b7_info (I# 11))) (I# 85))
+                                                                (== $fEqInt (ord (!! s1b7_info (I# 12))) (I# 53)))))))))))))
+                    of
+                    &lt;tag 1&gt; -&gt; putStrLn (unpackCString# ":p"),
+                    c1ni_info_case_tag_DEFAULT_arg_0@_DEFAULT -&gt; case == ($fEq[] $fEqChar)
+                    (reverse s1b9_info)
+                    (: (C# 103)
+                        (: (C# 110)
+                            (: (C# 105)
+                                (: (C# 107)
+                                    (: loc_7168872
+                                        (: loc_7168872
+                                            (: (C# 76)
+                                                (: (C# 51)
+                                                    (: (C# 114)
+                                                        (: (C# 52) [])))))))))) of
+                        False -&gt; putStrLn (unpackCString# ":p"),
+                        True -&gt; case &amp;&amp;
+
+                        (== $fEqChar (!! s1bb_info 0) (!! s1b3_info loc_7172456)) (&amp;&amp;
+                            (== $fEqChar (!! s1bb_info 1) (!! s1b4_info (I# 19))) (&amp;&amp;
+                                (== $fEqChar (!! s1bb_info 2) (!! s1b3_info (I# 19))) (&amp;&amp;
+                                    (== $fEqChar (!! s1bb_info 3) (!! s1b4_info 7)) (&amp;&amp;
+                                        (== $fEqChar (!! s1bb_info 4) (!! s1b2_info 2)) (&amp;&amp;
+                                            (== $fEqChar (!! s1bb_info 5) (!! s1b3_info (I# 18))) (&amp;&amp;
+                                                (== $fEqChar (!! s1bb_info 6) (!! s1b4_info (I# 19))) (&amp;&amp;
+                                                    (== $fEqChar (!! s1bb_info 7) (!! s1b2_info 3)) (&amp;&amp;
+                                                        (== $fEqChar (!! s1bb_info 8) (!! s1b4_info (I# 17)))
+                                                            (== $fEqChar (!! s1bb_info 9) (!! s1b4_info (I# 18))))))))))) of
+                    &lt;tag 1&gt; -&gt; putStrLn (unpackCString# ":p"),
+                    c1tb_info_case_tag_DEFAULT_arg_0@_DEFAULT -&gt; putStrLn (unpackCString# "Correct Serial Key! Auth Flag!")
+                )
+        )
+    )')
+('s1b4_info', '=', 'unpackCString# "abcdefghijklmnopqrstuvwxyz"')
+('loc_7172600', '=', 'I# 9')
+('s1bb_info', '=', '!! s1b5_info loc_7172488')
+('loc_7172488', '=', 'I# 2')
+('s1b5_info', '=', 'splitOn $fEqChar (unpackCString# "#") s1dZ_info_arg_0')
+('loc_7172584', '=', 'I# 8')
+('loc_7172504', '=', 'I# 3')
+('s1b2_info', '=', 'unpackCString# "1234567890"')
+('loc_7172568', '=', 'I# 7')
+('loc_7172552', '=', 'I# 6')
+('s1b3_info', '=', 'unpackCString# "ABCDEFGHIJKLMNOPQRSTUVWXYZ"')
+('loc_7172536', '=', 'I# 5')
+('loc_7172520', '=', 'I# 4')
+('loc_7172472', '=', 'I# 1')
+('loc_7172456', '=', 'I# 0')
+('loc_7168872', '=', 'C# 48')
+('s1b9_info', '=', '!! s1b5_info loc_7172472')
+('s1b7_info', '=', '!! s1b5_info loc_7172456')
+</code></pre>
+
+<p>문법을 조금 찾아보면, 입력 값에 대해서 <code class="highlighter-rouge">#</code>으로 구분하여 3부분으로 나눈다. ASCII 값 비교 구문을 통해, serial check를 수행하는데, 첫번째 구간에 해당하는 string은 아래와 같다.</p>
+<pre><code class="language-Haskell">(== $fEqInt (ord (!! s1b7_info loc_7172456)) (I# 70))
+                    (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172472)) (I# 108))
+                        (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172488)) (I# 97))
+                            (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172504)) (I# 103))
+                                (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172520)) (I# 123))
+                                    (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172536)) (I# 83))
+                                        (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172552)) (I# 48))
+                                            (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172568)) (I# 109))
+                                                (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172584)) (I# 101))
+                                                    (&amp;&amp; (== $fEqInt (ord (!! s1b7_info loc_7172600)) (I# 48))
+                                                        (&amp;&amp; (== $fEqInt (ord (!! s1b7_info (I# 10))) (I# 102))
+                                                            (&amp;&amp; (== $fEqInt (ord (!! s1b7_info (I# 11))) (I# 85))
+                                                                (== $fEqInt (ord (!! s1b7_info (I# 12))) (I# 53)))))))))))))
+</code></pre>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">70</span><span class="p">,</span><span class="mi">108</span><span class="p">,</span><span class="mi">97</span><span class="p">,</span><span class="mi">103</span><span class="p">,</span><span class="mi">123</span><span class="p">,</span><span class="mi">83</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="mi">109</span><span class="p">,</span><span class="mi">101</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="mi">102</span><span class="p">,</span><span class="mi">85</span><span class="p">,</span><span class="mi">53</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
+<span class="o">...</span>
+<span class="n">F</span> <span class="n">l</span> <span class="n">a</span> <span class="n">g</span> <span class="p">{</span> <span class="n">S</span> <span class="mi">0</span> <span class="n">m</span> <span class="n">e</span> <span class="mi">0</span> <span class="n">f</span> <span class="n">U</span> <span class="mi">5</span>
+</code></pre></div></div>
+<p><br /></p>
+
+<p>두번째 구간에 해당 하는 비교 부분은 아래와 같다.</p>
+<pre><code class="language-Haskell">(: (C# 103)
+    (: (C# 110)
+        (: (C# 105)
+            (: (C# 107)
+                (: loc_7168872
+                    (: loc_7168872
+                        (: (C# 76)
+                            (: (C# 51)
+                                (: (C# 114)
+                                    (: (C# 52) [])))))))))) of
+</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">103</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span><span class="mi">105</span><span class="p">,</span><span class="mi">107</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="mi">76</span><span class="p">,</span><span class="mi">51</span><span class="p">,</span><span class="mi">114</span><span class="p">,</span><span class="mi">52</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">b</span><span class="p">:</span>
+<span class="o">...</span>     <span class="k">print</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
+<span class="o">...</span>
+<span class="n">g</span> <span class="n">n</span> <span class="n">i</span> <span class="n">k</span> <span class="mi">0</span> <span class="mi">0</span> <span class="n">L</span> <span class="mi">3</span> <span class="n">r</span> <span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="s">"g n i k 0 0 L 3 r 4"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="s">'4 r 3 L 0 0 k i n g'</span>
+</code></pre></div></div>
+
+<p>세번째 구간에 해당하는 비교 부분은 아래와 같다.</p>
+<pre><code class="language-Haskell">(== $fEqChar (!! s1bb_info 0) (!! s1b3_info loc_7172456)) (&amp;&amp;
+    (== $fEqChar (!! s1bb_info 1) (!! s1b4_info (I# 19))) (&amp;&amp;
+        (== $fEqChar (!! s1bb_info 2) (!! s1b3_info (I# 19))) (&amp;&amp;
+            (== $fEqChar (!! s1bb_info 3) (!! s1b4_info 7)) (&amp;&amp;
+                (== $fEqChar (!! s1bb_info 4) (!! s1b2_info 2)) (&amp;&amp;
+                    (== $fEqChar (!! s1bb_info 5) (!! s1b3_info (I# 18))) (&amp;&amp;
+                        (== $fEqChar (!! s1bb_info 6) (!! s1b4_info (I# 19))) (&amp;&amp;
+                            (== $fEqChar (!! s1bb_info 7) (!! s1b2_info 3)) (&amp;&amp;
+                                (== $fEqChar (!! s1bb_info 8) (!! s1b4_info (I# 17)))
+                                    (== $fEqChar (!! s1bb_info 9) (!! s1b4_info (I# 18))))))))))) of
+&lt;tag 1&gt; -&gt; putStrLn (unpackCString# ":p"),
+c1tb_info_case_tag_DEFAULT_arg_0@_DEFAULT -&gt; putStrLn (unpackCString# "Correct Serial Key! Auth Flag!"))
+</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s1b3_info</span> <span class="o">=</span> <span class="s">"ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1b2_info</span> <span class="o">=</span> <span class="s">"1234567890"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1b4_info</span> <span class="o">=</span> <span class="s">"abcdefghijklmnopqrstuvwxyz"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1b3_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="s">'A'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1b4_info</span><span class="p">[</span><span class="mi">19</span><span class="p">]</span>
+<span class="s">'t'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1b3_info</span><span class="p">[</span><span class="mi">19</span><span class="p">]</span>
+<span class="s">'T'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1b4_info</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+<span class="s">'h'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1b2_info</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="s">'3'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1b3_info</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span>
+<span class="s">'S'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1b4_info</span><span class="p">[</span><span class="mi">19</span><span class="p">]</span>
+<span class="s">'t'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1b2_info</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="s">'4'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1b4_info</span><span class="p">[</span><span class="mi">17</span><span class="p">]</span>
+<span class="s">'r'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s1b4_info</span><span class="p">[</span><span class="mi">18</span><span class="p">]</span>
+<span class="s">'s'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">AtTh3St4rs</span>
+</code></pre></div></div>
+<p><br /></p>
+
+<blockquote>
+  <p>각 구간별, string을 합치면 <code class="highlighter-rouge">Flag{S0me0fU5#4r3L00king#AtTh3St4rs</code>임을 알 수 있으며, input serial로 입력할 경우 Flag를 확인할 수 있다.</p>
+</blockquote>
+
+<p><img src="/images/2018-02-06-Codegate-CTF-Easy-Serial-350/result.png" alt="" /></p>
+<p align="center"><i>[그림] result</i></p>
+
+<p align="right"><strong>Flag{S0me0fU5_4r3L00king_AtTh3St4rs}</strong></p>
+
+  </article>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//jinshs-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/ctf/2018_ndh/2018/04/02/NUIT-DU-HACK-CTF-Kebab-STO-350/">
+            [2018_NUIT_DU_HACK_CTF] Kebab STO(350)
+            <small>02 Apr 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/ctf/2018_securinets/2018/03/26/Securinets-CTF-duck-hunt-300/">
+            [2018_Securinets_CTF] duck_hunt(300)
+            <small>26 Mar 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/ctf/2018_sharif/2018/02/16/Sharif-CTF-RunMe-50/">
+            [2018_Sharif_CTF] RunMe(50)
+            <small>16 Feb 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+      </div>
+    </div>
+    <a href="/search/" class="search">
+      <i class="fa fa-search" aria-hidden="true"></i>
+      <!-- <img src="/assets/images/search.png"/> -->
+    </a>
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if (target === toggle) {
+            checkbox.checked = !checkbox.checked;
+            e.preventDefault();
+          } else if (checkbox.checked && !sidebar.contains(target)) {
+            /* click outside the sidebar when sidebar is open */
+            checkbox.checked = false;
+          }
+        }, false);
+      })(document);
+    </script>
+    
+    <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-92094009-1', 'auto');
+ga('send', 'pageview');
+    </script>
+    
+    <script id="dsq-count-scr" src="//jinshs-blog.disqus.com/count.js" async></script>
+  </body>
+  
+  <script id="dsq-count-scr" src="//jinshs-blog.disqus.com/count.js" async></script>
+  
+
+  <script type="text/javascript">
+      // Hide Header on on scroll down
+    var didScroll;
+    var lastScrollTop = 0;
+    var delta = 5;
+    var navbarHeight = $('.masthead').outerHeight();
+
+    $(window).scroll(function(event){
+      didScroll = true;
+    });
+
+    setInterval(function() {
+      if (didScroll) {
+          hasScrolled();
+          didScroll = false;
+      }
+    }, 250);
+
+    function hasScrolled() {
+      var st = $(this).scrollTop();
+
+      // Make sure they scroll more than delta
+      if(Math.abs(lastScrollTop - st) <= delta)
+          return;
+
+      // If they scrolled down and are past the navbar, add class .nav-up.
+      // This is necessary so you never see what is "behind" the navbar.
+      if (st > lastScrollTop && st > navbarHeight){
+          // Scroll Down
+          $('.masthead').removeClass('nav-down').addClass('nav-up');
+      } else {
+          // Scroll Up
+          if(st + $(window).height() < $(document).height()) {
+              $('.masthead').removeClass('nav-up').addClass('nav-down');
+          }
+      }
+
+      lastScrollTop = st;
+}
+  </script>
+</html>

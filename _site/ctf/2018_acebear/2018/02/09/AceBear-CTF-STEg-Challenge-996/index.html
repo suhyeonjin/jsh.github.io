@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      [2018_AceBear_CTF] STEg Challenge(996) &middot; Way Back Home
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/main.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+
+  
+  <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_SVG"> </script>
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });
+  </script>
+  
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <div class="sidebar-personal-info">
+      <div class="
+      ">
+        <a href="https://www.github.com/suhyeonjin">
+          <img src="/public/profile.jpeg" alt="profile picture" />
+        </a>
+      </div>
+      <div class="sidebar-personal-info-section">
+        <p>Su-Hyeon JIN</p>
+      </div>
+      
+      
+      
+      <div class="sidebar-personal-info-section">
+        <p> Contact Me
+        
+        
+        
+        <a href="https://github.com/suhyeonjin">
+          <i class="fa fa-github" aria-hidden="true"></i>
+        </a>
+        
+        |
+        
+        
+        
+        <a href="https://www.facebook.com/jsh05042">
+          <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+        
+        |
+        
+        
+        
+        <a href="mailto:jsh05042@gmail.com">
+          <i class="fa fa-envelope" aria-hidden="true"></i>
+        </a>
+        
+        
+        
+        <br>
+        <span class="notice">
+
+        Why so serious?
+        </span>
+        </p>
+      </div>
+      
+    </div>
+  </div>
+
+<!-- 사이드 메뉴시작 -->
+  <nav class="sidebar-nav">
+    
+      
+      
+      
+
+      
+      <!-- 사이드바 대분류 -->
+      <span class="">
+        <a class="sidebar-nav-item " href="/blog/">
+          Home
+        </a>
+
+        
+      </span>
+
+    
+      
+      
+      
+
+      
+      <!-- 사이드바 대분류 -->
+      <span class="foldable">
+        <a class="sidebar-nav-item " href="/">
+          Categories
+        </a>
+
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#til">
+                
+                TIL (Today I Learned) -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#컴퓨터공학">
+                
+                컴퓨터공학 -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#django">
+                
+                Django -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#python">
+                
+                python -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#javascript">
+                
+                javascript -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#nodejs">
+                
+                nodejs -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#MySQL">
+                
+                MySQL -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#알고리즘-문제풀이">
+                
+                알고리즘 문제풀이 -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#git">
+                
+                git -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#firebase">
+                
+                firebase -
+                  
+                  
+                  0
+              </a>
+          
+        
+          
+            
+            
+            
+            <!-- 사이드바 카테고리 소분류  -->
+
+              <a class="sidebar-nav-item sidebar-nav-item-sub " href="/blog/categories/#etc">
+                
+                etc -
+                  
+                  
+                  1
+              </a>
+          
+        
+      </span>
+
+    
+      
+      
+      
+
+      
+      <!-- 사이드바 대분류 -->
+      <span class="">
+        <a class="sidebar-nav-item " href="/about/">
+          About
+        </a>
+
+        
+      </span>
+
+    
+      
+      
+      
+
+      
+      <!-- 사이드바 대분류 -->
+      <span class="">
+        <a class="sidebar-nav-item " href="/search/">
+          Search
+        </a>
+
+        
+      </span>
+
+    
+
+
+  </nav>
+  <div class="sidebar-item template">
+    <p>
+    Powered by <a href="http://jekyllrb.com">jekyll</a> and <a href="http://codinfox.github.io">codinfox-lanyon</a>
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead nav-down">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="suhyeonjin-github-io">
+              <!-- <img class="masthead-logo" src="/public/logo.png"/> -->
+              <img class="masthead-logo" src="/assets/images/monkey.jpg"/>
+
+            <small id="blog-title">Way Back Home</small>
+            </a>
+          </h3>
+
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">[2018_AceBear_CTF] STEg Challenge(996)</h1>
+  <span class="post-date">09 Feb 2018</span>
+  <a href="#disqus_thread"></a>
+   |
+  
+    <a href="/blog/tags/#forensic" class="post-tag">Forensic</a>
+  
+    <a href="/blog/tags/#misc" class="post-tag">MISC</a>
+  
+    <a href="/blog/tags/#steganography" class="post-tag">steganography</a>
+  
+  
+  <article>
+    <h2 id="exercise">Exercise</h2>
+
+<blockquote>
+  <p>Download: Link
+Service: nc 35.200.176.244 33338
+author: komang4130</p>
+</blockquote>
+
+<p><img src="/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/exercise.png" alt="" /></p>
+<p align="center"><i>[그림] exercise</i></p>
+
+<h2 id="solution">Solution</h2>
+
+<p>AceBear CTF 에서 나왔던 Forensic/MISC 분야 중, 마지막 풀이 문제. JS 문제랑 마찬가지로 대회 당시에는 해결하지 못했다. 문제 제목에 대해서 조금만 더 고찰을 했었더라면 해결할 수 있었을텐데…</p>
+
+<p>link를 통해, 받은 rar 파일을 압축 해제하면, <code class="highlighter-rouge">flag_enc.png</code> 파일을 하나 확인할 수 있다.</p>
+
+<p><img src="/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/flag_enc.png" alt="" /></p>
+<p align="center"><i>[그림] flag_enc.png</i></p>
+
+<p>이미지를 자세히 보면, 좌측 상단에 검정색 pixel 일부를 볼 수 있다. 당연히, pixel을 이용한 steganography 방식의 LSB 로 인식하고 접근했었는데 별짓을 다해도 의미있는 문자열을 확인할 수 없었던게 큰 문제였던 것 같다.</p>
+
+<p>문제를 보면, nc 로 socket 접속할 수 있는 server 가 하나 주어지는데, 접속해보면 아래와 같이 16byte의 data를 받아 base64로  encode 된 data를 receive할 수 있었다.
+<img src="/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/data_recieve.png" alt="" /></p>
+<p align="center"><i>[그림] encode data</i></p>
+
+<p>decode 하여, 확인해보면 flag_enc와 동일한 이미지인 것을 확인할 수 있는데, 자세히 보면 상단의 pixel 위치가 조금씩 다르다.
+<img src="/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/file1.png" alt="" /></p>
+<p align="center"><i>[그림] decode data</i></p>
+
+<p>여기서 생각의 전환이 조금 필요했다. server로 부터 어떤 유의미한 데이터를 얻어낼 수 있는가 고민을 하다가 결국, 원점으로 돌아가 flag_enc 로부터 정보를 얻어내려 했던 것이 발목을 잡았다..</p>
+
+<p>결과적으로, 문제 제목에서 알 수 있듯이 <code class="highlighter-rouge">STEg</code>, <code class="highlighter-rouge">flag_enc</code> 라는 문자열에 주목해보자. enc라는 문자열은 무엇인가 encrypt 되었다는 것을 의미한다. 그렇다면, 어떤 로직을 통해 data가 encrypt 되었다는 것인데 pixel과 Image를 Steganography 적용하는 방식에서 사용될 수 있는 항목은 주로 lsb일 것이다.</p>
+
+<p>기존에 알고 있던 lsb 방식은 모두 이용해 보았지만 별 소득은 없었고, 구글을 뒤지다가 Python 과 관련된 도구에서 <code class="highlighter-rouge">Stepic</code>라는 것을 찾을 수 있었다. (Python Steganography 라는 언급만 있었어도…ㅂㄷㅂㄷ)</p>
+
+<p><img src="/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/stepic.png" alt="" /></p>
+<p align="center"><i>[그림] stepic stegano</i></p>
+
+<p>연속된 3개의 pixel 에 data를 은닉하는 방식의 lsb 인데, code 그대로 사용해 unhide 할 수 있다. (https://stackoverflow.com/questions/16838341/steganography-in-python-stepic)</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="k">def</span> <span class="nf">decode_imdata</span><span class="p">(</span><span class="n">imdata</span><span class="p">):</span>
+    <span class="s">'''Given a sequence of pixels, returns an iterator of characters
+    encoded in the image'''</span>
+
+    <span class="n">imdata</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">imdata</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">pixels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">imdata</span><span class="o">.</span><span class="nb">next</span><span class="p">()[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">imdata</span><span class="o">.</span><span class="nb">next</span><span class="p">()[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">imdata</span><span class="o">.</span><span class="nb">next</span><span class="p">()[:</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">byte</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+            <span class="n">byte</span> <span class="o">|=</span> <span class="n">pixels</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span>
+            <span class="n">byte</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+        <span class="n">byte</span> <span class="o">|=</span> <span class="n">pixels</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span>
+        <span class="k">yield</span> <span class="nb">chr</span><span class="p">(</span><span class="n">byte</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pixels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">break</span>
+
+
+<span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'test'</span><span class="p">)</span>
+<span class="n">data</span>  <span class="o">=</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">decode_imdata</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">getdata</span><span class="p">()))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data</span>
+</code></pre></div></div>
+<p><br /></p>
+
+<p>위 code로 서버로부터 받은 <code class="highlighter-rouge">encode data</code>와 <code class="highlighter-rouge">flag_enc.png</code>를 unhide 했을 때, 아래와 같은 문자열을 얻을 수 있었다. 무엇인가 복호화가 된다는 사실이 일단 실마리이다.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python ./steg.py
+|vohenrbuq<span class="o">{</span>nxe
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python ./steg.py
+53:<span class="o">)</span>~&gt;1&amp;v1z4hu
+</code></pre></div></div>
+
+<p>굳이, server로부터 encode data를 주는 이유는 무엇일까? 해당 data로부터 알아내야할 것이 있다는 말이다. <code class="highlighter-rouge">flag_enc.png</code>로부터 unhide 했을 때, 별 소득이 없었으므로 해당 결과 값에 영향을 미칠만한 항목을 찾아냈어야 했다. (이 부분에서도 꽤 많은 시간을 쏟았다.)</p>
+
+<p>여러 data 를 server 로 send 하다가, <code class="highlighter-rouge">\x00</code> 로만 16byte를 채워보내고 받은 encode data에 대해서 unhide 한 결과 식별할 수 있는 string(<code class="highlighter-rouge">OMG_YOU_BREAK_IT</code>)을 얻을 수 있었다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python <span class="nt">-c</span> “print ‘<span class="se">\x</span>00’<span class="k">*</span>16” | nc localhost 33338 | base64 <span class="nt">-D</span> <span class="o">&gt;</span> tmp.png
+
+jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python ./steg.py
+OMG_YOU_BREAK_IT
+</code></pre></div></div>
+
+<p>또 여기서, 삽질했던게 Null로 얻은 문자열 길이는 16byte인데 flag_enc.png 에서 얻은 문자열 길이는 14byte이다.. 기왕 내는거 길이 좀 맞춰서 내지;; 14byte 까지만 각각의 문자열을 xor 할 경우 flag를 확인할 수 있었다;;;</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="k">def</span> <span class="nf">decode_imdata</span><span class="p">(</span><span class="n">imdata</span><span class="p">):</span>
+    <span class="s">'''Given a sequence of pixels, returns an iterator of characters
+    encoded in the image'''</span>
+
+    <span class="n">imdata</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">imdata</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">pixels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">imdata</span><span class="o">.</span><span class="nb">next</span><span class="p">()[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">imdata</span><span class="o">.</span><span class="nb">next</span><span class="p">()[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">imdata</span><span class="o">.</span><span class="nb">next</span><span class="p">()[:</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">byte</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+            <span class="n">byte</span> <span class="o">|=</span> <span class="n">pixels</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span>
+            <span class="n">byte</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+        <span class="n">byte</span> <span class="o">|=</span> <span class="n">pixels</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span>
+        <span class="k">yield</span> <span class="nb">chr</span><span class="p">(</span><span class="n">byte</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pixels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">break</span>
+
+<span class="k">def</span> <span class="nf">strxor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">^</span><span class="nb">ord</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">))</span>
+
+
+<span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'flag_enc.png'</span><span class="p">)</span>
+<span class="n">data</span>  <span class="o">=</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">decode_imdata</span><span class="p">(</span><span class="n">im</span><span class="o">.</span><span class="n">getdata</span><span class="p">()))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data</span>
+
+
+<span class="n">im2</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'tmp.png'</span><span class="p">)</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">decode_imdata</span><span class="p">(</span><span class="n">im2</span><span class="o">.</span><span class="n">getdata</span><span class="p">()))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data2</span>
+
+
+<span class="k">print</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">^</span><span class="nb">ord</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">data2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python ./steg.py
+53:<span class="o">)</span>~&gt;1&amp;v1z4hu
+OMG_YOU_BREAK_IT
+zStep1k_st3p1k!!
+</code></pre></div></div>
+
+<blockquote>
+  <p>솔직히, 맞추라고 낸 문제인가 애매하다.. Forensic이 아니라 그냥 MISC 느낌.. 어거지로 끼워 만든 문제 느낌이 너무 강하고, 쓸데 없는 삽질이 너무 많이 필요했다…;;</p>
+</blockquote>
+
+<p align="right"><strong>AceBear{zStep1k_st3p1k!!}</strong></p>
+
+  </article>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//jinshs-blog.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+<div class="related">
+  <h2>Related Posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/ctf/2018_ndh/2018/04/02/NUIT-DU-HACK-CTF-Kebab-STO-350/">
+            [2018_NUIT_DU_HACK_CTF] Kebab STO(350)
+            <small>02 Apr 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/ctf/2018_securinets/2018/03/26/Securinets-CTF-duck-hunt-300/">
+            [2018_Securinets_CTF] duck_hunt(300)
+            <small>26 Mar 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/ctf/2018_sharif/2018/02/16/Sharif-CTF-RunMe-50/">
+            [2018_Sharif_CTF] RunMe(50)
+            <small>16 Feb 2018</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+      </div>
+    </div>
+    <a href="/search/" class="search">
+      <i class="fa fa-search" aria-hidden="true"></i>
+      <!-- <img src="/assets/images/search.png"/> -->
+    </a>
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if (target === toggle) {
+            checkbox.checked = !checkbox.checked;
+            e.preventDefault();
+          } else if (checkbox.checked && !sidebar.contains(target)) {
+            /* click outside the sidebar when sidebar is open */
+            checkbox.checked = false;
+          }
+        }, false);
+      })(document);
+    </script>
+    
+    <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-92094009-1', 'auto');
+ga('send', 'pageview');
+    </script>
+    
+    <script id="dsq-count-scr" src="//jinshs-blog.disqus.com/count.js" async></script>
+  </body>
+  
+  <script id="dsq-count-scr" src="//jinshs-blog.disqus.com/count.js" async></script>
+  
+
+  <script type="text/javascript">
+      // Hide Header on on scroll down
+    var didScroll;
+    var lastScrollTop = 0;
+    var delta = 5;
+    var navbarHeight = $('.masthead').outerHeight();
+
+    $(window).scroll(function(event){
+      didScroll = true;
+    });
+
+    setInterval(function() {
+      if (didScroll) {
+          hasScrolled();
+          didScroll = false;
+      }
+    }, 250);
+
+    function hasScrolled() {
+      var st = $(this).scrollTop();
+
+      // Make sure they scroll more than delta
+      if(Math.abs(lastScrollTop - st) <= delta)
+          return;
+
+      // If they scrolled down and are past the navbar, add class .nav-up.
+      // This is necessary so you never see what is "behind" the navbar.
+      if (st > lastScrollTop && st > navbarHeight){
+          // Scroll Down
+          $('.masthead').removeClass('nav-down').addClass('nav-up');
+      } else {
+          // Scroll Up
+          if(st + $(window).height() < $(document).height()) {
+              $('.masthead').removeClass('nav-up').addClass('nav-down');
+          }
+      }
+
+      lastScrollTop = st;
+}
+  </script>
+</html>

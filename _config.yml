@@ -1,28 +1,73 @@
-title: Jsh
-description: My Personal Blog
-author: jin su hyeon
-logo: /static/img/avatar.png
-github: https://github.com/jinsoohyun/
-about: Student
-
+# Site Info
+title: 'suhyeonjin-github-io'
+tagline: 'Way Back Home'
+description: '이것 저것 정리'
 baseurl: ""
-url: ""
+url: https://suhyeonjin.github.io
+logo: '/public/logo.png'
 
-allowsearch: true
-
-disqus_shortname: jinshs-blog
-google_analytics: ""
-
-share:
-  twitter_username: \#
-  fb_appid: jsh05042
-
-
-enableTags: true
-tagarray: []
-
-paginate: 5
-per_page: 5
-paginate_path: "/page:num/"
+# Site configurations
+gems:
+  - jekyll-paginate
 markdown: kramdown
-gems: [jekyll-paginate, jekyll-gist]
+kramdown:
+  input: GFM
+excerpt_separator: "<!-- more -->"
+sass:
+  style: compressed
+  sass_dir: _scss
+paginate: 5
+paginate_path: '/blog/page:num'
+permalink: pretty
+
+version: 1.0.0
+
+# About/contact
+author:
+  name: Jin SuHyeon
+  description: Su-Hyeon JIN
+  contact:
+    # linkedin:
+    github:    https://github.com/suhyeonjin
+    facebook:  https://www.facebook.com/jsh05042
+    # twitter:
+    email:    mailto:jsh05042@gmail.com
+
+# Navigation (2nd level links supported)
+nav:
+  Home:
+    - '/blog/'
+  Categories:
+    - '/'
+    # - { Categories All: '/blog/categories/' }
+    - { TIL (Today I Learned): '/blog/categories/#til' }
+    - { 컴퓨터공학 : '/blog/categories/#컴퓨터공학' }
+    - { Django: '/blog/categories/#django' }
+    - { python: '/blog/categories/#python' }
+    - { javascript: '/blog/categories/#javascript' }
+    - { nodejs: '/blog/categories/#nodejs' }
+    - { MySQL: '/blog/categories/#MySQL' }
+    - { 알고리즘 문제풀이: '/blog/categories/#알고리즘-문제풀이' }
+    - { git: '/blog/categories/#git' }
+    - { firebase: '/blog/categories/#firebase' }
+    - { etc: '/blog/categories/#etc' }
+    # - { Tags: '/blog/tags/' }
+  About:
+    - '/about/'
+  Search:
+    - '/search/'
+
+# Where are tags and categories displayed
+tag_page: '/blog/tags/'
+category_page: '/blog/categories/'
+
+
+# Puglins
+mathjax: true # whether support mathjax
+google_analytics_token: 'UA-92094009-1' # leave blank if you don't want google analytics
+disqus_short_name: jinshs-blog # leave blank if you don't want disqus
+
+
+# Use the following plug-ins
+gems:
+  - jekyll-paginate
