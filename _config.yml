@@ -51,7 +51,7 @@ nav:
     - { git: '/blog/categories/#git' }
     - { firebase: '/blog/categories/#firebase' }
     - { etc: '/blog/categories/#etc' }
-    # - { Tags: '/blog/tags/' }
+    - { Tags: '/blog/tags/' }
   About:
     - '/about/'
   Search:
