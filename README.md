@@ -10,11 +10,11 @@
 - [x] jekyll blog google 검색 작업 (sitemap, google html)
 - [x] tag 카테고리 작업
 - [x] disqus 연동 및 count, embed
-
+- [x] old url disqus comment 연동/옮기기
 - [ ] post css 작업
 - [ ] icon, favicon 등 작업
-- [ ] disqus 댓글 연결
-- [ ] category 목록 고치기
+- [x] disqus 댓글 연결
+- [x] category 목록 고치기
 - [ ] 게시글 정리
 
 
