@@ -59,7 +59,7 @@ title: About-Me
 
 ##### [Eligibility]
   - 정보처리 산업기사
-  - Digital Forensic Expert  2rd
+  - Digital Forensic Expert  2nd
 
 ##### [Career]
   - (2014.07.20 ~ 2016.07.21) 공군본부 중앙전산소 침해사고 대응팀 - CERT
