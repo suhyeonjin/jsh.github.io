@@ -5,7 +5,7 @@ description:
 headline:
 modified: 2018-01-26
 category:
-  - ETC
+  - etc
 tags: [etc,tensorflow,error]
 imagefeature:
 mathjax:
