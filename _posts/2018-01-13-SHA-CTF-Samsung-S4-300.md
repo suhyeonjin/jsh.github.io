@@ -4,7 +4,8 @@ title: "[2017_SHA_CTF] Samsung S4 (300)"
 description:
 headline:
 modified: 2018-01-13
-category: [CTF]
+category:
+  - CTF
 tags: [2017_SHA, Forensic, Writeup, JTAG]
 imagefeature:
 mathjax:
