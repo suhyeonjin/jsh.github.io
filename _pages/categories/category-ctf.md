@@ -1,7 +1,7 @@
 ---
-title: "Post about CTF"
+title: "Post about ctf"
 layout: archive
-permalink: /categories/CTF
+permalink: /categories/ctf
 author_profile: true
 sidebar_main: true
 ---
