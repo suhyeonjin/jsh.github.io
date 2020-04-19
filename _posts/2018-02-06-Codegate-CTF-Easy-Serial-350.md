@@ -1,16 +1,18 @@
 ---
-layout: post
+layout: single
 title: "[2018_Codegate_CTF] Easy_Serial (350)"
 description:
 headline:
 modified: 2018-02-06
-category: [CTF, 2018_Codegate]
-tags: [Reversing, haskell]
+category: [CTF]
+tags: [2018_Codegate, Reversing, Writeup, haskell]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+toc: true
+toc_sticky: true
 ---
 
 
@@ -20,7 +22,7 @@ featured: true
 
 너무 매정한 지문..
 
-![](/images/2018-02-06-Codegate-CTF-Easy-Serial-350/exercise.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Easy-Serial-350/exercise.png)
 <p align='center'><i>[그림] exercise</i></p>
 
 
@@ -34,7 +36,7 @@ featured: true
 
 <br>
 실행해보면, serial Key를 입력 받는 것을 확인해 볼 수 있다.
-![](/images/2018-02-06-Codegate-CTF-Easy-Serial-350/run.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Easy-Serial-350/run.png)
 <p align='center'><i>[그림] run</i></p>
 
 
@@ -233,7 +235,7 @@ c1tb_info_case_tag_DEFAULT_arg_0@_DEFAULT -> putStrLn (unpackCString# "Correct S
 
 > 각 구간별, string을 합치면 `Flag{S0me0fU5#4r3L00king#AtTh3St4rs`임을 알 수 있으며, input serial로 입력할 경우 Flag를 확인할 수 있다.
 
-![](/images/2018-02-06-Codegate-CTF-Easy-Serial-350/result.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Easy-Serial-350/result.png)
 <p align='center'><i>[그림] result</i></p>
 
 <p align='right'><strong>Flag{S0me0fU5_4r3L00king_AtTh3St4rs}</strong></p>

@@ -1,16 +1,18 @@
 ---
-layout: post
+layout: single
 title: "[2018_Sharif_CTF] RunMe(50)"
 description:
 headline:
 modified: 2018-02-16
-category: [CTF, 2018_Sharif]
-tags: [Reversing, string]
+category: [CTF]
+tags: [2018_Sharif, Reversing, Writeup, string]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+toc: true
+toc_sticky: true
 ---
 
 ## Exercise
@@ -18,7 +20,7 @@ featured: true
 > Run the attached file. If you can, you will capture the flag.<br>
 > Note: Apply the minimum changes to make the file executable. Then, the mentioned hash function is md5. Be sure to run it on a real Windows OS (not Wine, etc.)
 
-![](/images/2018-02-16-Sharif-CTF-RunMe-50/exercise.png)
+![](/assets/images/2018-02-16-Sharif-CTF-RunMe-50/exercise.png)
 <p align='center'>[그림] exercise</p>
 
 
@@ -56,7 +58,7 @@ Subsystem                       : Native
 
 
 실행을 해보면, 정상적으로 동작하지 않는 것을 확인할 수 있다. 정상적인 PE binary와 비교했을 때, 차이점을 살펴보다. `Subsystem` 항목이 Native 로 설정되어 있는 것을 확인할 수 있었는데 관련 정보를 찾아보니 보통, `2`,`3` 으로 지정되어 있는 것을 확인.
-![](/images/2018-02-16-Sharif-CTF-RunMe-50/error.png)
+![](/assets/images/2018-02-16-Sharif-CTF-RunMe-50/error.png)
 <p align='center'><i>[그림] execution error</i></p>
 
 ```
@@ -67,7 +69,7 @@ WINDOWS CUI : 3 --> Runs in console subsystem
 
 
 아래와 같이, `Subsystem` offset을 수정해주었다. 그 결과, 실행에 성공했다는 string 과 함께, file의 hash 값이 flag임을 명시하고 있다.
-![](/images/2018-02-16-Sharif-CTF-RunMe-50/fix.png)
+![](/assets/images/2018-02-16-Sharif-CTF-RunMe-50/fix.png)
 <p align='center'><i>[그림] fix subsystem</i></p>
 
 

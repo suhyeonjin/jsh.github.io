@@ -1,16 +1,19 @@
 ---
-layout: post
+layout: single
 title: "[2018_AceBear_CTF] Forensic/MISC Welcome(100)"
 description:
 headline:
 modified: 2018-01-31
-category: [CTF,2018_AceBear]
-tags: [ctf,Forensic, MISC, xor]
+category: [CTF]
+tags: [2018_AceBear, Forensic, Writeup, xor]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+
+toc: true
+toc_sticky: true
 ---
 
 ## Exercise
@@ -23,7 +26,7 @@ featured: true
 ```
 > author: komang4130
 
-![](/images/2018-01-31-AceBear-CTF-Welcome-100/exercise.png)
+![](/assets/images/2018-01-31-AceBear-CTF-Welcome-100/exercise.png)
 
 
 ## Solution

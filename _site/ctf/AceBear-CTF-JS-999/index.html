@@ -1,0 +1,772 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.19.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[2018_AceBear_CTF] JS (999) - Way Back home</title>
+<meta name="description" content="Exercise ">
+
+
+  <meta name="author" content="suheyon.Jin">
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Way Back home">
+<meta property="og:title" content="[2018_AceBear_CTF] JS (999)">
+<meta property="og:url" content="http://localhost:4000/ctf/AceBear-CTF-JS-999/">
+
+
+  <meta property="og:description" content="Exercise ">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2018-02-09T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/ctf/AceBear-CTF-JS-999/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "suhyeon.jin's BLOG",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Way Back home Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/blue-star.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Way Back home
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">Yearly</a>
+            </li><li class="masthead__menu-item">
+              <a href="/month-archive/">Monthly</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About ME</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/profile.jpeg" alt="suheyon.Jin" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">suheyon.Jin</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>-</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Seoul/Republic of Korea</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="mailto:jsh05042@gmail.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://www.facebook.com/jsh05042" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-facebook-square" aria-hidden="true"></i><span class="label">Facebook</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/suhyeonjin" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+
+  
+    <nav class="nav__list">
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle menu</label>
+  <ul class="nav__items" id="category_tag_menu">
+      <li>
+        <span class="nav__sub-title" v-on:click='togglec()' style = "color:$h3-color" >Categories</span>
+        <ul v-show="1">
+        
+           <li style = "color:$h4-color"><a href="/categories/life" class="">Life (1)</a></li>
+        
+           <li style = "color:$h4-color"><a href="/categories/ctf" class="">Ctf (15)</a></li>
+        
+           <li style = "color:$h4-color"><a href="/categories/etc" class="">Etc (1)</a></li>
+        
+        </ul>
+      </li>
+  </ul>
+</nav>
+
+  
+
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="[2018_AceBear_CTF] JS (999)">
+    <meta itemprop="description" content="Exercise">
+    <meta itemprop="datePublished" content="2018-02-09T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">[2018_AceBear_CTF] JS (999)
+</h1>
+          
+<!--
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+            devinlife comments :
+                싱글 페이지(포스트)에 제목 밑에 Updated 시간 표기
+                기존에는 read_time이 표기. read_time -> date 변경
+-->
+            <p class="page__date"><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated: <time datetime="2018-02-09T00:00:00+09:00">February 09, 2018</time></p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#exercise">Exercise</a></li>
+  <li><a href="#solution">Solution</a></li>
+</ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="exercise">Exercise</h2>
+
+<blockquote>
+  <p>Challenge Description: Let listen to the best song of this month.
+Download: Link
+Author: komang4130</p>
+</blockquote>
+
+<p><img src="/assets/images/2018-02-09-AceBear-CTF-JS-999/exercise.png" alt="" /></p>
+<p align="center">[그림] exercise</p>
+
+<h2 id="solution">Solution</h2>
+
+<p>Forensic/MISC 분야에서 나왔던 문제, 풀이자가 상당히 적고 나도 당시엔 풀지 못한 문제인데.. 너무 어이 없이 해결해서 당황스럽다..</p>
+
+<p>link를 통해서 받은 파일을 확인해보면, mp3 파일을 하나 확인할 수 있다.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/JS
+ file ./Hey_Stranger.mp3
+./Hey_Stranger.mp3: Audio file with ID3 version 2.4.0
+ jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/JS
+ exiftool ./Hey_Stranger.mp3
+ExifTool Version Number         : 10.55
+File Name                       : Hey_Stranger.mp3
+Directory                       : <span class="nb">.</span>
+File Size                       : 4.7 MB
+File Modification Date/Time     : 2018:01:27 14:11:55+09:00
+File Access Date/Time           : 2018:02:08 21:26:36+09:00
+File Inode Change Date/Time     : 2018:01:27 14:13:20+09:00
+File Permissions                : rw-r--r--
+File Type                       : MP3
+File Type Extension             : mp3
+MIME Type                       : audio/mpeg
+MPEG Audio Version              : 1
+Audio Layer                     : 3
+Audio Bitrate                   : 128 kbps
+Sample Rate                     : 44100
+Channel Mode                    : Stereo
+MS Stereo                       : Off
+Intensity Stereo                : Off
+Copyright Flag                  : False
+Original Media                  : False
+Emphasis                        : None
+ID3 Size                        : 1415670
+Copyright                       : Vega
+Title                           : Người Lạ Ơi
+Genre                           : Rap / Hip Hop Việt
+Artist                          : Karik, Orange
+Album                           :
+User Defined Text               : <span class="o">(</span>author<span class="o">)</span> Châu Đăng Khoa
+Encoder Settings                : Lavf56.40.101
+Picture MIME Type               : image/png
+Picture Type                    : Other
+Picture Description             : Hey Stranger - Karik - Orange
+Picture                         : <span class="o">(</span>Binary data 1415401 bytes, use <span class="nt">-b</span> option to extract<span class="o">)</span>
+Duration                        : 0:03:37 <span class="o">(</span>approx<span class="o">)</span>
+</code></pre></div></div>
+<p><br /></p>
+
+<p>대회 당시, binary가 mp3 파일로 주어졌기 때문에 MP3stego 등을 이용하거나, Spectrum, GoldWave 등으로 Audio Steganography로 접근했었다. 하지만 전혀 관계없다… <code class="highlighter-rouge">binwalk</code>로 파일 내 데이터를 추출하면, 아래와 같이 Thumbnail로 저장되어 있는 이미지 파일을 하나 확인할 수 있다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/JS
+binwalk ./Hey_Stranger.mp3
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+<span class="nt">--------------------------------------------------------------------------------</span>
+259           0x103           PNG image, 1366 x 1000, 8-bit/color RGBA, non-interlaced
+300           0x12C           Zlib compressed data, compressed
+4103003       0x3E9B5B        lrzip compressed data
+</code></pre></div></div>
+
+<p><img src="/assets/images/2018-02-09-AceBear-CTF-JS-999/info.png" alt="" /></p>
+<p align="center"><i>[그림] Binwalk information</i></p>
+
+<p>혹시 몰라, 대회 당시엔 해당 png 파일에 대해 추출하고 OpenStego 돌려보고, LSB 확인하고 등의 작업을 많이 수행했었는데 바보 같았던게 문제에서 <code class="highlighter-rouge">JS</code> 라는 단어를 언급하고 있던 점을 전혀 생각하지 않았던 것이다.</p>
+
+<p><code class="highlighter-rouge">javascript</code> image steganography 에 대해서 찾아보니, 바로 관련된 자료가 나왔고.. 해당 thumbnail을 올려 unhide 해보니.. 바로 Flag 확인..(상당히 어이가 없었다.. 풀이자도 2-3팀 정도였던 걸로 기억하는데, 너무 간단한 문제였다..)
+<img src="/assets/images/2018-02-09-AceBear-CTF-JS-999/unhide.png" alt="" /></p>
+<p align="center"><i>[그림] unhide Thumbnail</i></p>
+<p align="right"><strong>AceBear{!!!!!BoA_Luffy_1s_Real!!!!!}</strong></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#2018-acebear" class="page__taxonomy-item" rel="tag">2018_acebear</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#forensic" class="page__taxonomy-item" rel="tag">Forensic</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#javascript" class="page__taxonomy-item" rel="tag">javascript</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#misc" class="page__taxonomy-item" rel="tag">MISC</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#steganography" class="page__taxonomy-item" rel="tag">steganography</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#writeup" class="page__taxonomy-item" rel="tag">Writeup</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#ctf" class="page__taxonomy-item" rel="tag">CTF</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2018-02-09T00:00:00+09:00">February 9, 2018</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5B2018_AceBear_CTF%5D+JS+%28999%29%20http%3A%2F%2Flocalhost%3A4000%2Fctf%2FAceBear-CTF-JS-999%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fctf%2FAceBear-CTF-JS-999%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fctf%2FAceBear-CTF-JS-999%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/ctf/Codegate-CTF-Welcome-to-droid-125/" class="pagination--pager" title="[2018_Codegate_CTF] Welcome to droid (125)
+">Previous</a>
+    
+    
+      <a href="/ctf/AceBear-CTF-Memory-951/" class="pagination--pager" title="[2018_AceBear_CTF] Memory (951)
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/ctf/NUIT-DU-HACK-CTF-Kebab-STO-350/" rel="permalink">[2018_NUIT_DU_HACK_CTF] Kebab STO(350)
+</a>
+      
+    </h2>
+    <!--
+    devinlife comments :
+        아키이브 싱글 페이지(ex. 카테고리)에 각 포스트 제목 밑에 Updated 시간 표기
+        기존에는 read_time이 표기. read_time -> date 변경
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  5 minute read
+
+</p>
+    
+-->
+    
+      <p class="page__meta"><i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i> April 02 2018</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Exercise
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/ctf/Securinets-CTF-duck-hunt-300/" rel="permalink">[2018_Securinets_CTF] duck_hunt(300)
+</a>
+      
+    </h2>
+    <!--
+    devinlife comments :
+        아키이브 싱글 페이지(ex. 카테고리)에 각 포스트 제목 밑에 Updated 시간 표기
+        기존에는 read_time이 표기. read_time -> date 변경
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+-->
+    
+      <p class="page__meta"><i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i> March 26 2018</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Exercise
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/ctf/Sharif-CTF-RunMe-50/" rel="permalink">[2018_Sharif_CTF] RunMe(50)
+</a>
+      
+    </h2>
+    <!--
+    devinlife comments :
+        아키이브 싱글 페이지(ex. 카테고리)에 각 포스트 제목 밑에 Updated 시간 표기
+        기존에는 read_time이 표기. read_time -> date 변경
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  1 minute read
+
+</p>
+    
+-->
+    
+      <p class="page__meta"><i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i> February 16 2018</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Exercise
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/ctf/Sharif-CTF-Hidden-100/" rel="permalink">[2018_Sharif_CTF] Hidden(100)
+</a>
+      
+    </h2>
+    <!--
+    devinlife comments :
+        아키이브 싱글 페이지(ex. 카테고리)에 각 포스트 제목 밑에 Updated 시간 표기
+        기존에는 read_time이 표기. read_time -> date 변경
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+
+</p>
+    
+-->
+    
+      <p class="page__meta"><i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i> February 16 2018</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Exercise
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://www.facebook.com/jsh05042" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-facebook-square" aria-hidden="true"></i> Facebook</a></li>
+        
+      
+        
+          <li><a href="https://github.com/suhyeonjin" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 suhyeon.jin's BLOG. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="http://localhost:4000/assets/js/main.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/ctf/AceBear-CTF-JS-999/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/ctf/AceBear-CTF-JS-999"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://jinshs-blog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+<script>
+  new Vue({
+    el : '#category_tag_menu',
+    data : {
+      flag_c : false,
+      flag_t : false
+    },
+    methods : {
+      togglec: function(){
+        this.flag_c = !this.flag_c;
+      },
+      togglet: function(){
+        this.flag_t = !this.flag_t;
+      }
+    }
+  });
+</script>
+
+
+  </body>
+</html>

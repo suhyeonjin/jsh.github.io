@@ -1,16 +1,18 @@
 ---
-layout: post
+layout: single
 title: "[2018_AceBear_CTF] Memory (951)"
 description:
 headline:
 modified: 2018-02-09
-category: [CTF, 2018_acebear]
-tags: [Forensic, MISC, memory, spammer]
+category: [CTF]
+tags: [2018_acebear, Forensic, Writeup, MISC, memory, spammer]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+toc: true
+toc_sticky: true
 ---
 
 ## Exercise
@@ -18,7 +20,7 @@ featured: true
 > Download: Link
 author: f4k3r
 
-![](/images/2018-02-09-AceBear-CTF-Memory-951/exercise.png)
+![](/assets/images/2018-02-09-AceBear-CTF-Memory-951/exercise.png)
 <p align='center'>[그림] exercise</p>
 
 
@@ -51,7 +53,7 @@ WARNING : volatility.debug    : Overlay structure cpuinfo_x86 not present in vty
 
 memory dump에 관련된 문제가 나왔을 때, 나같은 경우에는 가장 먼저 이상 프로세스가 없는지 확인한다. 이후, 이상 프로세스가 식별되는 경우에 해당 프로세스에 대한 덤프, 분석 등을 시도하며 별도로 이상한 프로세스가 식별되지 않을 경우 Command line, Registry, Shellbag 등 부가적인 정보, Network, Filelist 등에 대해 분석하는 식으로 보통 접근하는데 이번에도 앞서 언급한 행위 분석을 하는 과정 중 Filescan 에서 Document directory내에 아래와 같은 파일 목록을 확인할 수 있었다.
 
-![](/images/2018-02-09-AceBear-CTF-Memory-951/filescan.png)
+![](/assets/images/2018-02-09-AceBear-CTF-Memory-951/filescan.png)
 <p align='center'>[그림] filescan list</p>
 
 식별되는 `\Device\HarddiskVolume2\Users\Administrator\Documents` 내에서 확인되는 파일 목록 중 특이한 부분은 아래와 같다. 5개의 파일이 Document 폴더 내에 존재하는 것을 확인할 수 있는데 각각 rtf 파일 2개, python 파일 1개, gif 파일 1개, pdf 파일 1개이다.
@@ -206,28 +208,28 @@ FLAG{PR#%%_)NWARDS_#A!)!#$E}C
 <br>
 
 GIF 파일은 아래 이미지와 같은데, 여러 장에 기록된 GIF 를 단일 이미지로 분할하여 모두 쭉 살펴보았지만 특별히 건질만한 항목은 없었다.
-![](/images/2018-02-09-AceBear-CTF-Memory-951/GIF.gif)
+![](/assets/images/2018-02-09-AceBear-CTF-Memory-951/GIF.gif)
 <p align='center'>[그림] GIF.gif</p>
 
 
 Ethical Hacking.pdf 파일내 분명 flag와 관련된 항목이 있을거라 생각했고, Embedded pdf 에 초점을 맞춰 분석했다. peepdf를 이용해 pdf 분석을 하였으며, 아래 초기 info 를 보더라도 의심되는 항목은 검출되지 않았다. 그럼에도 stream, object를 하나씩 쭉 살펴보았지만 역시 아무것도 도움이 되는 내용은 존재하지 않았다..
-![](/images/2018-02-09-AceBear-CTF-Memory-951/peepdf.png)
+![](/assets/images/2018-02-09-AceBear-CTF-Memory-951/peepdf.png)
 <p align='center'>[그림] peepdf with Ethical Hacking.pdf</p>
 
 
 이번 CTF는 HackXore 친구들과 5명 정도 같이했는데 모두 외쿡인 친구들이었다. 내가 살펴본 Task 들에 대해서 알렸고, hint가 주어졌다. steganography라는 힌트가 주어졌으며, 팀원 중 한명이 document.rtf 의 내용이 Spam Message 내에 정보를 은닉시키는 steganography 기술이 적용된 것 같다는 말을 해주었다. `http://www.spammimic.com/decode.shtml`에서 spam message 에 대해 decode 작업을 수행할 수 있었으며, decode 결과 url hash 값으로 보여지는 text 를 얻을 수 있었다.
-![](/images/2018-02-09-AceBear-CTF-Memory-951/spamdecode.png)
+![](/assets/images/2018-02-09-AceBear-CTF-Memory-951/spamdecode.png)
 <p align='center'>[그림] spam mimic decode</p>
 
 Decode Message result : `1gwiPCJHiIrnZAwLB9q9ztZKrD9tbq65YnoZzXALnh6c`
 - url hash format 으로 보여지는 해당 Decode 값을 가지고 문제를 어떻게 해결해야 생각하던 찰나, Memory dump 내에서 url 목록을 모두 뽑아보기로 했다. bulk extrator 를 이용해, 해당 Memory내에 존재하는 url histogram 등을 뽑으면서 동시에, strings & grep 조합으로 문자열 탐색을 하다가 `form`이라는 hint가 나왔고, memory dump 내 url 목록들 중, google drive 문서에서 비슷한 format 을 가지는 형태가 나오는 것을 확인할 수 있었다.
-![](/images/2018-02-09-AceBear-CTF-Memory-951/url.png)
+![](/assets/images/2018-02-09-AceBear-CTF-Memory-951/url.png)
 <p align='center'>[그림] url format</p>
 
 
 이후, 개인 계정에서 Gdrive 문서들을 하나씩 열어보면서 Form을 확인했고, 아래와 같은 Form을 가지고 있는 것을 확인할 수 있었다.
-![](/images/2018-02-09-AceBear-CTF-Memory-951/form.png)
-![](/images/2018-02-09-AceBear-CTF-Memory-951/form2.png)
+![](/assets/images/2018-02-09-AceBear-CTF-Memory-951/form.png)
+![](/assets/images/2018-02-09-AceBear-CTF-Memory-951/form2.png)
 <p align='center'>[그림] google drive url form</p>
 
 
@@ -236,7 +238,7 @@ docement, spreadsheet 등의 url parameter에 해당 Decode Message 결과를 �
 > result url
 https://docs.google.com/spreadsheets/d/1gwiPCJHiIrnZAwLB9q9ztZKrD9tbq65YnoZzXALnh6c/edit#gid=0
 
-![](/images/2018-02-09-AceBear-CTF-Memory-951/flag.png)
+![](/assets/images/2018-02-09-AceBear-CTF-Memory-951/flag.png)
 <p align='center'>[그림] 스프레드시트 flag</p>
 <p align='right'><strong>AceBear{y0u_l00k_v3ry_pr3tty!}</strong></p>
 

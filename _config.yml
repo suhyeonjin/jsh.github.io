@@ -1,74 +1,316 @@
-# Site Info
-title: 'suhyeonjin-github-io'
-tagline: 'Way Back Home'
-description: '이것 저것 정리'
-baseurl: ""
-url: https://suhyeonjin.github.io
-logo: '/public/logo.png'
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your entire site, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# `jekyll serve`. If you change this file, please restart the server process.
 
-# Site configurations
-gems:
-  - jekyll-paginate
+# Theme Settings
+#
+# Review documentation to determine if you should use `theme` or `remote_theme`
+# https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/#installing-the-theme
+
+# theme                  : "minimal-mistakes-jekyll"
+# remote_theme           : "mmistakes/minimal-mistakes"
+minimal_mistakes_skin    : "air" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+
+# Site Settings
+locale                   : "en-US"
+title                    : "Way Back home" #Blog 노출 제목
+title_separator          : "-"
+subtitle                 : # site tagline that appears below site title in masthead
+name                     : "suhyeon.jin's BLOG" #footer 표시 항목
+description              : "이것 저것 정리"
+url                      : "https://suhyeonjin.github.io/" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+baseurl                  : # the subpath of your site, e.g. "/blog"
+repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
+teaser                   : #"/assets/images/blue-star.png" # path of fallback teaser image, e.g. "/assets/images/500x300.png"
+logo                     : "/assets/images/blue-star.png" # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
+# breadcrumbs            : false # true, false (default)
+words_per_minute         : 200
+comments:
+  provider               : "disqus" # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "custom"
+  disqus:
+    shortname            : "jinshs-blog" # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
+  discourse:
+    server               : # https://meta.discourse.org/t/embedding-discourse-comments-via-javascript/31963 , e.g.: meta.discourse.org
+  facebook:
+    # https://developers.facebook.com/docs/plugins/comments
+    appid                :
+    num_posts            : # 5 (default)
+    colorscheme          : # "light" (default), "dark"
+  utterances:
+    theme                : # "github-light" (default), "github-dark"
+    issue_term           : # "pathname" (default)
+  staticman:
+    branch               : # "master"
+    endpoint             : # "https://{your Staticman v3 API}/v3/entry/github/"
+reCaptcha:
+  siteKey                :
+  secret                 :
+atom_feed:
+  path                   : # blank (default) uses feed.xml
+search                   : # true, false (default)
+search_full_content      : # true, false (default)
+search_provider          : # lunr (default), algolia, google
+algolia:
+  application_id         : # YOUR_APPLICATION_ID
+  index_name             : # YOUR_INDEX_NAME
+  search_only_api_key    : # YOUR_SEARCH_ONLY_API_KEY
+  powered_by             : # true (default), false
+google:
+  search_engine_id       : # YOUR_SEARCH_ENGINE_ID
+  instant_search         : # false (default), true
+# SEO Related
+google_site_verification :
+bing_site_verification   :
+yandex_site_verification :
+naver_site_verification  :
+
+# Social Sharing
+twitter:
+  username               :
+facebook:
+  username               :
+  app_id                 :
+  publisher              :
+og_image                 : # Open Graph/Twitter default site image
+# For specifying social profiles
+# - https://developers.google.com/structured-data/customize/social-profiles
+social:
+  type                   : # Person or Organization (defaults to Person)
+  name                   : # If the user or organization name differs from the site's name
+  links: # An array of links to social media profiles
+
+# Analytics
+analytics:
+  provider               : false # false (default), "google", "google-universal", "custom"
+  google:
+    tracking_id          : "UA-92094009-1"
+    anonymize_ip         : # true, false (default)
+
+
+# Site Author
+author:
+  name             : "suheyon.Jin"
+  avatar           : "/assets/images/profile.jpeg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  bio              : "-"
+  location         : "Seoul/Republic of Korea"
+  email            :
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: mailto:jsh05042@gmail.com
+
+    #- label: "Twitter"
+    #  icon: "fab fa-fw fa-twitter-square"
+      # url: "https://twitter.com/"
+    - label: "Facebook"
+      icon: "fab fa-fw fa-facebook-square"
+      url: "https://www.facebook.com/jsh05042"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/suhyeonjin"
+    #- label: "Instagram"
+    #  icon: "fab fa-fw fa-instagram"
+      # url: "https://instagram.com/"
+    #- label: "About ME"
+      #icon: "fas fa-fw fa-link"
+      #url: "{{ site.url }}/about"
+
+# Site Footer
+footer:
+  links:
+    #- label: "Twitter"
+    #  icon: "fab fa-fw fa-twitter-square"
+      # url:
+    - label: "Facebook"
+      icon: "fab fa-fw fa-facebook-square"
+      url: "https://www.facebook.com/jsh05042"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/suhyeonjin"
+    #- label: "GitLab"
+    #  icon: "fab fa-fw fa-gitlab"
+      # url:
+    #- label: "Bitbucket"
+    #  icon: "fab fa-fw fa-bitbucket"
+      # url:
+    #- label: "Instagram"
+    #  icon: "fab fa-fw fa-instagram"
+      # url:
+
+
+# Reading Files
+include:
+  - .htaccess
+  - _pages
+exclude:
+  - "*.sublime-project"
+  - "*.sublime-workspace"
+  - vendor
+  - .asset-cache
+  - .bundle
+  - .jekyll-assets-cache
+  - .sass-cache
+  - assets/js/plugins
+  - assets/js/_main.js
+  - assets/js/vendor
+  - Capfile
+  - CHANGELOG
+  - config
+  - Gemfile
+  - Gruntfile.js
+  - gulpfile.js
+  - LICENSE
+  - log
+  - node_modules
+  - package.json
+  - package-lock.json
+  - Rakefile
+  - README
+  - tmp
+  - /docs # ignore Minimal Mistakes /docs
+  - /test # ignore Minimal Mistakes /test
+keep_files:
+  - .git
+  - .svn
+encoding: "utf-8"
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+
+
+# Conversion
 markdown: kramdown
+highlighter: rouge
+lsi: false
+excerpt_separator: "\n\n"
+incremental: false
+
+
+# Markdown Processing
 kramdown:
   input: GFM
-excerpt_separator: "<!-- more -->"
+  hard_wrap: false
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  enable_coderay: false
+
+
+# Sass/SCSS
 sass:
-  style: compressed
-  sass_dir: _scss
-paginate: 5
-paginate_path: '/blog/page:num'
-permalink: pretty
-
-version: 1.0.0
-
-# About/contact
-author:
-  name: Jin SuHyeon
-  description: Su-Hyeon JIN
-  contact:
-    # linkedin:
-    github:    https://github.com/suhyeonjin
-    facebook:  https://www.facebook.com/jsh05042
-    # twitter:
-    email:    mailto:jsh05042@gmail.com
-
-# Navigation (2nd level links supported)
-nav:
-  Home:
-    - '/blog/'
-  Categories:
-    - '/'
-  # - { Categories All: '/blog/categories/' }
-  #  - { TIL (Today I Learned): '/blog/categories/#til' }
-  #  - { 컴퓨터공학 : '/blog/categories/#컴퓨터공학' }
-  #  - { Django: '/blog/categories/#django' }
-  #  - { python: '/blog/categories/#python' }
-    - { CTF: '/blog/categories/#ctf' }
-  #  - { javascript: '/blog/categories/#javascript' }
-    - { Machine_Learning: '/blog/categories/#Machine_Learning' }
-  #  - { MySQL: '/blog/categories/#MySQL' }
-    - { alogithm : '/blog/categories/#알고리즘-문제풀이' }
-  #  - { git: '/blog/categories/#git' }
-  #  - { firebase: '/blog/categories/#firebase' }
-    - { etc: '/blog/categories/#etc' }
-    - { Tags: '/blog/tags/' }
-  About:
-    - '/about/'
-  Search:
-    - '/search/'
-
-# Where are tags and categories displayed
-tag_page: '/blog/tags/'
-category_page: '/blog/categories/'
+  sass_dir: _sass
+  style: compressed # https://sass-lang.com/documentation/file.SASS_REFERENCE.html#output_style
 
 
-# Puglins
-mathjax: true # whether support mathjax
-google_analytics_token: 'UA-92094009-1' # leave blank if you don't want google analytics
-disqus_short_name: jinshs-blog # leave blank if you don't want disqus
+# Outputting
+permalink: /:categories/:title/
+paginate: 5 # amount of posts to show
+paginate_path: /page:num/
+timezone: Asia/Seoul # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 
-# Use the following plug-ins
-gems:
+# Plugins (previously gems:)
+plugins:
   - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jekyll-include-cache
+
+# mimic GitHub Pages with --safe
+whitelist:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
+  - jekyll-include-cache
+
+
+# Archives
+#  Type
+#  - GitHub Pages compatible archive pages built with Liquid ~> type: liquid (default)
+#  - Jekyll Archives plugin archive pages ~> type: jekyll-archives
+#  Path (examples)
+#  - Archive page should exist at path when using Liquid method or you can
+#    expect broken links (especially with breadcrumbs enabled)
+#  - <base_path>/tags/my-awesome-tag/index.html ~> path: /tags/
+#  - <base_path>/categories/my-awesome-category/index.html ~> path: /categories/
+#  - <base_path>/my-awesome-category/index.html ~> path: /
+category_archive:
+  type: liquid
+  path: /categories/
+tag_archive:
+  type: liquid
+  path: /tags/
+# https://github.com/jekyll/jekyll-archives
+# jekyll-archives:
+#   enabled:
+#     - categories
+#     - tags
+#   layouts:
+#     category: archive-taxonomy
+#     tag: archive-taxonomy
+#   permalinks:
+#     category: /categories/:name/
+#     tag: /tags/:name/
+
+
+# HTML Compression
+# - https://jch.penibelst.de/
+compress_html:
+  clippings: all
+  ignore:
+    envs: development
+
+
+# Defaults
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments:  true
+      share: true
+      related: true
+      toc: true
+      toc-sticky: true
+      sidebar_main: true
+      #sidebar:
+      #  nav: "docs"
+
+  # _pages
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+      read_time: false
+      comments: false
+      share: true
+      related: false
+      sidebar_main: true
+      #sidebar:
+      #  nav: "docs"
+
+  # _docs
+  - scope:
+      path: ""
+      type: docs
+    values:
+      layout: single
+      read_time: false
+      author_profile: false
+      share: false
+      comments: false
+      sidebar_main: true
+      #sidebar:
+      #  nav: "docs"

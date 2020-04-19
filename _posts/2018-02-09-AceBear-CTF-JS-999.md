@@ -1,16 +1,18 @@
 ---
-layout: post
+layout: single
 title: "[2018_AceBear_CTF] JS (999)"
 description:
 headline:
 modified: 2018-02-09
-category: [CTF, 2018_acebear]
-tags: [Forensic, MISC, javascript, steganography]
+category: [CTF]
+tags: [2018_acebear, Forensic, MISC, Writeup, javascript, steganography]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+toc: true
+toc_sticky: true
 ---
 
 ## Exercise
@@ -19,7 +21,7 @@ featured: true
 Download: Link
 Author: komang4130
 
-![](/images/2018-02-09-AceBear-CTF-JS-999/exercise.png)
+![](/assets/images/2018-02-09-AceBear-CTF-JS-999/exercise.png)
 <p align='center'>[그림] exercise</p>
 
 
@@ -85,7 +87,7 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 4103003       0x3E9B5B        lrzip compressed data
 ```
 
-![](/images/2018-02-09-AceBear-CTF-JS-999/info.png)
+![](/assets/images/2018-02-09-AceBear-CTF-JS-999/info.png)
 <p align='center'><i>[그림] Binwalk information</i></p>
 
 
@@ -93,6 +95,6 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 
 
 `javascript` image steganography 에 대해서 찾아보니, 바로 관련된 자료가 나왔고.. 해당 thumbnail을 올려 unhide 해보니.. 바로 Flag 확인..(상당히 어이가 없었다.. 풀이자도 2-3팀 정도였던 걸로 기억하는데, 너무 간단한 문제였다..)
-![](/images/2018-02-09-AceBear-CTF-JS-999/unhide.png)
+![](/assets/images/2018-02-09-AceBear-CTF-JS-999/unhide.png)
 <p align='center'><i>[그림] unhide Thumbnail</i></p>
 <p align='right'><strong>AceBear{!!!!!BoA_Luffy_1s_Real!!!!!}</strong></p>

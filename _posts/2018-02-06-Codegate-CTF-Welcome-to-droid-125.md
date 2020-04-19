@@ -1,16 +1,18 @@
 ---
-layout: post
+layout: single
 title: "[2018_Codegate_CTF] Welcome to droid (125)"
 description:
 headline:
 modified: 2018-02-06
-category: [CTF, 2018_Codegate]
-tags: [Reversing, android, apk]
+category: [CTF]
+tags: [2018_Codegate, Reversing, Writeup, android, apk]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+toc: true
+toc_sticky: true
 ---
 
 
@@ -20,7 +22,7 @@ featured: true
 > \> o < !<br>
 > Download
 
-![](/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/exercise.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/exercise.png)
 <p align='center'><i>[그림] exercise</i></p>
 
 
@@ -29,22 +31,22 @@ featured: true
 풀이자가 많아서, 시간 날때 봤던 문제.. 하지만 Smail code 때매 제대로 code 보질 못했는데, 나중에 다른 도구 써보니 잘되서 빡친 문제..
 
 zip 파일을 다운 받을 수 있으며, 압축 해제 시 APK 파일을 하나 확인할 수 있다.
-![](/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/apk.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/apk.png)
 <p align='center'><i>[그림] apk binary</i></p>
 
 
 ADB에 올려, 먼저 설치를 진행한다. 팀원들이 설치가 제대로 되지 않는다고 했었는데, 별다른 에러 없이 설치가 진행된 것을 확인할 수 있었다.
-![](/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/1.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/1.png)
 <p align='center'><i>[그림] apk install</i></p>
 
 
 설치된 apk를 실행시켜 보면, 아래와 같은 id input 항목과 `next` 버튼을 확인할 수 있다.
-![](/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/2.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/2.png)
 <p align='center'><i>[그림] apk execute (MainActivity)</i></p>
 
 
 아무 값으로 id 항목을 입력하고, next 버튼을 누를 경우 아래와 같이 pw 입력 레이아웃(Main2Activity)으로 전환되는 것을 확인할 수 있으며, password 를 아무값으로 입력하고 next를 눌러 popup되는 문구를 확인할 수 있었다.
-![](/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/3.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/3.png)
 <p align='center'><i>[그림] apk execute (Main2Activity)</i></p>
 
 
@@ -52,7 +54,7 @@ ADB에 올려, 먼저 설치를 진행한다. 팀원들이 설치가 제대로 �
 
 > BytecodeViewer로만 해당 apk를 열 경우, 정상적으로 로드되지 않는다. (Null Point Exception error)
 
-![](/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/bytecodeviewer.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/bytecodeviewer.png)
 <p align='center'><i>[그림] BytecodeViewer Error</i></p>
 
 
@@ -75,12 +77,12 @@ I: Copying unknown files...
 I: Copying original files...
 ```
 
-![](/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/decompile_smali.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/decompile_smali.png)
 <p align='center'><i>[그림] decompile_smali</i></p>
 
 
 이게, apktool 로 decompile 했을 땐 smali가 덕지덕지 붙어나와서 영 보기 불편했는데 `jadx-gui`를 이용해서 해당 apk를 열었을 땐, 아래와 같이 깔끔하게 Code를 볼 수 있었다..
-![](/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/jadx_decompile.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/jadx_decompile.png)
 <p align='center'><i>[그림] decompile jadx</i></p>
 
 
@@ -220,7 +222,7 @@ public class Main4Activity extends c {
 ```
 <br>
 JNI가 나와서 lib 경로를 확인해보니, 아래와 같이 so 파일을 lib내에 포함하고 있는 것을 확인할 수 있었다.
-![](/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/lib.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/lib.png)
 <p align='center'><i>[그림] lib directory</i></p>
 
 
@@ -229,8 +231,8 @@ JNI가 나와서 lib 경로를 확인해보니, 아래와 같이 so 파일을 li
 
 Main4Activity class 를 먼저 띄워 JNI()로부터 호출되는 Text를 확인하기 위해서, 아래와 같이 MainActivity로 잡혀있는 Entrypoint를 Main4Activity로 변경하도록 한다.
 
-![](/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/before.png)
-![](/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/after.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/before.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/after.png)
 <p align='center'><i>[그림] fix AndroidManifest.xml</i></p>
 
 
@@ -264,7 +266,7 @@ droid.apk   droid.s.apk
 
 
 본래 앱을 삭제하고, re-build 된 apk를 재설치 한 뒤, 실행해보면 아래와 같이 JNI()로부터 settext 된 flag 문자열을 확인할 수 있다.
-![](/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/result.png)
+![](/assets/images/2018-02-06-Codegate-CTF-Welcome-to-droid-125/result.png)
 <p align='center'><i>[그림] Main4Activity - flag</i></p>
 
 > Wol!! awesome!! FLAG{W3_w3r3_Back_70_$3v3n7een!!!} hahahah!!

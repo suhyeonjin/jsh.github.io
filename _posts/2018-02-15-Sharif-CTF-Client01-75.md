@@ -1,23 +1,25 @@
 ---
-layout: post
+layout: single
 title: "[2018_Sharif_CTF] Client01(75)"
 description:
 headline:
 modified: 2018-02-15
-category: [CTF, 2018_Sharif]
-tags: [Forensic, string]
+category: [CTF]
+tags: [2018_Sharif, Forensic, Writeup, string]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+toc: true
+toc_sticky: true
 ---
 
 ## Exercise
 
 > Attached file is the homepage of the client01. He knows the flag.
 
-![](/images/2018-02-15-Sharif-CTF-Client01-75/exercise.png)
+![](/assets/images/2018-02-15-Sharif-CTF-Client01-75/exercise.png)
 <p align='center'>[그림] exercise</p>
 
 
@@ -120,32 +122,32 @@ Binary file ./client01/.thunderbird/5bd7jhog.default/secmod.db matches
 
 .thunderbird 파일 내에서 e-mail과 관련된 항목에서 해당 flag 문자열이 식별되는 것을 확인할 수 있었다. thunderbird 파일을 살펴본다. `inbox` 항목 내에서 flag 라는 제목으로 수신된 email을 확인할 수 있으며, link 를 하나 식별할 수 있다.
 
-![](/images/2018-02-15-Sharif-CTF-Client01-75/inbox.png)
+![](/assets/images/2018-02-15-Sharif-CTF-Client01-75/inbox.png)
 <p align='center'><i>[그림] inbox mail</i></p>
 
 
 해당 링크 `http://www.filehosting.org/file/details/720884/file`로 접속하면, 아래와 같이 download link를 redirect 할 mail을 입력할 수 있다.
-![](/images/2018-02-15-Sharif-CTF-Client01-75/filedown1.png)
+![](/assets/images/2018-02-15-Sharif-CTF-Client01-75/filedown1.png)
 <p align='center'><i>[그림] file download1</i></p>
 
 
 본인의 mail 주소를 넣고, inbox 함을 확인한 결과 file download를 수행할 수 있는 link를 받을 수 있었으며, 해당 파일을 정상적으로 download 할 수 있었다.
-![](/images/2018-02-15-Sharif-CTF-Client01-75/filedown2.png)
+![](/assets/images/2018-02-15-Sharif-CTF-Client01-75/filedown2.png)
 <p align='center'><i>[그림] file download2</i></p>
 
 
 
 download 받은 파일에 대해 확인해보면, data stream으로 식별되나 hex 값을 통해 signature가 손상된 PNG 파일임을 알 수 있다.
-![](/images/2018-02-15-Sharif-CTF-Client01-75/file_information.png)
+![](/assets/images/2018-02-15-Sharif-CTF-Client01-75/file_information.png)
 <p align='center'><i>[그림] file information</i></p>
 
 
 올바른 signature 값으로 offset을 수정한 뒤, 해당 이미지를 열어보면 Flag을 식별할 수 있었다. (조금 잘려서 보이지만 식별하는데에는 이상이 없다.)
 
-![](/images/2018-02-15-Sharif-CTF-Client01-75/fixed.png)
+![](/assets/images/2018-02-15-Sharif-CTF-Client01-75/fixed.png)
 <p align='center'><i>[그림] signature fix</i></p>
 
-![](/images/2018-02-15-Sharif-CTF-Client01-75/flag.png)
+![](/assets/images/2018-02-15-Sharif-CTF-Client01-75/flag.png)
 <p align='center'><i>[그림] flag</i></p>
 
 <p align='right'><strong>SharifCTF{43215f0c5e005d4e557ddfe3f2e57df0}</strong></p>

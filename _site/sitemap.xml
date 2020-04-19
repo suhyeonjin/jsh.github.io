@@ -1,162 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_ndh/2018/04/02/NUIT-DU-HACK-CTF-Kebab-STO-350/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_securinets/2018/03/26/Securinets-CTF-duck-hunt-300/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_sharif/2018/02/16/Sharif-CTF-RunMe-50/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_sharif/2018/02/16/Sharif-CTF-Hidden-100/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_sharif/2018/02/16/Sharif-CTF-Crashed-DB-50/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_sharif/2018/02/15/Sharif-CTF-Client01-75/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_acebear/2018/02/09/AceBear-CTF-STEg-Challenge-996/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_acebear/2018/02/09/AceBear-CTF-My-idol-975/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_acebear/2018/02/09/AceBear-CTF-Memory-951/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_acebear/2018/02/09/AceBear-CTF-JS-999/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_codegate/2018/02/06/Codegate-CTF-Welcome-to-droid-125/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_codegate/2018/02/06/Codegate-CTF-RedVelvet-75/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_codegate/2018/02/06/Codegate-CTF-Easy-Serial-350/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2018_acebear/2018/01/31/AceBear-CTF-Welcome-100/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/etc/2018/01/26/OSX-Tensorflow-Install/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/ctf/2017_sha/2018/01/13/SHA-CTF-Samsung-S4-300/</loc>
-    </url>
-    
-    <url>
-        <loc>http://localhost:4000/life/2017/12/31/2017%EB%85%84-%ED%9A%8C%EA%B3%A0%EB%A1%9D/</loc>
-    </url>
-    
-
-    
-    
-    
-    <url>
-        <loc>http://localhost:4000/404.html</loc>
-    </url>
-    
-    
-    
-    
-    
-    <url>
-        <loc>http://localhost:4000/about/</loc>
-    </url>
-    
-    
-    
-    
-    
-    
-    
-    <url>
-        <loc>http://localhost:4000/blog/categories/</loc>
-    </url>
-    
-    
-    
-    
-    
-    <url>
-        <loc>http://localhost:4000/</loc>
-    </url>
-    
-    
-    
-    
-    
-    <url>
-        <loc>http://localhost:4000/blog/</loc>
-    </url>
-    
-    
-    
-    
-    
-    
-    
-    <url>
-        <loc>http://localhost:4000/search/</loc>
-    </url>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <url>
-        <loc>http://localhost:4000/blog/tags/</loc>
-    </url>
-    
-    
-    
-    
-    
-    <url>
-        <loc>http://localhost:4000/blog/page2/</loc>
-    </url>
-    
-    
-    
-    
-    
-    <url>
-        <loc>http://localhost:4000/blog/page3/</loc>
-    </url>
-    
-    
-    
-    
-    
-    <url>
-        <loc>http://localhost:4000/blog/page4/</loc>
-    </url>
-    
-    
-    
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>http://localhost:4000/life/2017%EB%85%84-%ED%9A%8C%EA%B3%A0%EB%A1%9D/</loc>
+<lastmod>2017-12-31T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/SHA-CTF-Samsung-S4-300/</loc>
+<lastmod>2018-01-13T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/etc/OSX-Tensorflow-Install/</loc>
+<lastmod>2018-01-26T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/AceBear-CTF-Welcome-100/</loc>
+<lastmod>2018-01-31T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/Codegate-CTF-Easy-Serial-350/</loc>
+<lastmod>2018-02-06T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/Codegate-CTF-RedVelvet-75/</loc>
+<lastmod>2018-02-06T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/Codegate-CTF-Welcome-to-droid-125/</loc>
+<lastmod>2018-02-06T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/AceBear-CTF-JS-999/</loc>
+<lastmod>2018-02-09T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/AceBear-CTF-Memory-951/</loc>
+<lastmod>2018-02-09T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/AceBear-CTF-My-idol-975/</loc>
+<lastmod>2018-02-09T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/AceBear-CTF-STEg-Challenge-996/</loc>
+<lastmod>2018-02-09T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/Sharif-CTF-Client01-75/</loc>
+<lastmod>2018-02-15T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/Sharif-CTF-Crashed-DB-50/</loc>
+<lastmod>2018-02-16T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/Sharif-CTF-Hidden-100/</loc>
+<lastmod>2018-02-16T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/Sharif-CTF-RunMe-50/</loc>
+<lastmod>2018-02-16T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/Securinets-CTF-duck-hunt-300/</loc>
+<lastmod>2018-03-26T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/ctf/NUIT-DU-HACK-CTF-Kebab-STO-350/</loc>
+<lastmod>2018-04-02T00:00:00+09:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/about/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/categories/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/categories/CTF</loc>
+</url>
+<url>
+<loc>http://localhost:4000/categories/ETC</loc>
+</url>
+<url>
+<loc>http://localhost:4000/categories/life</loc>
+</url>
+<url>
+<loc>http://localhost:4000/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/month-archive/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/sitemap/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/splash-page/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/tags/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/year-archive/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/page2/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/page3/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/page4/</loc>
+</url>
 </urlset>

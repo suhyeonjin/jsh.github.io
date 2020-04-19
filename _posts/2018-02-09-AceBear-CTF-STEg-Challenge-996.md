@@ -1,16 +1,18 @@
 ---
-layout: post
+layout: single
 title: "[2018_AceBear_CTF] STEg Challenge(996)"
 description:
 headline:
 modified: 2018-02-09
-category: [CTF, 2018_acebear]
-tags: [Forensic, MISC, steganography]
+category: [CTF]
+tags: [2018_acebear, Forensic, MISC, Writeup, steganography]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+toc: true
+toc_sticky: true
 ---
 
 ## Exercise
@@ -19,7 +21,7 @@ featured: true
 Service: nc 35.200.176.244 33338
 author: komang4130
 
-![](/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/exercise.png)
+![](/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/exercise.png)
 <p align='center'><i>[그림] exercise</i></p>
 
 
@@ -29,7 +31,7 @@ AceBear CTF 에서 나왔던 Forensic/MISC 분야 중, 마지막 풀이 문제. 
 
 link를 통해, 받은 rar 파일을 압축 해제하면, `flag_enc.png` 파일을 하나 확인할 수 있다.
 
-![](/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/flag_enc.png)
+![](/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/flag_enc.png)
 <p align='center'><i>[그림] flag_enc.png</i></p>
 
 
@@ -37,12 +39,12 @@ link를 통해, 받은 rar 파일을 압축 해제하면, `flag_enc.png` 파일�
 
 
 문제를 보면, nc 로 socket 접속할 수 있는 server 가 하나 주어지는데, 접속해보면 아래와 같이 16byte의 data를 받아 base64로  encode 된 data를 receive할 수 있었다.
-![](/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/data_recieve.png)
+![](/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/data_recieve.png)
 <p align='center'><i>[그림] encode data</i></p>
 
 
 decode 하여, 확인해보면 flag_enc와 동일한 이미지인 것을 확인할 수 있는데, 자세히 보면 상단의 pixel 위치가 조금씩 다르다.
-![](/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/file1.png)
+![](/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/file1.png)
 <p align='center'><i>[그림] decode data</i></p>
 
 
@@ -52,7 +54,7 @@ decode 하여, 확인해보면 flag_enc와 동일한 이미지인 것을 확인�
 
 기존에 알고 있던 lsb 방식은 모두 이용해 보았지만 별 소득은 없었고, 구글을 뒤지다가 Python 과 관련된 도구에서 `Stepic`라는 것을 찾을 수 있었다. (Python Steganography 라는 언급만 있었어도...ㅂㄷㅂㄷ)
 
-![](/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/stepic.png)
+![](/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/stepic.png)
 <p align='center'><i>[그림] stepic stegano</i></p>
 
 

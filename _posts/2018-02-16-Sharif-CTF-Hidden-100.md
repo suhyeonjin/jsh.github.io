@@ -1,16 +1,18 @@
 ---
-layout: post
+layout: single
 title: "[2018_Sharif_CTF] Hidden(100)"
 description:
 headline:
 modified: 2018-02-16
-category: [CTF, 2018_Sharif]
-tags: [Reversing, string]
+category: [CTF]
+tags: [2018_Sharif, Reversing, Writeup, string]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+toc: true
+toc_sticky: true
 ---
 
 
@@ -20,7 +22,7 @@ featured: true
 
 > The flag is SharifCTF{MD5(Process id)}.
 
-![](/images/2018-02-16-Sharif-CTF-Hidden-100/exercise.png)
+![](/assets/images/2018-02-16-Sharif-CTF-Hidden-100/exercise.png)
 <p align='center'>[그림] exercise</p>
 
 

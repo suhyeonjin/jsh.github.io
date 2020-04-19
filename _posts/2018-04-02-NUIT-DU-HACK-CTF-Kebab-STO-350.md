@@ -1,16 +1,20 @@
 ---
-layout: post
+layout: single
 title: "[2018_NUIT_DU_HACK_CTF] Kebab STO(350)"
 description:
 headline:
 modified: 2018-04-02
-category: [CTF, 2018_NDH]
-tags: [Network]
+category: [CTF]
+tags: [2018_NDH, Network, Writeup]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+
+toc: true
+toc_sticky: true
+
 ---
 
 
@@ -21,7 +25,7 @@ featured: true
 > Challenge is listening on port 8888
 > Url : tcp://kebabsto.challs.malice.fr/
 
-![](/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/exercise.png)
+![](/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/exercise.png)
 <p align='center'>[그림] exercise</p>
 
 
@@ -29,7 +33,7 @@ featured: true
 
 Network 문제, Pcap 파일(`kebabsto.pcapng`)을 확인할 수 있다. HTTP Object 를 먼저 확인했을 때, "kdsqfkpdsdf" 파일을 download 한 것을 확인.
 
-![](/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/1.png)
+![](/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/1.png)
 <p align='center'>[그림] HTTP Object</p>
 
 
@@ -49,24 +53,24 @@ Archive:  ./kdsqfkpdsdf
 
 
 하지만, 802.11 packet 내용에 대해서는 아래와 같이 식별할 수 있는 정보들이 존재하지 않았다. WPA 방식의 Encrypt를 사용하고 있었으며, 이를 decrypt할 필요가 보였다.
-![](/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/2.png)
+![](/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/2.png)
 <p align='center'>[그림] lkdjflknezcz pcap</p>
 
 
 
 802.11 packet decrypt를 위해서는 wireshark preference의 802.11 항목에 Password:SSID를 넣어주어야 하는데 이를 구하기 위해 `aircrack-ng`과 사전파일을 이용해 WPA 방식의 인증을 풀어내었다. password = "abcdefgh" (간단하게 해결될 수 있는 부분이었는데 아래에 TCP 통신을 통해 Decrypt Message와 관련된 부분을 이용해 진행하려다 시간을 많이 허비)
-![](/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/3.png)
+![](/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/3.png)
 <p align='center'>[그림] aircrack-ng</p>
 
 
 아래와 같이, preference 에서 ssid, pw 정보를 이용해 decrypt 하겠다고 명시해준 후, packet 을 확인해보면, zip 파일의 전송을 확인할 수 있다. raw 로 type 변환 후, 확인한 결과 압축 해제시 Password 를 요구하는 것을 볼 수 있었다. (Password와 관련된 항목을 찾아내야 하는데, 이 부분에서 좀 헤맸던 것 같다.)
-![](/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/4.png)
+![](/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/4.png)
 <p align='center'>[그림] 802.11 decrypt</p>
 
-![](/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/5.png)
+![](/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/5.png)
 <p align='center'>[그림] 802.11 packet transfer</p>
 
-![](/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/6.png)
+![](/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/6.png)
 <p align='center'>[그림] pk password</p>
 
 
@@ -271,7 +275,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 위에서 얻은 `Th1s1s2P@ss_W0rd%M0f0`를 이용해 이전에 압축 해제시 password 로 인해 풀지 못했던 `slkfdsflj` 파일의 압축을 해제하면 아래와 같이 flag를 확인할 수 있었다.
 
-![](/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/flag.png)
+![](/assets/images/2018-04-02-NUIT-DU-HACK-CTF-Kebab-STO-350/flag.png)
 <p align='center'>[그림] flag</p>
 
 <p align='right'><strong>ndh2k18{M4k3M4tr10cHKa9r34T4g41n}</strong></p>

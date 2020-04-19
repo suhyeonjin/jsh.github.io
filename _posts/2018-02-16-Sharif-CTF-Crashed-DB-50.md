@@ -1,16 +1,18 @@
 ---
-layout: post
+layout: single
 title: "[2018_Sharif_CTF] Crashed DB(50)"
 description:
 headline:
 modified: 2018-02-16
-category: [CTF, 2018_Sharif]
-tags: [Forensic, sqlite3, db]
+category: [CTF]
+tags: [2018_Sharif, Forensic, Writeup, sqlite3, db]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+toc: true
+toc_sticky: true
 ---
 
 ## Exercise
@@ -19,7 +21,7 @@ featured: true
 Can you recover it??
 Hint: SQLite
 
-![](/images/2018-02-16-Sharif-CTF-Crashed-DB-50/exercise.png)
+![](/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/exercise.png)
 <p align='center'>[그림] exercise</p>
 
 
@@ -66,15 +68,15 @@ Error: file is encrypted or is not a database
 
 
 binary 확인 시, signature를 포함한 header 정보가 날아가 있는 것을 확인할 수 있다.
-![](/images/2018-02-16-Sharif-CTF-Crashed-DB-50/init.png)
+![](/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/init.png)
 <p align='center'><i>[그림] Header information</i></p>
 
 
 적당한, sqlite db 파일을 하나 만들고 `db0.db`의 0번째 offset 인 0x0D 로 구분되는 지점까지의 header offset을 가져다 넣어준다.
-![](/images/2018-02-16-Sharif-CTF-Crashed-DB-50/tmp_header.png)
+![](/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/tmp_header.png)
 <p align='center'><i>[그림] tmp Header</i></p>
 
-![](/images/2018-02-16-Sharif-CTF-Crashed-DB-50/fix_header.png)
+![](/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/fix_header.png)
 <p align='center'><i>[그림] fixed Header</i></p>
 
 
@@ -113,7 +115,7 @@ Error: database disk image is malformed
 ```
 
 Error 정보를 확인해보면, page 와 관련이 있었다. 주어진 db 의 크기는 8kb size를 가진다. 아래와 같이 page의 크기를 0x1000 (4096) 으로 명시하고, 하나의 page 크기가 0x1000일 때, 해당 db는 8kb 이므로 2 page로 구성된다. 따라서 offset을 0x02로 수정한다.
-![](/images/2018-02-16-Sharif-CTF-Crashed-DB-50/fixed.png)
+![](/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/fixed.png)
 <p align='center'><i>[그림] fixed Header Offset</i></p>
 
 

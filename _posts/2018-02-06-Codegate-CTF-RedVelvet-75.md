@@ -1,16 +1,18 @@
 ---
-layout: post
+layout: single
 title: "[2018_Codegate_CTF] RedVelvet (75)"
 description:
 headline:
 modified: 2018-02-06
-category: [CTF, 2018_Codegate]
-tags: [Reversing, z3, angr]
+category: [CTF]
+tags: [2018_Codegate, Reversing, Writeup, z3, angr]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+toc: true
+toc_sticky: true
 ---
 
 ## Exercise
@@ -18,7 +20,7 @@ featured: true
 > Happiness:)
 > Download
 
-![](/images/2018-02-06-Codegate-CTF-RedVelvet-75/exercise.png)
+![](/assets/images/2018-02-06-Codegate-CTF-RedVelvet-75/exercise.png)
 <p align='center'><i>[그림] exercise</i></p>
 
 
@@ -37,7 +39,7 @@ binary 정보를 확인해보면, 아래와 같이 64bit ELF 파일이다.
 
 
 실행해보면, 아래와 같이 input 을 받는 것을 확인할 수 있는데 별다른 incorrect message 없이 그대로 binary 가 종료 된다.
-![](/images/2018-02-06-Codegate-CTF-RedVelvet-75/run.png)
+![](/assets/images/2018-02-06-Codegate-CTF-RedVelvet-75/run.png)
 <p align='center'><i>[그림] run</i></p>
 
 
@@ -356,7 +358,7 @@ What_You_Wanna_Be?:)_lc_la
 
 `AngryIDA`라는 IDA Plugin을 이용한 풀이 방식인데, Angr가 설치된 x64 Windows 환경에서 IDA Plugin으로 Angr를 바로 이용할 수 있는 방식이다. 얼핏 보면 `Ponce`랑 유사한 느낌.. 아래 처럼 avoid, find offset을 직접 지정해주고, explorer 에서 run만 눌러주면 stdin에 대한 값을 찾아내는 걸 확인할 수 있다. (angr 동작이랑 동일하다, 단지 IDA 에서 수행될 뿐..)
 
-![](/images/2018-02-06-Codegate-CTF-RedVelvet-75/angryIDA.png)
+![](/assets/images/2018-02-06-Codegate-CTF-RedVelvet-75/angryIDA.png)
 <p align='center'><i>[그림] angryIDA</i></p>
 
 <br>

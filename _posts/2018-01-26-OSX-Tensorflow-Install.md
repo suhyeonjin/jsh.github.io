@@ -1,16 +1,19 @@
 ---
-layout: post
+layout: single
 title: "OSX Tensorflow Install"
 description:
 headline:
 modified: 2018-01-26
-category: etc
+category: [ETC]
 tags: [etc,tensorflow,error]
 imagefeature:
 mathjax:
 chart:
 comments: true
 featured: true
+
+toc: true
+toc_sticky: true
 ---
 
 
@@ -37,7 +40,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 좀 뒤져보면, (https://github.com/tensorflow/tensorflow/issues/14273)
 
-![](/images/2018-01-26-OSX-Tensorflow-Install/issue.png)
+![](/assets/images/2018-01-26-OSX-Tensorflow-Install/issue.png)
 
 * https://github.com/lakshayg/tensorflow-build/releases/download/v1.4.1-macosx_10_12-py27-py36-avx-sse41-sse42/tensorflow-1.4.1-cp36-cp36m-macosx_10_12_x86_64.whl
 
