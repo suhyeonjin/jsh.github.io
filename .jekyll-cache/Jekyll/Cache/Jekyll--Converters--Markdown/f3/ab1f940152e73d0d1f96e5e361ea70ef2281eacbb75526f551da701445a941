@@ -1,0 +1,161 @@
+I"�<h2 id="profile">Profile</h2>
+
+<!--figure>
+  <img src="http://localhost:4000/assets/images/profile.jpeg" width="200" height="200">
+  <figcaption>At Sanfrancisco RSA 2017</figcaption>
+</figure-->
+
+<blockquote>
+  <p>업데이트 &amp; 수정 중</p>
+</blockquote>
+
+<h5 id="introduce">[Introduce]</h5>
+<ul>
+  <li>1993.05.04</li>
+  <li>SU HYEON, JIN</li>
+</ul>
+
+<h5 id="operation-system">[Operation System]</h5>
+<ul>
+  <li>Windows</li>
+  <li>Linux</li>
+  <li>macOS</li>
+</ul>
+
+<h5 id="language">[Language]</h5>
+<ul>
+  <li>Major : Python</li>
+  <li>Minor : C/C++, Java, PHP, javascript(ajax, jqeury…)</li>
+  <li>ETC : C#, Android, Shell Script, Markup</li>
+</ul>
+
+<h5 id="database">[Database]</h5>
+<ul>
+  <li>Mysql, MongoDB(NoSQL)</li>
+  <li>Oracle
+    <ul>
+      <li>Procedure, PL/SQL</li>
+    </ul>
+  </li>
+</ul>
+
+<h5 id="web-server">[Web Server]</h5>
+<ul>
+  <li>Python(Flask + Gevent)</li>
+  <li>Apache</li>
+</ul>
+
+<h5 id="framework">[Framework]</h5>
+<ul>
+  <li>Flask, Jinja, Django</li>
+  <li>Elastic search, Logstash, Kibana</li>
+</ul>
+
+<h5 id="server-framework">[Server Framework]</h5>
+<ul>
+  <li>Docker</li>
+</ul>
+
+<h5 id="eligibility">[Eligibility]</h5>
+<ul>
+  <li>정보처리 산업기사</li>
+  <li>Digital Forensic Expert  2nd</li>
+</ul>
+
+<h5 id="career">[Career]</h5>
+<ul>
+  <li>(2014.07.20 ~ 2016.07.21) 공군본부 중앙전산소 침해사고 대응팀 - CERT</li>
+  <li>(2016.07.01 ~ 2017.03.30) 차세대 보안리더 양성 프로그램 Best of the Best 5th
+    <ul>
+      <li>Digital Forensic Track</li>
+    </ul>
+  </li>
+  <li>(2016.11.28 ~ 2017.02.28) LG 전자 서초 R&amp;D, SW Platform SDL &amp; Security part
+    <ul>
+      <li>IoT SDL Secure coding Guide</li>
+    </ul>
+  </li>
+  <li>(2017.06.26 ~ 2017.08.25) 한국 전자통신 연구소 (ETRI), 지능보안연구 그룹
+    <ul>
+      <li>Moving Target Defense Project</li>
+    </ul>
+  </li>
+</ul>
+
+<h5 id="presentation--project">[Presentation / Project]</h5>
+<ul>
+  <li>Best of the Best 5th Project
+    <ul>
+      <li>IoT Hacking &amp; Forensic with 0-day</li>
+    </ul>
+  </li>
+  <li>LG 전자 서초 R&amp;D 취약점 시연회</li>
+  <li>독일 하이델베르크 TROOPERS17 NGI Session Speaker
+    <ul>
+      <li>IoT Hacking &amp; Forensic with 0-day</li>
+    </ul>
+  </li>
+  <li>동계 정보보호 학술 대회 논문
+    <ul>
+      <li>기계학습을 이용한 행위 기반의 악성코드 판별 모델</li>
+    </ul>
+  </li>
+  <li>일본 도쿄 AVTOKYO Conference Speaker
+    <ul>
+      <li>IoT Hacking &amp; Forensic with 0-day</li>
+    </ul>
+  </li>
+  <li>고려대학교 정보보호 R&amp;D Challenge 참가
+    <ul>
+      <li>CAN Network Traffic (차량 네트워크 이상 징후 탐지 시스템 개발)</li>
+    </ul>
+  </li>
+</ul>
+
+<h5 id="awards">[Awards]</h5>
+<ul>
+  <li>2016 KR/FE 훈련. 사이버 DDoS 악성코드 탐지 및 방어
+    <ul>
+      <li>참모총장 표창 및 포상 휴가 수상</li>
+    </ul>
+  </li>
+  <li>(2016.12.13) LG 전자 보안 취약점 탐지
+    <ul>
+      <li>LG전자 제품 취약점 5건 제보</li>
+      <li>부사장 감사장</li>
+    </ul>
+  </li>
+  <li>(2017.03.30) 차세대 보안리더 Best 10 선정
+    <ul>
+      <li>미래창조과학부 장관상</li>
+    </ul>
+  </li>
+  <li>(2017.04.20) 2017 Codegate 해킹 시연영상 특별상
+    <ul>
+      <li>Codegate</li>
+    </ul>
+  </li>
+  <li>(2017.07.) 2017 1회 SCTF
+    <ul>
+      <li>Finalist</li>
+    </ul>
+  </li>
+  <li>(2017.11.02) 제 4회 SW 개발보안 경진대회 우수상
+    <ul>
+      <li>한국인터넷진흥원장상</li>
+    </ul>
+  </li>
+  <li>(2017.11.16) 2017 WhiteHat CTF
+    <ul>
+      <li>Finalist</li>
+    </ul>
+  </li>
+  <li>(2017.12.12) 제 5회 디지털 범인을 찾아라 대상
+    <ul>
+      <li>검창총장상 수여</li>
+    </ul>
+  </li>
+  <li>그 외 다수 CTF 참가</li>
+</ul>
+
+:ET

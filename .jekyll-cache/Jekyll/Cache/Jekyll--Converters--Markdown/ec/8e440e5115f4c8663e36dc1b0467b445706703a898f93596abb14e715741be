@@ -1,0 +1,55 @@
+I"<h2 id="exercise">Exercise</h2>
+
+<blockquote>
+  <p>Welcome to AceBear Security Contest:<br />
+Cipher:</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>172d330d21283133037c65101220703c187a3b1033202f24092c33103021261721273821773b3e
+</code></pre></div></div>
+<blockquote>
+  <p>author: komang4130</p>
+</blockquote>
+
+<p><img src="/assets/images/2018-01-31-AceBear-CTF-Welcome-100/exercise.png" alt="" /></p>
+
+<h2 id="solution">Solution</h2>
+
+<p>Cipher Text가 하나 주어진다. 해당 Cipher 를 Plain Text 로써 의미있는 문자열로 복호화 해내는 문제.
+감이 모자란지라,, 처음엔 ROT, Hex Decoding 등으로 다르게 접근 했었는데 flag format 과 xor을 이용해서 해결할 수 있었다.</p>
+
+<blockquote>
+  <ol>
+    <li>cipher를 hex 형태로 convert 해야한다.</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>flag format이 ‘AceBear{‘ 임을 이미 알고 있기 때문에, 해당 길이만큼 hex로 decode 한 cipher에 대해 xor 하여 flag format text 가 생성되는 xor key를 찾을 수 있다. (VNVODICH)</li>
+  </ol>
+</blockquote>
+
+<blockquote>
+  <ol>
+    <li>cipher 와 찾은 xor key를 이용하여 다시 xor을 수행함으로써, flag를 확인할 수 있다.</li>
+  </ol>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="s">'172d330d21283133037c65101220703c187a3b1033202f24092c33103021261721273821773b3e'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="s">"</span><span class="si">\</span><span class="se">x17</span><span class="s">-3</span><span class="si">\</span><span class="se">r</span><span class="s">!(13</span><span class="si">\</span><span class="se">x03</span><span class="s">|e</span><span class="si">\</span><span class="se">x10</span><span class="si">\</span><span class="se">x12</span><span class="s"> p&lt;</span><span class="si">\</span><span class="se">x18</span><span class="s">z;</span><span class="si">\</span><span class="se">x10</span><span class="s">3 /$</span><span class="si">\</span><span class="se">t</span><span class="s">,3</span><span class="si">\</span><span class="se">x10</span><span class="s">0!&amp;</span><span class="si">\</span><span class="se">x17</span><span class="s">!'8!w;&gt;"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span>
+<span class="s">'</span><span class="si">\</span><span class="se">x17</span><span class="s">-3</span><span class="si">\</span><span class="se">r</span><span class="s">!(13'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">plain</span>
+<span class="s">'AceBear{'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">xor</span><span class="p">(</span><span class="n">plain</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+<span class="s">'VNVODICH'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">xor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="s">"VNVODICH"</span><span class="p">)</span>
+<span class="s">'AceBear{U23_Vi3tN4m_will_be_the_winn3r}'</span>
+</code></pre></div></div>
+
+<p align="right"><strong>AceBear{U23_Vi3tN4m_will_be_the_winn3r}</strong></p>
+:ET

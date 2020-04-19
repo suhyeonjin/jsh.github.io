@@ -1,0 +1,160 @@
+I"�<h2 id="exercise">Exercise</h2>
+
+<blockquote>
+  <p>We lost some data when we were delivering our DB.
+Can you recover it??
+Hint: SQLite</p>
+</blockquote>
+
+<p><img src="/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/exercise.png" alt="" /></p>
+<p align="center">[그림] exercise</p>
+
+<h2 id="solution">Solution</h2>
+
+<p>Forensic 첫번째 문제, DB 전송 과정에서 일부 데이터를 손실했으며, 이를 복구할 수 있는지 묻고 있다. SQLite 가 hint로 주어진 것을 보아, sqlite db 관련 문제임을 확인.</p>
+
+<p>sqlite3 를 통해, 해당 binary를 읽어보면, db 정보가 전혀 식별되지 않는 것을 확인할 수 있으며 table 조회 시, error를 볼 수 있다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Forensic/50_Crashed DB
+ sqlite3 ./db0.db
+SQLite version 3.16.0 2016-11-04 19:09:39
+Enter <span class="s2">".help"</span> <span class="k">for </span>usage hints.
+sqlite&gt; .dbinfo
+database page size:  0
+write format:        0
+<span class="nb">read </span>format:         0
+reserved bytes:      0
+file change counter: 0
+database page count: 0
+freelist page count: 0
+schema cookie:       0
+schema format:       0
+default cache size:  0
+autovacuum top root: 0
+incremental vacuum:  0
+text encoding:       0
+user version:        0
+application <span class="nb">id</span>:      0
+software version:    0
+number of tables:    0
+number of indexes:   0
+number of triggers:  0
+number of views:     0
+schema size:         0
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sqlite&gt; .table
+Error: file is encrypted or is not a database
+</code></pre></div></div>
+
+<p>binary 확인 시, signature를 포함한 header 정보가 날아가 있는 것을 확인할 수 있다.
+<img src="/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/init.png" alt="" /></p>
+<p align="center"><i>[그림] Header information</i></p>
+
+<p>적당한, sqlite db 파일을 하나 만들고 <code class="highlighter-rouge">db0.db</code>의 0번째 offset 인 0x0D 로 구분되는 지점까지의 header offset을 가져다 넣어준다.
+<img src="/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/tmp_header.png" alt="" /></p>
+<p align="center"><i>[그림] tmp Header</i></p>
+
+<p><img src="/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/fix_header.png" alt="" /></p>
+<p align="center"><i>[그림] fixed Header</i></p>
+
+<p>remake 한 db 파일의 정보를 확인하여, table 정보를 식별하려 하면, 아래와 같은 error message를 확인할 수 있다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Forensic/50_Crashed DB
+ sqlite3 ./remake_db0.db
+SQLite version 3.16.0 2016-11-04 19:09:39
+Enter <span class="s2">".help"</span> <span class="k">for </span>usage hints.
+sqlite&gt; .dbinfo
+database page size:  1024
+write format:        1
+<span class="nb">read </span>format:         1
+reserved bytes:      0
+file change counter: 1
+database page count: 2
+freelist page count: 0
+schema cookie:       1
+schema format:       4
+default cache size:  0
+autovacuum top root: 0
+incremental vacuum:  0
+text encoding:       1 <span class="o">(</span>utf8<span class="o">)</span>
+user version:        0
+application <span class="nb">id</span>:      0
+software version:    3008004
+number of tables:    0
+number of indexes:   0
+number of triggers:  0
+number of views:     0
+schema size:         0
+
+sqlite&gt; .table
+Error: database disk image is malformed
+</code></pre></div></div>
+
+<p>Error 정보를 확인해보면, page 와 관련이 있었다. 주어진 db 의 크기는 8kb size를 가진다. 아래와 같이 page의 크기를 0x1000 (4096) 으로 명시하고, 하나의 page 크기가 0x1000일 때, 해당 db는 8kb 이므로 2 page로 구성된다. 따라서 offset을 0x02로 수정한다.
+<img src="/assets/images/2018-02-16-Sharif-CTF-Crashed-DB-50/fixed.png" alt="" /></p>
+<p align="center"><i>[그림] fixed Header Offset</i></p>
+
+<p>이후, table과 table schema를 정상적으로 식별할 수 있었다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sqlite&gt; .schema
+CREATE TABLE tbl <span class="o">(</span>Glaf varchar<span class="o">(</span>15<span class="o">)</span>, Flag varchar<span class="o">(</span>1<span class="o">)</span>, Lfag varchar<span class="o">(</span>15<span class="o">))</span><span class="p">;</span>
+
+sqlite&gt; .table
+tbl
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">tbl</code>이라는 table 내에서 <code class="highlighter-rouge">Flag</code>라는 column을 하나 확인할 수 있는데 해당  정보를 출력하면 flag를 확인할 수 있다.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>✘ jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Sharif_CTF/Forensic/50_Crashed DB
+ sqlite3 ./remake_db0.db
+SQLite version 3.16.0 2016-11-04 19:09:39
+Enter <span class="s2">".help"</span> <span class="k">for </span>usage hints.
+sqlite&gt; <span class="k">select </span>Flag from tbl<span class="p">;</span>
+S
+h
+a
+r
+i
+f
+C
+T
+F
+<span class="o">{</span>
+7
+d
+9
+e
+d
+4
+a
+5
+8
+6
+7
+f
+6
+b
+d
+3
+7
+6
+9
+2
+8
+a
+3
+e
+d
+7
+8
+3
+7
+a
+0
+7
+<span class="o">}</span>
+sqlite&gt;
+</code></pre></div></div>
+
+<p align="right"><strong>SharifCTF{7d9ed4a5867f6bd376928a3ed7837a07}</strong></p>
+:ET

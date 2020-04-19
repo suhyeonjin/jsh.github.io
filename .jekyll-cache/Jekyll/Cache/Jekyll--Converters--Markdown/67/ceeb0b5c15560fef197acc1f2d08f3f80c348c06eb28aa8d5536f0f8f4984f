@@ -1,0 +1,136 @@
+I"�;<h2 id="exercise">Exercise</h2>
+
+<blockquote>
+  <p>Download: Link
+Service: nc 35.200.176.244 33338
+author: komang4130</p>
+</blockquote>
+
+<p><img src="/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/exercise.png" alt="" /></p>
+<p align="center"><i>[그림] exercise</i></p>
+
+<h2 id="solution">Solution</h2>
+
+<p>AceBear CTF 에서 나왔던 Forensic/MISC 분야 중, 마지막 풀이 문제. JS 문제랑 마찬가지로 대회 당시에는 해결하지 못했다. 문제 제목에 대해서 조금만 더 고찰을 했었더라면 해결할 수 있었을텐데…</p>
+
+<p>link를 통해, 받은 rar 파일을 압축 해제하면, <code class="highlighter-rouge">flag_enc.png</code> 파일을 하나 확인할 수 있다.</p>
+
+<p><img src="/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/flag_enc.png" alt="" /></p>
+<p align="center"><i>[그림] flag_enc.png</i></p>
+
+<p>이미지를 자세히 보면, 좌측 상단에 검정색 pixel 일부를 볼 수 있다. 당연히, pixel을 이용한 steganography 방식의 LSB 로 인식하고 접근했었는데 별짓을 다해도 의미있는 문자열을 확인할 수 없었던게 큰 문제였던 것 같다.</p>
+
+<p>문제를 보면, nc 로 socket 접속할 수 있는 server 가 하나 주어지는데, 접속해보면 아래와 같이 16byte의 data를 받아 base64로  encode 된 data를 receive할 수 있었다.
+<img src="/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/data_recieve.png" alt="" /></p>
+<p align="center"><i>[그림] encode data</i></p>
+
+<p>decode 하여, 확인해보면 flag_enc와 동일한 이미지인 것을 확인할 수 있는데, 자세히 보면 상단의 pixel 위치가 조금씩 다르다.
+<img src="/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/file1.png" alt="" /></p>
+<p align="center"><i>[그림] decode data</i></p>
+
+<p>여기서 생각의 전환이 조금 필요했다. server로 부터 어떤 유의미한 데이터를 얻어낼 수 있는가 고민을 하다가 결국, 원점으로 돌아가 flag_enc 로부터 정보를 얻어내려 했던 것이 발목을 잡았다..</p>
+
+<p>결과적으로, 문제 제목에서 알 수 있듯이 <code class="highlighter-rouge">STEg</code>, <code class="highlighter-rouge">flag_enc</code> 라는 문자열에 주목해보자. enc라는 문자열은 무엇인가 encrypt 되었다는 것을 의미한다. 그렇다면, 어떤 로직을 통해 data가 encrypt 되었다는 것인데 pixel과 Image를 Steganography 적용하는 방식에서 사용될 수 있는 항목은 주로 lsb일 것이다.</p>
+
+<p>기존에 알고 있던 lsb 방식은 모두 이용해 보았지만 별 소득은 없었고, 구글을 뒤지다가 Python 과 관련된 도구에서 <code class="highlighter-rouge">Stepic</code>라는 것을 찾을 수 있었다. (Python Steganography 라는 언급만 있었어도…ㅂㄷㅂㄷ)</p>
+
+<p><img src="/assets/images/2018-02-09-AceBear-CTF-STEg-Challenge-996/stepic.png" alt="" /></p>
+<p align="center"><i>[그림] stepic stegano</i></p>
+
+<p>연속된 3개의 pixel 에 data를 은닉하는 방식의 lsb 인데, code 그대로 사용해 unhide 할 수 있다. (https://stackoverflow.com/questions/16838341/steganography-in-python-stepic)</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="k">def</span> <span class="nf">decode_imdata</span><span class="p">(</span><span class="n">imdata</span><span class="p">):</span>
+    <span class="s">'''Given a sequence of pixels, returns an iterator of characters
+    encoded in the image'''</span>
+
+    <span class="n">imdata</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">imdata</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">pixels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">imdata</span><span class="p">.</span><span class="nb">next</span><span class="p">()[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">imdata</span><span class="p">.</span><span class="nb">next</span><span class="p">()[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">imdata</span><span class="p">.</span><span class="nb">next</span><span class="p">()[:</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">byte</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+            <span class="n">byte</span> <span class="o">|=</span> <span class="n">pixels</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span>
+            <span class="n">byte</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+        <span class="n">byte</span> <span class="o">|=</span> <span class="n">pixels</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span>
+        <span class="k">yield</span> <span class="nb">chr</span><span class="p">(</span><span class="n">byte</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pixels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">break</span>
+
+
+<span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'test'</span><span class="p">)</span>
+<span class="n">data</span>  <span class="o">=</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">decode_imdata</span><span class="p">(</span><span class="n">im</span><span class="p">.</span><span class="n">getdata</span><span class="p">())).</span><span class="n">decode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data</span>
+</code></pre></div></div>
+<p><br /></p>
+
+<p>위 code로 서버로부터 받은 <code class="highlighter-rouge">encode data</code>와 <code class="highlighter-rouge">flag_enc.png</code>를 unhide 했을 때, 아래와 같은 문자열을 얻을 수 있었다. 무엇인가 복호화가 된다는 사실이 일단 실마리이다.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python ./steg.py
+|vohenrbuq<span class="o">{</span>nxe
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python ./steg.py
+53:<span class="o">)</span>~&gt;1&amp;v1z4hu
+</code></pre></div></div>
+
+<p>굳이, server로부터 encode data를 주는 이유는 무엇일까? 해당 data로부터 알아내야할 것이 있다는 말이다. <code class="highlighter-rouge">flag_enc.png</code>로부터 unhide 했을 때, 별 소득이 없었으므로 해당 결과 값에 영향을 미칠만한 항목을 찾아냈어야 했다. (이 부분에서도 꽤 많은 시간을 쏟았다.)</p>
+
+<p>여러 data 를 server 로 send 하다가, <code class="highlighter-rouge">\x00</code> 로만 16byte를 채워보내고 받은 encode data에 대해서 unhide 한 결과 식별할 수 있는 string(<code class="highlighter-rouge">OMG_YOU_BREAK_IT</code>)을 얻을 수 있었다.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python <span class="nt">-c</span> “print ‘<span class="se">\x</span>00’<span class="k">*</span>16” | nc localhost 33338 | <span class="nb">base64</span> <span class="nt">-D</span> <span class="o">&gt;</span> tmp.png
+
+jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python ./steg.py
+OMG_YOU_BREAK_IT
+</code></pre></div></div>
+
+<p>또 여기서, 삽질했던게 Null로 얻은 문자열 길이는 16byte인데 flag_enc.png 에서 얻은 문자열 길이는 14byte이다.. 기왕 내는거 길이 좀 맞춰서 내지;; 14byte 까지만 각각의 문자열을 xor 할 경우 flag를 확인할 수 있었다;;;</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="k">def</span> <span class="nf">decode_imdata</span><span class="p">(</span><span class="n">imdata</span><span class="p">):</span>
+    <span class="s">'''Given a sequence of pixels, returns an iterator of characters
+    encoded in the image'''</span>
+
+    <span class="n">imdata</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">imdata</span><span class="p">)</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">pixels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">imdata</span><span class="p">.</span><span class="nb">next</span><span class="p">()[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">imdata</span><span class="p">.</span><span class="nb">next</span><span class="p">()[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">imdata</span><span class="p">.</span><span class="nb">next</span><span class="p">()[:</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">byte</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+            <span class="n">byte</span> <span class="o">|=</span> <span class="n">pixels</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span>
+            <span class="n">byte</span> <span class="o">&lt;&lt;=</span> <span class="mi">1</span>
+        <span class="n">byte</span> <span class="o">|=</span> <span class="n">pixels</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span>
+        <span class="k">yield</span> <span class="nb">chr</span><span class="p">(</span><span class="n">byte</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pixels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">break</span>
+
+<span class="k">def</span> <span class="nf">strxor</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">^</span><span class="nb">ord</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">))</span>
+
+
+<span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'flag_enc.png'</span><span class="p">)</span>
+<span class="n">data</span>  <span class="o">=</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">decode_imdata</span><span class="p">(</span><span class="n">im</span><span class="p">.</span><span class="n">getdata</span><span class="p">())).</span><span class="n">decode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data</span>
+
+
+<span class="n">im2</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'tmp.png'</span><span class="p">)</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">decode_imdata</span><span class="p">(</span><span class="n">im2</span><span class="p">.</span><span class="n">getdata</span><span class="p">())).</span><span class="n">decode</span><span class="p">(</span><span class="s">'hex'</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data2</span>
+
+
+<span class="k">print</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">^</span><span class="nb">ord</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">data2</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jsh05042@Macs-MacBook-Pro  ~/Desktop/CTF/2018_Acebear_CTF/Forensic:MISC/STEg
+ python ./steg.py
+53:<span class="o">)</span>~&gt;1&amp;v1z4hu
+OMG_YOU_BREAK_IT
+zStep1k_st3p1k!!
+</code></pre></div></div>
+
+<blockquote>
+  <p>솔직히, 맞추라고 낸 문제인가 애매하다.. Forensic이 아니라 그냥 MISC 느낌.. 어거지로 끼워 만든 문제 느낌이 너무 강하고, 쓸데 없는 삽질이 너무 많이 필요했다…;;</p>
+</blockquote>
+
+<p align="right"><strong>AceBear{zStep1k_st3p1k!!}</strong></p>
+:ET
