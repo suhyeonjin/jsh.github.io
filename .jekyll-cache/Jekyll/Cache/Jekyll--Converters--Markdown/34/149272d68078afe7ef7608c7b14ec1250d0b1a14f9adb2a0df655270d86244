@@ -1,0 +1,17 @@
+I"�<p>최근 ML Challenge 할 때, Desktop만으로는 성능이 잘나오지 않아 colab을 애용 중이다. 
+주로, Booting 알고리즘을 많이 사용하는데 그 중 하나가 <code class="highlighter-rouge">lightGBM</code>. 
+colab에서 GPU로 lightgbm을 사용하기 위해서, pip로 설치만 하면 되는 것이 아니라 GPU option으로 Compile 과정이 필요함,</p>
+
+<p>아래 Cell 그대로 실행하고 import하면 개꿀딱;</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">!</span>git clone https://github.com/Microsoft/LightGBM
+%cd /content/LightGBM/
+<span class="o">!</span><span class="nb">mkdir </span>build
+%cd build
+<span class="o">!</span>cmake <span class="nt">-DUSE_GPU</span><span class="o">=</span>1
+<span class="o">!</span>make <span class="nt">-j</span><span class="si">$(</span><span class="nb">nproc</span><span class="si">)</span>
+%cd /content/LightGBM/python-package
+<span class="o">!</span>python3 setup.py <span class="nb">install</span> <span class="nt">--gpu</span> <span class="c">#--precompile</span>
+<span class="c">#!sudo apt-get -y install python-pip</span>
+</code></pre></div></div>
+:ET

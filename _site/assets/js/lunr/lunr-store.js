@@ -12,7 +12,7 @@ var store = [{
         "teaser": null
       },{
         "title": "OSX Tensorflow Install",
-        "excerpt":"Lab3 예제 code를 Docker에서 실습하던 중에, gvs optimizer 가 type error 뜨는 것을 확인.. 고치려고 별 짓을 다했으나 결국 version 문제인것으로 확인했다… Docker 끄고.. 로컬에 설치 시작.. 아래처럼 하면, 정상적으로 설치 되지 않는다… sudo pip3 install tensorflow 문제를 찾아보면, Max OS에서 정상적으로 version이 호환되지 않는 문제인데,, 아래와 같은 error 를...","categories": ["ETC"],
+        "excerpt":"Lab3 예제 code를 Docker에서 실습하던 중에, gvs optimizer 가 type error 뜨는 것을 확인.. 고치려고 별 짓을 다했으나 결국 version 문제인것으로 확인했다… Docker 끄고.. 로컬에 설치 시작.. 아래처럼 하면, 정상적으로 설치 되지 않는다… sudo pip3 install tensorflow 문제를 찾아보면, Max OS에서 정상적으로 version이 호환되지 않는 문제인데,, 아래와 같은 error 를...","categories": ["etc"],
         "tags": ["etc","tensorflow","error"],
         "url": "http://localhost:4000/etc/OSX-Tensorflow-Install/",
         "teaser": null
@@ -99,5 +99,11 @@ var store = [{
         "excerpt":"Exercise Description The challenge consists in finding the flag into a network capture. Challenge is listening on port 8888 Url : tcp://kebabsto.challs.malice.fr/ [그림] exercise Solution Network 문제, Pcap 파일(kebabsto.pcapng)을 확인할 수 있다. HTTP Object 를 먼저 확인했을 때, “kdsqfkpdsdf” 파일을 download 한 것을 확인. [그림] HTTP Object save 하고, ZIP...","categories": ["CTF"],
         "tags": ["2018_NDH","Network","Writeup"],
         "url": "http://localhost:4000/ctf/NUIT-DU-HACK-CTF-Kebab-STO-350/",
+        "teaser": null
+      },{
+        "title": "lightGBM with google colab",
+        "excerpt":"최근 ML Challenge 할 때, Desktop만으로는 성능이 잘나오지 않아 colab을 애용 중이다. 주로, Booting 알고리즘을 많이 사용하는데 그 중 하나가 lightGBM. colab에서 GPU로 lightgbm을 사용하기 위해서, pip로 설치만 하면 되는 것이 아니라 GPU option으로 Compile 과정이 필요함, 아래 Cell 그대로 실행하고 import하면 개꿀딱; !git clone https://github.com/Microsoft/LightGBM %cd /content/LightGBM/ !mkdir build...","categories": ["codeblock"],
+        "tags": ["ml","lgbm"],
+        "url": "http://localhost:4000/codeblock/lightGBM-with-google-colab/",
         "teaser": null
       }]
