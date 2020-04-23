@@ -79,6 +79,9 @@
 <loc>http://localhost:4000/categories/</loc>
 </url>
 <url>
+<loc>http://localhost:4000/categories/codeblock</loc>
+</url>
+<url>
 <loc>http://localhost:4000/categories/ctf</loc>
 </url>
 <url>
